@@ -1,0 +1,7 @@
+1. Join Game Session
+2. Select An Avatar
+3. Wait for Turn
+4. Select Category
+5. Select Amount
+6. Send Response
+-
