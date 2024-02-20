@@ -11,7 +11,6 @@ router.get('/', (req, res) => {
 });
 
 router.post('/', (req, res) => {
-    console.log(req.body)
     client(req.body)
     res.render('pages/index');
 });

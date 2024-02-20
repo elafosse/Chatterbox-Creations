@@ -1,4 +1,6 @@
 // Client
+const Message = require('../Utils/messages')
+const Types = require('../Utils/message_types')
 var WebSocket = require('ws');
 
 function create_ws(request) {
@@ -6,7 +8,10 @@ function create_ws(request) {
 
     ws.on('open', (event) => {
         // Initial Server Request
-        ws.send(request.ROOMCODE);
+        ws.send(JSON.stringify(new Message(Types.Handshake, {
+            'room_code': request.ROOMCODE,
+            'username': request.USERNAME
+        })));
     });
 
     ws.on('error', (err) => {
