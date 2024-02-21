@@ -1,0 +1,5 @@
+class Jeopardy {
+    constructor() {
+        
+    }
+}
