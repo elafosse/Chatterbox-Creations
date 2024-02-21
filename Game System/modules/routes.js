@@ -1,5 +1,6 @@
-const Game_Types = require('../Utils/game_types');
+const Game_Types = require('../../Utils/game_types');
 const express = require('express');
+const Server = require('./server');
 const router = express.Router();
 
 // Index Page
@@ -9,8 +10,9 @@ router.get('/', (req, res) => {
 
 // Jeopardy Game Page
 router.get('/jeopardy', (req, res) => {
-  run_game(Game_Types.Jeopardy);
-  res.render('pages/jeopardy');
+  Server.run_game(Game_Types.Jeopardy).then((value) => {
+    res.render('pages/jeopardy');
+  })
 });
 
 module.exports = router;
