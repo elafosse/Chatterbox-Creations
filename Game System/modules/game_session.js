@@ -17,7 +17,7 @@ class Game_Session {
 
     create_roomcode(active_roomcodes) {
         // Creates a code for players to join the room
-        var roomcode = Math.floor(Math.random() * 89999) + 10000;
+        let roomcode = Math.floor(Math.random() * 89999) + 10000;
         if (active_roomcodes.has(roomcode)) {
             return this.create_roomcode();
         } else {
@@ -26,9 +26,9 @@ class Game_Session {
     }
 
     add_player(name) {
-        // TODO: Check name
-        if (!this.player_names.has(name)) {
-            this.player_names.add(name);
+        let uppercase_name = name.toUpperCase();
+        if (!this.player_names.has(uppercase_name)) {
+            this.player_names.add(uppercase_name);
             return 200;
         } else {
             return 400;

@@ -7,7 +7,7 @@ class Message {
     }
 
     import_data(msg) {
-        var data = JSON.parse(msg);
+        let data = JSON.parse(msg);
         this.type = data.type;
         this.data = data.data;
         return this;

@@ -11,7 +11,7 @@ router.get('/', (req, res) => {
 // Jeopardy Game Page
 router.get('/jeopardy', (req, res) => {
   Server.run_game(Game_Types.Jeopardy).then((value) => {
-    res.render('pages/jeopardy');
+    res.render('pages/jeopardy', { room_code: value });
   })
 });
 
