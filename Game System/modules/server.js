@@ -18,7 +18,7 @@ function ws_server() {
                     handshake_response(ws, msg)
                     break;
                 case Types.Avatar:
-                    
+                    set_player_avatar(ws, name, avatar)
                     break;
                 default:
                     console.log(404);
@@ -44,8 +44,15 @@ function handshake_response(ws, msg) {
     };
 
     gs = get_game_session_with_code(msg.data.room_code);
-    gs.add_player(msg.data.username)
-    ws.send("Hello " + msg.data.username);
+    let id = gs.add_player(msg.data.username).PLAYER_ID
+    console.log("Player - " + msg.data.username + " - added.");
+    ws.send(JSON.stringify(new Message(Types.Player_ID, {
+        'player_id': id,
+    })));
+}
+
+function set_player_avatar(ws, name, avatar) {
+    return 200;
 }
 
 function check_code(room_code) {

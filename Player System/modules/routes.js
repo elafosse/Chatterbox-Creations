@@ -5,39 +5,45 @@ const router = express.Router();
 router.use(express.json());
 router.use(express.urlencoded({ extended: false }));
 
+function match_body(data) {
+    if (Object.keys(data).includes('ROOMCODE' && 'USERNAME')) {
+        return 'avatar';
+    } else if (Object.keys(data).includes('AVATAR_ID')) {
+        return 'loading';
+    }
+}
+
 // Index Page
 router.get('/', (req, res) => {
     res.render('pages/index');
 });
 
 router.post('/', (req, res) => {
-    Client.create_ws(req.body).then((value) => {
-        res.render('pages/avatar');
-    })
+    switch (match_body(req.body)) {
+        case 'avatar':
+            // Avatar Page
+            Client.create_ws(req.body).then((value) => {
+                res.render('pages/avatar');
+            })
+            break;
+        case 'loading':
+            // Game Wait Page
+            Client.send_avatar_selection(req.body).then((value) => {
+                res.render('pages/loading');
+            })
+        default:
+            break;
+    }
 });
 
-// TODO: Complete Webpages
-// Avatar Page
-// router.get('/avatar', (req, res) => {
-//     Client.create_ws(req.body).then((value) => {
-//         res.render('pages/avatar');
-//     })
-// });
-
-// Game Wait Page
-router.get('/loading', (req, res) => {
-    Client.send_avatar_selection(req.body).then((value) => {
-        res.render('pages/loading');
-    })
-});
 
 // Jeopardy Pages
 
 // Categories Page
 router.post('/jeopardy/categories', (req, res) => {
     connect_to_server(req.body).then((value) => {
-        // TODO: Render '' Page
-        res.render('pages/loading');
+        // TODO: Render Next Page
+        res.render('pages/');
     })
 });
 

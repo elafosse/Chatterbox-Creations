@@ -3,6 +3,9 @@ const express = require('express');
 const Server = require('./server');
 const router = express.Router();
 
+router.use(express.json());
+router.use(express.urlencoded({ extended: false }));
+
 // Index Page
 router.get('/', (req, res) => {
   res.render('pages/index');

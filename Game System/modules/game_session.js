@@ -1,7 +1,10 @@
+const PlayerMaker = require('./player');
+
 // Starts Up Game
 class Game_Session {
     room_code;
     player_names = new Set([]);
+    player_id = {};
 
     constructor(game) {
         this.game = game;
@@ -28,12 +31,23 @@ class Game_Session {
     add_player(name) {
         let uppercase_name = name.toUpperCase();
         if (!this.player_names.has(uppercase_name)) {
-            this.player_names.add(uppercase_name);
-            return 200;
+            let player_id = Math.floor(Math.random() * 899) + 100;
+            let player = new PlayerMaker(uppercase_name, player_id)
+            this.player_names.add(player);
+            return {
+                STATUS: 200,
+                PLAYER_ID: player_id
+            };
         } else {
-            return 400;
+            return {
+                STATUS: 400
+            };
         }
     }
+
+    // get_game_player(name) {
+
+    // }
 
     end_session() {
         // TODO: REMOVE ROOM_CODE

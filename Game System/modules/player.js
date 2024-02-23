@@ -1,7 +1,11 @@
 class Player {
     points = 0;
+    avatar;
 
-    constructor() {
-        this.name;
+    constructor(name, id) {
+        this.name = name;
+        this.id = id;
     }
 }
+
+module.exports = Player;
