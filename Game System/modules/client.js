@@ -2,11 +2,13 @@
 const Message = require('../../Utils/messages')
 const Types = require('../../Utils/message_types')
 let WebSocket = require('ws');
-let ws;
-let player_id = 0;
+let sockets = new Map();
 
-async function create_ws(request) {
-    ws = new WebSocket("ws://127.0.0.1:3001");
+
+
+async function create_ws(id, request) {
+    let ws = new WebSocket("ws://127.0.0.1:3001");
+    sockets.set(id, ws);
 
     ws.on('open', (event) => {
         // Initial Server Request
@@ -38,7 +40,7 @@ async function create_ws(request) {
     });
 }
 
-async function send_avatar_selection(request) {
+async function send_avatar_selection(id, request) {
     ws.send(JSON.stringify(new Message(Types.Avatar, {
         'avatar_id': request.AVATAR_ID
     })));

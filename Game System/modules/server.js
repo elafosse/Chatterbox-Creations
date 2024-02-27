@@ -6,8 +6,8 @@ const Types = require('../../Utils/message_types');
 const PORT = 3001
 
 const wss = new WebSocketServer({ port: PORT });
-const ACTIVE_GAME_SESSIONS = new Set([]);
-const ACTIVE_ROOMCODES = new Set([]);
+const ACTIVE_GAME_SESSIONS = new Set();
+const ACTIVE_ROOMCODES = new Set();
 
 function ws_server() {
     wss.on('connection', ((ws) => {

@@ -27,19 +27,19 @@ router.get('/join', (req, res) => {
 
 router.post('/join', (req, res) => {
   switch (match_body(req.body)) {
-      case 'avatar':
-          // Avatar Page
-          Client.create_ws(req.body).then((value) => {
-              res.render('pages/avatar');
-          })
-          break;
-      case 'loading':
-          // Game Wait Page
-          Client.send_avatar_selection(req.body).then((value) => {
-              res.render('pages/loading');
-          })
-      default:
-          break;
+    case 'avatar':
+      // Avatar Page
+      Client.create_ws(req.session.id, req.body).then((value) => {
+        res.render('pages/avatar');
+      })
+      break;
+    case 'loading':
+      // Game Wait Page
+      Client.send_avatar_selection(req.session.id, req.body).then((value) => {
+        res.render('pages/loading');
+      })
+    default:
+      break;
   }
 });
 
