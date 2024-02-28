@@ -1,8 +1,9 @@
 const Game_Types = require('../../Utils/game_types');
 const express = require('express');
-const Server = require('./server');
-const Client = require('./client');
+const ServerClass = require('./server');
 const router = express.Router();
+
+const server = new ServerClass();
 
 router.use(express.json());
 router.use(express.urlencoded({ extended: false }));
@@ -26,16 +27,19 @@ router.get('/join', (req, res) => {
 });
 
 router.post('/join', (req, res) => {
+  let c = server.get_client(req.session.id);
+
   switch (match_body(req.body)) {
     case 'avatar':
-      // Avatar Page
-      Client.create_ws(req.session.id, req.body).then((value) => {
+      // Avatar Selection Page
+      c.create_ws(req.body).then((value) => {
+        // TODO: check if value is good
         res.render('pages/avatar');
       })
       break;
     case 'loading':
       // Game Wait Page
-      Client.send_avatar_selection(req.session.id, req.body).then((value) => {
+      c.send_avatar_selection(req.body).then((value) => {
         res.render('pages/loading');
       })
     default:
@@ -43,13 +47,12 @@ router.post('/join', (req, res) => {
   }
 });
 
-
 // Jeopardy Pages
 
 // Jeopardy Game Page
 router.get('/jeopardy', (req, res) => {
-  Server.run_game(Game_Types.Jeopardy).then((value) => {
-    res.render('pages/jeopardy', { room_code: value });
+  server.run_game(Game_Types.Jeopardy).then((value) => {
+      res.render('pages/jeopardy', { room_code: value });
   })
 });
 
