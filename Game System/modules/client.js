@@ -25,23 +25,7 @@ class Client {
 
         ws.on('open', (event) => {
             // Initial Server Request
-            this.send_message_to_server(new Message(Types.Handshake, {
-                'room_code': request.ROOMCODE,
-                'username': request.USERNAME
-            }));
-        });
-
-        ws.on('message', (message) => {
-            let msg = (new Message()).import_data(message);
-            switch (msg.type) {
-                case Types.Player_ID:
-                    player_id = msg.data.player_id;
-                    console.log(player_id);
-                    console.log(`Message: ${message}`);
-                    break;
-                default:
-                    console.log(404);
-            }
+            this.send_handshake(request);
         });
 
         ws.on('error', (err) => {
@@ -56,6 +40,38 @@ class Client {
     }
 
     // Message Functions
+    recieve_msg() {
+        return new Promise((resolve, reject) => this.ws_message(resolve, reject));
+    }
+
+    ws_message(resolve, reject) {
+        this.ws.on('message', (message) => {
+            let msg = (new Message()).import_data(JSON.parse(message));
+
+            switch (msg.type) {
+                case Types.Player_ID:
+                    player_id = msg.data.player_id;
+                    console.log(player_id);
+                    console.log(`Message: ${message}`);
+                    break;
+                case Types.Success:
+                    resolve(msg['STATUS']);
+                    break;
+                default:
+                    reject();
+                    console.log(404);
+            }
+        });
+    }
+
+    async send_handshake(request) {
+        // Initial Server Request
+        this.send_message_to_server(new Message(Types.Handshake, {
+            'room_code': request.ROOMCODE,
+            'username': request.USERNAME
+        }));
+    }
+
     async send_message_to_server(msg) {
         this.ws.send(JSON.stringify({
             'session_id': this.session_id,

@@ -3,7 +3,7 @@ const PlayerMaker = require('./player');
 // Starts Up Game
 class Game_Session {
     room_code;
-    player_names = new Set();
+    player_list = new Set();
     player_id = {};
 
     constructor(game) {
@@ -29,24 +29,29 @@ class Game_Session {
     }
 
     add_player(name, id) {
-        let uppercase_name = name.toUpperCase();
-        if (!this.player_names.has(uppercase_name)) {
-            // let player_id = Math.floor(Math.random() * 899) + 100;
-            let player = new PlayerMaker(uppercase_name, id)
-            this.player_names.add(player);
-            return {
-                STATUS: 200
-            };
+        // Adds Player To Game Session
+        if (this.player_list >= 8) {
+            // Returns if too many players attempt to join
+            return 406;
+        } else if (!this.player_name_in_game(name.toUpperCase())) {
+            this.player_list.add(new PlayerMaker(name.toUpperCase(), id));
+            return 200;
         } else {
-            return {
-                STATUS: 400
-            };
+            // Name Already Taken
+            return 400;
         }
     }
 
-    // get_game_player(name) {
+    player_name_in_game(name) {
+        // Checks if Player Name is Already In the Game
+        for (const p of this.player_list) {
+            if (p.name == name) {
+                return true;
+            }
+        }
 
-    // }
+        return false;
+    }
 
     end_session() {
         // TODO: REMOVE ROOM_CODE

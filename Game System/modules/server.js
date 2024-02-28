@@ -4,9 +4,9 @@ const Game_Session = require('./game_session');
 const Client = require('./client');
 const Message = require('../../Utils/messages')
 const Types = require('../../Utils/message_types');
+const Utils = require('../../Utils/utils');
 const PORT = 3001
 
-// const wss = new WebSocketServer({ port: PORT });
 const ACTIVE_GAME_SESSIONS = new Map();
 const GAME_SESSION_CLIENTS = new Map();
 const ACTIVE_ROOMCODES = new Set();
@@ -21,22 +21,32 @@ class Server {
     async ws_server() {
         this.wss.on('connection', ((ws) => {
             ws.on('message', (message) => {
+                let command_status = 200;
                 let parsed_message = JSON.parse(message)
                 let id = parsed_message['session_id']
                 let msg = (new Message()).import_data(parsed_message['message']);
+
                 switch (msg.type) {
                     case Types.Handshake:
-                        this.handshake_response(ws, id, msg)
+                        command_status = this.handshake_response(id, msg)
                         break;
                     case Types.Avatar:
-                        this.set_player_avatar(ws, id, name, avatar)
+                        command_status = this.set_player_avatar(ws, id, name, avatar)
                         break;
                         default:
                             console.log(404);
-                        }
-                    });
+                }
 
-                    ws.on('end', () => {
+                if (command_status != 200) {
+                    Utils.send_error(ws, command_status);
+                } else {
+                    Utils.send_success(ws, command_status);
+                }
+            });
+                
+                
+
+            ws.on('end', () => {
                 console.log('Connection ended...');
             });
         }));
@@ -44,25 +54,29 @@ class Server {
 
     // Message & WebSocket Functions
 
-    handshake_response(ws, id, msg) {
-        // Handles Handshake Message & Sends Response
+    handshake_response(id, msg) {
+        // Handles Initial Handshake Message & Sends Response
         let room_code = parseInt(msg.data.room_code);
 
-        if (this.check_name(msg.data.username) != 200) {
-            return 400;
+        let ret = this.check_name(msg.data.username);
+        if (ret != 200) {
+            return ret;
+        };
+
+        ret = this.check_code(room_code);
+        if (ret != 200) {
+            return ret;
         };
         
-        if (this.check_code(room_code) != 200) {
-            return 400;
+        ret = ACTIVE_GAME_SESSIONS.get(room_code).add_player(msg.data.username, id);
+        if (ret != 200) {
+            return ret;
         };
-        
-        ACTIVE_GAME_SESSIONS.get(room_code).add_player(msg.data.username);
+
         this.add_client(room_code, id);
 
         console.log("Player - " + msg.data.username + " - added.");
-        ws.send(JSON.stringify(new Message(Types.Player_ID, {
-            'STATUS': 200,
-        })));
+        return ret;
     }
 
     set_player_avatar(ws, id, name, avatar) {
@@ -70,8 +84,7 @@ class Server {
     }
 
     check_code(room_code) {
-        // Check Client Room Code
-        // TODO: Return Proper Data
+        // Checks if Client Room Code Correspondes to a Real Game Session Code
         if (ACTIVE_ROOMCODES.has(room_code)) {
             return 200;
         } else {
@@ -81,8 +94,12 @@ class Server {
     }
 
     check_name(name) {
-        // TODO: Check if name is appropriate somehow
-        return 200;
+        // Checks if Name is Appropriate
+        if (Utils.name_appropriate(name)) {
+            return 200;
+        } else {
+            return 400;
+        }
     }
 
     get_game_session_with_code(code) {

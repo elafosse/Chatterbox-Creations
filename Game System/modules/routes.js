@@ -32,9 +32,13 @@ router.post('/join', (req, res) => {
   switch (match_body(req.body)) {
     case 'avatar':
       // Avatar Selection Page
-      c.create_ws(req.body).then((value) => {
+      c.create_ws(req.body);
+      c.recieve_msg().then((status) => {
         // TODO: check if value is good
+        // TODO: Change Screen From Client Code
         res.render('pages/avatar');
+      }).catch(() => {
+        res.render('pages/join');
       })
       break;
     case 'loading':
