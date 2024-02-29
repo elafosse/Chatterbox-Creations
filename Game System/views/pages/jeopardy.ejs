@@ -11,7 +11,12 @@
     <main>
       <div class="container">
         <h1>Jeopardy</h1>
-        <h3><%= (room_code) ? room_code : 'xxxxx' %></h3>
+        <h3 id="roomcode"><%= (room_code) ? room_code : 'xxxxx' %></h3>
+      </div>
+      <div class="container">
+        <form action="/jeopardy/board" class="form" method="post">
+          <button name="code" value="<%= room_code %>" class="btn btn-primary float-right">Start Game</button>
+        </form>
       </div>
     </main>
 

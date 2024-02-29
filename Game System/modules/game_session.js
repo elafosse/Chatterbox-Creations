@@ -1,4 +1,5 @@
 const PlayerMaker = require('./player');
+const Utils = require('../../Utils/utils');
 const AVATAR_IDS = new Set([
     'elephant',
     'frog',
@@ -12,7 +13,9 @@ const AVATAR_IDS = new Set([
 
 // Starts Up Game
 class Game_Session {
+    started = false;
     room_code;
+    current_player_index = 0;
     player_list = new Set();
     player_id = {};
     avaliable_avatar_ids = new Set(AVATAR_IDS);
@@ -31,7 +34,9 @@ class Game_Session {
 
     create_roomcode(active_roomcodes) {
         // Creates a code for players to join the room
-        let roomcode = Math.floor(Math.random() * 89999) + 10000;
+        // TODO: Test
+        // let roomcode = Math.floor(Math.random() * 89999) + 10000;
+        let roomcode = Utils.random_roomcode();
         if (active_roomcodes.has(roomcode)) {
             return this.create_roomcode();
         } else {
@@ -84,6 +89,33 @@ class Game_Session {
         }
 
         return false;
+    }
+
+    start_game() {
+        this.started = true;
+        this.player_order = this.get_player_order();
+        
+        // TODO: Start Game API
+
+        // 1. Player Chooses Category
+        // 2. Player Chooses Amount
+        // 3. Jeopardy API Returns Question
+        // 4. 
+
+    }
+
+    get_player_order() {
+        let array = Array.from(this.player_list);
+        let current_index = array.length;
+        let random_index;
+
+        while (current_index > 0) {
+            random_index = Math.floor(Math.random() * current_index);
+            current_index--;
+            [array[current_index], array[random_index]] = [array[random_index], array[current_index]];
+        }
+
+        return array;
     }
 
     end_session() {

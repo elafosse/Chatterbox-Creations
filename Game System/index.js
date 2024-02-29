@@ -6,6 +6,7 @@ const port = 8080;
 process.env.PWD = process.cwd()
 
 const middleware = session({
+  // TODO: Fix Up
   secret: 'my-secret',  // a secret string used to sign the session ID cookie
   // resave: false,  // don't save session if unmodified
   // saveUninitialized: false  // don't create session until something stored

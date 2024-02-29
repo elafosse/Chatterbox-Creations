@@ -80,6 +80,7 @@ class Server {
     }
 
     set_player_avatar(id, avatar) {
+        // Sets the Players Avatar
         return ACTIVE_GAME_SESSIONS.get(PLAYER_GAME_SESSION.get(id)).set_player_avatar(id, avatar.data.avatar_id);
     }
 
@@ -110,6 +111,10 @@ class Server {
         }
     }
 
+    // send_to_client() {
+
+    // }
+
     // Game Session Functions
 
     async run_game(type) {
@@ -119,6 +124,13 @@ class Server {
         ACTIVE_GAME_SESSIONS.set(this.code, this.gs);
         ACTIVE_ROOMCODES.add(this.code);
         return this.code;
+    }
+
+    start_gs(code) {
+        // TODO: Start game if not started yet
+        ACTIVE_GAME_SESSIONS.get(parseInt(code)).start_game();
+        // TODO: Tell Clients to Start Game
+        
     }
 
     add_client(room_code, id) {
