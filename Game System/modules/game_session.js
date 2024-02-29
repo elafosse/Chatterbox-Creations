@@ -1,10 +1,21 @@
 const PlayerMaker = require('./player');
+const AVATAR_IDS = new Set([
+    'elephant',
+    'frog',
+    'duck',
+    'cow',
+    'chicken',
+    'penguin',
+    'dog',
+    'panda',
+])
 
 // Starts Up Game
 class Game_Session {
     room_code;
     player_list = new Set();
     player_id = {};
+    avaliable_avatar_ids = new Set(AVATAR_IDS);
 
     constructor(game) {
         this.game = game;
@@ -38,6 +49,28 @@ class Game_Session {
             return 200;
         } else {
             // Name Already Taken
+            return 400;
+        }
+    }
+
+    get_player(id) {
+        for (const p of this.player_list) {
+            if (p.id == id) {
+                return p;
+            }
+        }
+    }
+
+    set_player_avatar(id, avatar_id) {
+        if (!AVATAR_IDS.has(avatar_id)) {
+            return 400;
+        }
+        let player = this.get_player(id);
+        if (this.avaliable_avatar_ids.has(avatar_id)) {
+            player.avatar_id = avatar_id;
+            this.avaliable_avatar_ids.delete(avatar_id)
+            return 200;
+        } else {
             return 400;
         }
     }

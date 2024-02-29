@@ -2,7 +2,6 @@
 const Message = require('../../Utils/messages')
 const Types = require('../../Utils/message_types')
 let WebSocket = require('ws');
-let sockets = new Map();
 
 class Client {
     constructor(id) {
@@ -64,18 +63,18 @@ class Client {
         });
     }
 
+    async send_message_to_server(msg) {
+        this.ws.send(JSON.stringify({
+            'session_id': this.session_id,
+            'message': msg
+        }));
+    }
+
     async send_handshake(request) {
         // Initial Server Request
         this.send_message_to_server(new Message(Types.Handshake, {
             'room_code': request.ROOMCODE,
             'username': request.USERNAME
-        }));
-    }
-
-    async send_message_to_server(msg) {
-        this.ws.send(JSON.stringify({
-            'session_id': this.session_id,
-            'message': msg
         }));
     }
 

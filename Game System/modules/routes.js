@@ -34,17 +34,19 @@ router.post('/join', (req, res) => {
       // Avatar Selection Page
       c.create_ws(req.body);
       c.recieve_msg().then((status) => {
-        // TODO: check if value is good
-        // TODO: Change Screen From Client Code
         res.render('pages/avatar');
       }).catch(() => {
+        // TODO: Display Error
         res.render('pages/join');
       })
       break;
     case 'loading':
       // Game Wait Page
-      c.send_avatar_selection(req.body).then((value) => {
-        res.render('pages/loading');
+      c.send_avatar_selection(req.body)
+      c.recieve_msg().then((value) => {
+        res.render('pages/loading', { game: Object.keys(Game_Types)[c.game] });
+      }).catch(() => {
+        res.render('pages/avatar');
       })
     default:
       break;

@@ -9,6 +9,7 @@ const PORT = 3001
 
 const ACTIVE_GAME_SESSIONS = new Map();
 const GAME_SESSION_CLIENTS = new Map();
+const PLAYER_GAME_SESSION = new Map();
 const ACTIVE_ROOMCODES = new Set();
 const CLIENTS = new Map();
 
@@ -31,7 +32,7 @@ class Server {
                         command_status = this.handshake_response(id, msg)
                         break;
                     case Types.Avatar:
-                        command_status = this.set_player_avatar(ws, id, name, avatar)
+                        command_status = this.set_player_avatar(id, msg)
                         break;
                         default:
                             console.log(404);
@@ -43,8 +44,6 @@ class Server {
                     Utils.send_success(ws, command_status);
                 }
             });
-                
-                
 
             ws.on('end', () => {
                 console.log('Connection ended...');
@@ -73,14 +72,15 @@ class Server {
             return ret;
         };
 
+        PLAYER_GAME_SESSION.set(id, room_code);
         this.add_client(room_code, id);
 
         console.log("Player - " + msg.data.username + " - added.");
         return ret;
     }
 
-    set_player_avatar(ws, id, name, avatar) {
-        return 200;
+    set_player_avatar(id, avatar) {
+        return ACTIVE_GAME_SESSIONS.get(PLAYER_GAME_SESSION.get(id)).set_player_avatar(id, avatar.data.avatar_id);
     }
 
     check_code(room_code) {
@@ -125,7 +125,9 @@ class Server {
         if (!GAME_SESSION_CLIENTS.get(room_code)) {
             GAME_SESSION_CLIENTS.set(room_code, new Set());
         }
-        GAME_SESSION_CLIENTS.set(room_code, GAME_SESSION_CLIENTS.get(room_code).add(this.get_client(id)));
+        let client = this.get_client(id)
+        client.game = ACTIVE_GAME_SESSIONS.get(room_code).game;
+        GAME_SESSION_CLIENTS.set(room_code, GAME_SESSION_CLIENTS.get(room_code).add(client));
     }
 
     get_client(id) {
