@@ -4,6 +4,7 @@ const Types = require('../../Utils/message_types')
 let WebSocket = require('ws');
 
 class Client {
+    current_player = false;
     constructor(id) {
         this.set_session_id(id);
     }
@@ -82,6 +83,11 @@ class Client {
         this.send_message_to_server(new Message(Types.Avatar, {
             'avatar_id': request.AVATAR_ID
         }))
+    }
+
+    async check_if_turn() {
+        // Sends Message Asking Server if its the Clients Turn
+        this.send_message_to_server(new Message(Types.Player_Turn));
     }
 }
 

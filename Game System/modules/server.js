@@ -34,8 +34,11 @@ class Server {
                     case Types.Avatar:
                         command_status = this.set_player_avatar(id, msg)
                         break;
-                        default:
-                            console.log(404);
+                    case Types.Player_Turn:
+                        command_status = this.check_turn(id);
+                        break;
+                    default:
+                        console.log(404);
                 }
 
                 if (command_status != 200) {
@@ -103,6 +106,15 @@ class Server {
         }
     }
 
+    check_turn(id) {
+        let gs = ACTIVE_GAME_SESSIONS.get(PLAYER_GAME_SESSION.get(id));
+        if (id == gs.get_current_turn_player().id) {
+            return 200;
+        } else {
+            return 400;
+        };
+    }
+
     get_game_session_with_code(code) {
         for (const value of ACTIVE_GAME_SESSIONS) {
             if (value.room_code == code) {
@@ -114,6 +126,10 @@ class Server {
     // send_to_client() {
 
     // }
+
+    client_game_started(client) {
+        return ACTIVE_GAME_SESSIONS.get(PLAYER_GAME_SESSION.get(client.session_id)).started;
+    }
 
     // Game Session Functions
 
@@ -128,9 +144,18 @@ class Server {
 
     start_gs(code) {
         // TODO: Start game if not started yet
-        ACTIVE_GAME_SESSIONS.get(parseInt(code)).start_game();
+        let gs = ACTIVE_GAME_SESSIONS.get(parseInt(code))
+        gs.start_game();
         // TODO: Tell Clients to Start Game
-        
+
+        // for (const item of gs.run_game()) {
+        //     this.clients_turn(item.id);
+        // }
+
+    }
+
+    clients_turn(id) {
+        CLIENTS.get(id);
     }
 
     add_client(room_code, id) {
@@ -149,6 +174,12 @@ class Server {
             let client = new Client(id);
             CLIENTS.set(id, client);
             return client;
+        }
+    }
+
+    get_game_display_data(data_type) {
+        if (data_type == 'Categories') {
+            return 
         }
     }
 }

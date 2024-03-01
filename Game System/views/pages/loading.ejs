@@ -7,6 +7,37 @@
     <main>
         <h1><%= (game) ? game : 'xxxxx' %></h1>
         <h3>Please Wait for the game to begin</h3>
+        <div class="container" hidden>
+          <form action="/jeopardy/categories" class="form" method="post">
+            <button id="form_button" class="btn btn-primary float-right">Start Game</button>
+          </form>
+        </div>
     </main>
   </body>
+
+  <script>
+    // TODO: Finish and Loop Until Done
+    // TODO: Continuously Check if your turn
+    function sleep(ms) {
+      return new Promise(resolve => setTimeout(resolve, ms));
+    }
+   
+    // sleep(5000).then(() => {
+    //   document.getElementById("form_button").click();
+    // });
+
+
+    function run() {
+      return sleep(5000).then(result => {
+        document.getElementById("form_button").click();
+        return run();
+      });
+    }
+
+    run().then(result => {
+      console.log(result);
+    }).catch(err => {
+      console.log(err);
+    });
+  </script>
 </html>

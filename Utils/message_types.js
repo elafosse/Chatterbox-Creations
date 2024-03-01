@@ -4,6 +4,7 @@ const Message_Type = {
 	Handshake: 1,
 	Player_ID: 2,
 	Avatar: 3,
+	Player_Turn: 4
 }
 
 module.exports = Message_Type

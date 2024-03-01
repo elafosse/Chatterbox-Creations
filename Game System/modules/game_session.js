@@ -14,6 +14,7 @@ const AVATAR_IDS = new Set([
 // Starts Up Game
 class Game_Session {
     started = false;
+    done = false;
     room_code;
     current_player_index = 0;
     player_list = new Set();
@@ -34,8 +35,6 @@ class Game_Session {
 
     create_roomcode(active_roomcodes) {
         // Creates a code for players to join the room
-        // TODO: Test
-        // let roomcode = Math.floor(Math.random() * 89999) + 10000;
         let roomcode = Utils.random_roomcode();
         if (active_roomcodes.has(roomcode)) {
             return this.create_roomcode();
@@ -94,10 +93,18 @@ class Game_Session {
     start_game() {
         this.started = true;
         this.player_order = this.get_player_order();
-        
+    }
+    
+    *run_game() {
         // TODO: Start Game API
-
-        // 1. Player Chooses Category
+        // let index = 0;
+        while (!this.done) {
+            // 1. Player Chooses Category
+            current_player = this.get_current_turn_player();
+            yield current_player;
+    
+        }
+    
         // 2. Player Chooses Amount
         // 3. Jeopardy API Returns Question
         // 4. 
@@ -116,6 +123,10 @@ class Game_Session {
         }
 
         return array;
+    }
+
+    get_current_turn_player() {
+        return this.player_order[this.current_player_index];
     }
 
     end_session() {
