@@ -129,6 +129,13 @@ class Game_Session {
         return this.player_order[this.current_player_index];
     }
 
+    next_turn() {
+        this.current_player_index++;
+        if (this.current_player_index == this.player_order.length) {
+            this.current_player_index = 0;
+        }
+    }
+
     end_session() {
         // TODO: REMOVE ROOM_CODE
         // TODO: Disconnect Clients

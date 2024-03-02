@@ -37,6 +37,12 @@ class Server {
                     case Types.Player_Turn:
                         command_status = this.check_turn(id);
                         break;
+                    case Types.Category:
+                        command_status = this.set_category(id, msg);
+                        break;
+                    case Types.Amount:
+                        command_status = this.set_amount(id, msg);
+                        break;
                     default:
                         console.log(404);
                 }
@@ -85,6 +91,16 @@ class Server {
     set_player_avatar(id, avatar) {
         // Sets the Players Avatar
         return ACTIVE_GAME_SESSIONS.get(PLAYER_GAME_SESSION.get(id)).set_player_avatar(id, avatar.data.avatar_id);
+    }
+    
+    set_category(id, msg) {
+        // TODO: Complete Function
+        return 200;
+    }
+    
+    set_amount(id, msg) {
+        // TODO: Complete Function
+        return 200;
     }
 
     check_code(room_code) {
@@ -156,6 +172,10 @@ class Server {
 
     clients_turn(id) {
         CLIENTS.get(id);
+    }
+
+    next_turn(id) {
+        ACTIVE_GAME_SESSIONS.get(PLAYER_GAME_SESSION.get(id)).next_turn()
     }
 
     add_client(room_code, id) {

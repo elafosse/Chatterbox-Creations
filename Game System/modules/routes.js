@@ -10,9 +10,17 @@ router.use(express.urlencoded({ extended: false }));
 function page_to_display(params) {
   // Select Page to Display Based on Parameters Sent
   if (Object.keys(params).includes('ROOMCODE' && 'USERNAME')) {
-      return 'avatar';
+    return 'avatar';
   } else if (Object.keys(params).includes('AVATAR_ID')) {
-      return 'loading';
+    return 'loading';
+  } else if (Object.keys(params).includes('TURN_CHECK')) {
+    return 'categories'
+  } else if (Object.keys(params).includes('CATEGORY')) {
+    return 'amount';
+  } else if (Object.keys(params).includes('AMOUNT')) {
+    return 'answer';
+  } else if (Object.keys(params).includes('RESPONSE')) {
+    return 'loading';
   }
 }
 
@@ -54,15 +62,53 @@ router.post('/join', (req, res) => {
       break;
     case 'loading':
       // Game Wait Page
-      current_client.send_avatar_selection(req.body);
-      current_client.recieve_msg().then(() => {
+      if (!server.client_game_started(current_client)) {
+        current_client.send_avatar_selection(req.body);
+        current_client.recieve_msg().then(() => {
+          res.render('pages/loading', {
+            game: Object.keys(Game_Types)[current_client.game]
+          });
+        }).catch(() => {
+          // TODO: Display Error
+          res.render('pages/avatar');
+        })
+      } else {
+        server.next_turn(current_client.session_id);
         res.render('pages/loading', {
           game: Object.keys(Game_Types)[current_client.game]
         });
+      }
+      break;
+    case 'categories':
+      // Categories Page
+      if (server.client_game_started(current_client) && server.check_turn(current_client.session_id) == 200) {
+        res.render('pages/jeopardy/categories');
+      } else {
+        res.render('pages/loading', {
+          game: Object.keys(Game_Types)[current_client.game]
+        });
+      }
+      break;
+    case 'amount':
+      // Amount Page
+      current_client.send_category_selection(req.body);
+      current_client.recieve_msg().then(() => {
+        res.render('pages/jeopardy/amount');
       }).catch(() => {
         // TODO: Display Error
-        res.render('pages/avatar');
+        res.render('pages/jeopardy/categories');
       })
+      break;
+    case 'answer':
+      // Player Answer Page
+      current_client.send_amount_selection(req.body);
+      current_client.recieve_msg().then(() => {
+        res.render('pages/jeopardy/response');
+      }).catch(() => {
+        // TODO: Display Error
+        res.render('pages/jeopardy/amount');
+      })
+      break;
     default:
       // TODO: Render Error Page?
       break;
@@ -74,28 +120,5 @@ router.post('/jeopardy/board', (req, res) => {
   server.start_gs(req.body.code);
   res.render('pages/jeopardy/board')
 })
-
-
-// Categories Page
-// TODO: Fix
-router.post('/jeopardy/categories', (req, res) => {
-  // TODO: Move from Loading Page to "Your Turn" Page
-  let client = server.get_client(req.session.id);
-  if (server.client_game_started(client) && !client.current_player) {
-    client.check_if_turn();
-    client.recieve_msg().then(() => {
-      client.current_player = true;
-      res.render('pages/jeopardy/categories');
-    }).catch(() => {
-      res.render('pages/loading', {
-        game: Object.keys(Game_Types)[client.game]
-      });
-    })
-  } else {
-    res.render('pages/loading', {
-      game: Object.keys(Game_Types)[client.game]
-    });
-  }
-});
 
 module.exports = router;

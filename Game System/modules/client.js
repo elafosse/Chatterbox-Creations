@@ -85,6 +85,19 @@ class Client {
         }))
     }
 
+    async send_category_selection(request) {
+        this.send_message_to_server(new Message(Types.Category, {
+            'category': request.CATEGORY
+        }))
+    }
+
+    async send_amount_selection(request) {
+        this.send_message_to_server(new Message(Types.Amount, {
+            'amount': request.AMOUNT
+        }))
+    }
+
+    // TODO: Delete?
     async check_if_turn() {
         // Sends Message Asking Server if its the Clients Turn
         this.send_message_to_server(new Message(Types.Player_Turn));
