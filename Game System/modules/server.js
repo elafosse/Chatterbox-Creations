@@ -12,6 +12,7 @@ const GAME_SESSION_CLIENTS = new Map();
 const PLAYER_GAME_SESSION = new Map();
 const ACTIVE_ROOMCODES = new Set();
 const CLIENTS = new Map();
+const HOST_SESSIONS = new Map();
 
 class Server {
     constructor() {
@@ -95,11 +96,13 @@ class Server {
     
     set_category(id, msg) {
         // TODO: Complete Function
+        ACTIVE_GAME_SESSIONS.get(PLAYER_GAME_SESSION.get(id)).game_api.set_curr_category(msg.data.category);
         return 200;
     }
     
     set_amount(id, msg) {
         // TODO: Complete Function
+        ACTIVE_GAME_SESSIONS.get(PLAYER_GAME_SESSION.get(id)).game_api.set_curr_amount(msg.data.amount);
         return 200;
     }
 
@@ -149,12 +152,13 @@ class Server {
 
     // Game Session Functions
 
-    async run_game(type) {
+    async run_game(type, id) {
         // Starts a new Game Session
-        this.gs = new Game_Session(type);
-        this.code = this.gs.start_session(ACTIVE_ROOMCODES)
-        ACTIVE_GAME_SESSIONS.set(this.code, this.gs);
+        let gs = new Game_Session(type);
+        this.code = gs.start_session(ACTIVE_ROOMCODES)
+        ACTIVE_GAME_SESSIONS.set(this.code, gs);
         ACTIVE_ROOMCODES.add(this.code);
+        HOST_SESSIONS.set(this.get_client(id).session_id, gs)
         return this.code;
     }
 
@@ -201,6 +205,10 @@ class Server {
         if (data_type == 'Categories') {
             return 
         }
+    }
+
+    check_if_host_change(id) {
+        return HOST_SESSIONS.get(id).host_screen_change();
     }
 }
 

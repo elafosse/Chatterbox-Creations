@@ -34,7 +34,7 @@ router.get('/', (req, res) => {
 // Game Join Page
 router.get('/jeopardy', (req, res) => {
   // TODO: Generalize?
-  server.run_game(Game_Types.Jeopardy).then((code) => {
+  server.run_game(Game_Types.Jeopardy, req.session.id).then((code) => {
       res.render('pages/jeopardy', { room_code: code });
   })
 });
@@ -120,5 +120,17 @@ router.post('/jeopardy/board', (req, res) => {
   server.start_gs(req.body.code);
   res.render('pages/jeopardy/board')
 })
+
+// Jeopardy Question Page
+router.post('/jeopardy/question', (req, res) => {
+  let change = server.check_if_host_change(req.session.id);
+  res.render('pages/jeopardy/' + change.Page, { data: change.Data })
+})
+
+// 
+router.post('/jeopardy/check_response', (req, res) => {
+  // TODO: Finish
+})
+
 
 module.exports = router;

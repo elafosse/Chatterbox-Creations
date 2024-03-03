@@ -1,4 +1,6 @@
 const PlayerMaker = require('./player');
+const Game_Types = require('../../Utils/game_types');
+const JeopardyAPI = require('./jeopardy_api');
 const Utils = require('../../Utils/utils');
 const AVATAR_IDS = new Set([
     'elephant',
@@ -13,6 +15,7 @@ const AVATAR_IDS = new Set([
 
 // Starts Up Game
 class Game_Session {
+    game_api;
     started = false;
     done = false;
     room_code;
@@ -23,6 +26,13 @@ class Game_Session {
 
     constructor(game) {
         this.game = game;
+        this.set_game_api();
+    }
+
+    set_game_api() {
+        if (this.game == Game_Types.Jeopardy) {
+            this.game_api = new JeopardyAPI();
+        }
     }
 
     start_session(active_roomcodes) {
@@ -93,6 +103,7 @@ class Game_Session {
     start_game() {
         this.started = true;
         this.player_order = this.get_player_order();
+        this.game_api.start_game();
     }
     
     *run_game() {
@@ -134,6 +145,10 @@ class Game_Session {
         if (this.current_player_index == this.player_order.length) {
             this.current_player_index = 0;
         }
+    }
+
+    host_screen_change() {
+        return this.game_api.host_screen_change();
     }
 
     end_session() {
