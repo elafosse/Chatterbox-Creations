@@ -32,12 +32,45 @@ router.get('/', (req, res) => {
 });
 
 // Game Join Page
-router.get('/jeopardy', (req, res) => {
-  // TODO: Generalize?
-  server.run_game(Game_Types.Jeopardy, req.session.id).then((code) => {
-      res.render('pages/jeopardy', { room_code: code });
+router.post('/', (req, res) => {
+  let game, type, path;
+  switch(req.body.chosen_game) {
+    case 'jeopardy':
+      game = 'Jeopardy';
+      type = Game_Types.Jeopardy;
+      path = "/jeopardy/board";
+      break;
+    default:
+        // TODO: Show Error Screen?
+      break;
+  }
+
+  server.init_game_session(type, req.session.id).then((code) => {
+    res.render('pages/host_join', { game: game, room_code: code, path: path });
   })
 });
+
+// Jeopardy Board Page
+router.post('/jeopardy/board', (req, res) => {
+  server.start_game_session(req.session.id).then(() => {
+    res.render('pages/jeopardy/board');
+  });
+})
+
+// Jeopardy Question Page
+router.post('/jeopardy/question', (req, res) => {
+  // TODO: Change URL
+  server.check_if_host_needs_to_change(req.session.id).then((change) => {
+    res.render('pages/jeopardy/' + change.Page, { data: change.Data })
+  });
+})
+
+// Jeopardy Answer Page
+router.post('/jeopardy/check_response_was_submitted', (req, res) => {
+  // TODO: Finish
+  server.check_if_response(id);
+})
+
 
 // Player Pages
 
@@ -115,21 +148,11 @@ router.post('/join', (req, res) => {
   }
 });
 
-// Jeopardy Board Page
-router.post('/jeopardy/board', (req, res) => {
-  server.start_gs(req.body.code);
-  res.render('pages/jeopardy/board')
-})
 
-// Jeopardy Question Page
-router.post('/jeopardy/question', (req, res) => {
-  let change = server.check_if_host_change(req.session.id);
-  res.render('pages/jeopardy/' + change.Page, { data: change.Data })
-})
-
-// 
+// Checks Player Response
 router.post('/jeopardy/check_response', (req, res) => {
   // TODO: Finish
+  server.check_if_response(id);
 })
 
 

@@ -15,6 +15,7 @@ const middleware = session({
 
 // Front End
 app.set('view engine', 'ejs');
+app.use(express.static('static'))
 app.use(middleware);
 app.use(routes);
 // app.use(cors());

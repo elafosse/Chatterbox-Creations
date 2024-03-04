@@ -3,12 +3,13 @@
   <head>
     <%- include('../../partials/head'); %>
   </head>
+
   <body class="container">
     <main>
-        <h3>Question</h3>
+        <h3>Question:</h3>
         <h1><%= (data) ? data : 'xxxxx' %></h1>
         <div class="container" hidden>
-          <form action="/jeopardy/check_response" class="form" method="post">
+          <form action="/jeopardy/check_response_submitted" class="form" method="post">
             <button name="CHECK_RESPONSE" id="form_button" value="true" class="btn btn-primary float-right">Start Game</button>
           </form>
         </div>

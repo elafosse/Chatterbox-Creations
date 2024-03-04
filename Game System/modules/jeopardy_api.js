@@ -5,6 +5,7 @@ HOST_STATES = {
     ANSWER: 2,
 }
 
+// Class For Running a Jeopardy Game
 class Jeopardy {
     host_state = HOST_STATES.NOT_STARTED;
     show_board = true;
@@ -14,14 +15,15 @@ class Jeopardy {
     selected_cat;
     selected_amt;
 
-    constructor() {
-        
-    }
+    // Game Progression Functions
 
-    start_game() {
+    run_game() {
+        // Starts Running The Jeopardy Game
         // TODO: Get Questions from CSV
         this.host_state = HOST_STATES.BOARD;
     }
+
+    // Setters
 
     set_curr_category(category) {
         this.selected_cat = category;
@@ -41,31 +43,43 @@ class Jeopardy {
 
     }
 
-    host_screen_change() {
-        // TODO: Complete
+    // Host Screen Functions
+
+    current_host_screen() {
+        // Returns Current Data To Display on Host Screen
+        // TODO: Add Leaderboard state? Return Current Board
         let data = {};
         switch (this.host_state) {
             case HOST_STATES.BOARD:
                 data = {
                     Page: 'board',
                     Data: ''
-                }
+                };
                 break;
             case HOST_STATES.QUESTION:
                 data = {
                     Page: 'question',
                     Data: this.current_question
-                }
+                };
                 break;
             case HOST_STATES.ANSWER:
                 data = {
                     Page: 'answer',
                     Data: this.current_answer
-                }
+                };
                 break;
         }
 
         return data;
+    }
+
+    check_answer(player_ans) {
+        this.host_state = ANSWER;
+        if (player_ans != this.current_answer) {
+            return 0;
+        } else {
+            return this.selected_amt;
+        }
     }
 }
 

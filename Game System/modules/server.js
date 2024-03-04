@@ -152,34 +152,32 @@ class Server {
 
     // Game Session Functions
 
-    async run_game(type, id) {
+    async init_game_session(type, id) {
         // Starts a new Game Session
         let gs = new Game_Session(type);
-        this.code = gs.start_session(ACTIVE_ROOMCODES)
-        ACTIVE_GAME_SESSIONS.set(this.code, gs);
-        ACTIVE_ROOMCODES.add(this.code);
+        let code = gs.init_session(ACTIVE_ROOMCODES)
+        ACTIVE_GAME_SESSIONS.set(code, gs);
+        ACTIVE_ROOMCODES.add(code);
         HOST_SESSIONS.set(this.get_client(id).session_id, gs)
-        return this.code;
+        return code;
     }
 
-    start_gs(code) {
-        // TODO: Start game if not started yet
-        let gs = ACTIVE_GAME_SESSIONS.get(parseInt(code))
-        gs.start_game();
-        // TODO: Tell Clients to Start Game
-
-        // for (const item of gs.run_game()) {
-        //     this.clients_turn(item.id);
-        // }
-
+    async start_game_session(id) {
+        // Starts the Game
+        return HOST_SESSIONS.get(id).start_game();
     }
 
-    clients_turn(id) {
-        CLIENTS.get(id);
-    }
+    // Client Functions
 
-    next_turn(id) {
-        ACTIVE_GAME_SESSIONS.get(PLAYER_GAME_SESSION.get(id)).next_turn()
+    get_client(id) {
+        // Creates or Returns Existing Client
+        if (CLIENTS.has(id)) {
+            return CLIENTS.get(id);
+        } else {
+            let client = new Client(id);
+            CLIENTS.set(id, client);
+            return client;
+        }
     }
 
     add_client(room_code, id) {
@@ -191,15 +189,15 @@ class Server {
         GAME_SESSION_CLIENTS.set(room_code, GAME_SESSION_CLIENTS.get(room_code).add(client));
     }
 
-    get_client(id) {
-        if (CLIENTS.has(id)) {
-            return CLIENTS.get(id);
-        } else {
-            let client = new Client(id);
-            CLIENTS.set(id, client);
-            return client;
-        }
+    clients_turn(id) {
+        CLIENTS.get(id);
     }
+
+    next_turn(id) {
+        ACTIVE_GAME_SESSIONS.get(PLAYER_GAME_SESSION.get(id)).next_turn()
+    }
+
+
 
     get_game_display_data(data_type) {
         if (data_type == 'Categories') {
@@ -207,8 +205,15 @@ class Server {
         }
     }
 
-    check_if_host_change(id) {
+    // Host Functions
+
+    async check_if_host_needs_to_change(id) {
+        // Returns Information On What Host Should Currently Display
         return HOST_SESSIONS.get(id).host_screen_change();
+    }
+    
+    check_if_response(id) {
+        return HOST_SESSIONS.get(id).check_if_user_responded();
     }
 }
 

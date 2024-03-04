@@ -13,11 +13,12 @@ const AVATAR_IDS = new Set([
     'panda',
 ])
 
-// Starts Up Game
+// Class to Connect Server & Game
 class Game_Session {
     game_api;
     started = false;
     done = false;
+    user_responded = false;
     room_code;
     current_player_index = 0;
     player_list = new Set();
@@ -30,16 +31,17 @@ class Game_Session {
     }
 
     set_game_api() {
+        // Selects Which Game API To Start
         if (this.game == Game_Types.Jeopardy) {
             this.game_api = new JeopardyAPI();
         }
     }
 
-    start_session(active_roomcodes) {
+    // Initialization Functions
+
+    init_session(active_roomcodes) {
+        // Initializes The Game Session
         this.room_code = this.create_roomcode(active_roomcodes);
-        console.log(this.room_code);
-        // TODO: Frontend
-        // TODO Run Trivia Code
         return this.room_code;
     }
 
@@ -52,6 +54,8 @@ class Game_Session {
             return roomcode;
         }
     }
+
+    // Player Functions
 
     add_player(name, id) {
         // Adds Player To Game Session
@@ -100,12 +104,33 @@ class Game_Session {
         return false;
     }
 
+    // Game Functions
+
     start_game() {
+        // Starts the Game
         this.started = true;
-        this.player_order = this.get_player_order();
-        this.game_api.start_game();
+        this.player_order = this.get_random_player_order();
+        this.game_api.run_game();
+        return this.started;
     }
-    
+
+    get_random_player_order() {
+        // Determines A Random Order for Players
+        let array = Array.from(this.player_list);
+        let current_index = array.length;
+        let random_index;
+
+        while (current_index > 0) {
+            random_index = Math.floor(Math.random() * current_index);
+            current_index--;
+            [array[current_index], array[random_index]] = [array[random_index], array[current_index]];
+        }
+
+        return array;
+    }
+
+    // 
+
     *run_game() {
         // TODO: Start Game API
         // let index = 0;
@@ -122,20 +147,6 @@ class Game_Session {
 
     }
 
-    get_player_order() {
-        let array = Array.from(this.player_list);
-        let current_index = array.length;
-        let random_index;
-
-        while (current_index > 0) {
-            random_index = Math.floor(Math.random() * current_index);
-            current_index--;
-            [array[current_index], array[random_index]] = [array[random_index], array[current_index]];
-        }
-
-        return array;
-    }
-
     get_current_turn_player() {
         return this.player_order[this.current_player_index];
     }
@@ -147,8 +158,21 @@ class Game_Session {
         }
     }
 
+    // Host Functions
+
     host_screen_change() {
-        return this.game_api.host_screen_change();
+        // Returns What Host Screen Must Be Displaying Currently
+        return this.game_api.current_host_screen();
+    }
+
+    check_if_user_responded() {
+        // Checks if User Sent A Response
+        if (this.user_responded) {
+            this.user_responded = false;
+            return true;
+        } else {
+            return false;
+        }
     }
 
     end_session() {
