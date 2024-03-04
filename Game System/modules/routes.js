@@ -7,6 +7,14 @@ const router = express.Router();
 router.use(express.json());
 router.use(express.urlencoded({ extended: false }));
 
+function host_page_to_display(params) {
+  if (Object.keys(params).includes('CHOSEN_GAME')) {
+    return 'host_join';
+  } else if (Object.keys(params).includes('START_GAME')) {
+    return 'start_game';
+  }
+}
+
 function page_to_display(params) {
   // Select Page to Display Based on Parameters Sent
   if (Object.keys(params).includes('ROOMCODE' && 'USERNAME')) {
@@ -33,32 +41,41 @@ router.get('/', (req, res) => {
 
 // Game Join Page
 router.post('/', (req, res) => {
-  let game, type, path;
-  switch(req.body.chosen_game) {
-    case 'jeopardy':
-      game = 'Jeopardy';
-      type = Game_Types.Jeopardy;
-      path = "/jeopardy/board";
+  switch(host_page_to_display(req.body)) {
+    case 'host_join':
+      let game, type, path;
+      switch(req.body.CHOSEN_GAME) {
+        case 'jeopardy':
+          game = 'Jeopardy';
+          type = Game_Types.Jeopardy;
+          path = "/jeopardy/board";
+          break;
+        default:
+            // TODO: Show Error Screen?
+          break;
+      }
+      server.init_game_session(type, req.session.id).then((code) => {
+        res.render('pages/host_join', { game: game, room_code: code, path: path });
+      })
       break;
-    default:
-        // TODO: Show Error Screen?
-      break;
+    case 'start_game':
+  // Jeopardy Board Page
+      server.start_game_session(req.session.id).then(() => {
+        res.render('pages' + req.body.START_GAME);
+      });
   }
 
-  server.init_game_session(type, req.session.id).then((code) => {
-    res.render('pages/host_join', { game: game, room_code: code, path: path });
-  })
 });
 
 // Jeopardy Board Page
-router.post('/jeopardy/board', (req, res) => {
-  server.start_game_session(req.session.id).then(() => {
-    res.render('pages/jeopardy/board');
-  });
-})
+// router.post('/jeopardy/board', (req, res) => {
+//   server.start_game_session(req.session.id).then(() => {
+//     res.render('pages/jeopardy/board');
+//   });
+// })
 
-// Jeopardy Question Page
-router.post('/jeopardy/question', (req, res) => {
+// Jeopardy Page
+router.post('/jeopardy', (req, res) => {
   // TODO: Change URL
   server.check_if_host_needs_to_change(req.session.id).then((change) => {
     res.render('pages/jeopardy/' + change.Page, { data: change.Data })
@@ -66,10 +83,10 @@ router.post('/jeopardy/question', (req, res) => {
 })
 
 // Jeopardy Answer Page
-router.post('/jeopardy/check_response_was_submitted', (req, res) => {
-  // TODO: Finish
-  server.check_if_response(id);
-})
+// router.post('/jeopardy/check_response_was_submitted', (req, res) => {
+//   // TODO: Finish
+//   server.check_if_response(id);
+// })
 
 
 // Player Pages
