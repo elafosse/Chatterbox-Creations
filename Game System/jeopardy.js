@@ -187,14 +187,17 @@ async function getDataTest(Category, amount){
 
     let arr = Array.from(map.get(Category).get(amount));
   
-    return arr[Math.floor(Math.random() * arr.length)].Question;
+    return arr[Math.floor(Math.random() * arr.length)];
 
 
 }
 
 //TODO: instead of console.log, display question to screen
 
-getDataTest("SPORTS", "$500.00").then((value)=>{console.log(value)});;
+getDataTest("SPORTS", "$100.00").then((value)=>{
+    console.log(value.Question)
+    console.log(value.Answer)
+});;
 
 
 
