@@ -139,6 +139,9 @@ class Game_Session {
         let points = this.game_api.check_answer(answer);
         this.next_turn();
         // TODO: Reward Points to player
+        let currentPlayer = this.get_current_turn_player();
+        let updatedScore = currentPlayer.points + points;
+        currentPlayer.points = updatedScore;
     }
 
     next_turn() {
