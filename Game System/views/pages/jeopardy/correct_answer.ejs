@@ -11,9 +11,7 @@
         <h3>Correct Answer:</h3>
         <h1><%= (data.Correct) ? data.Correct : 'xxxxx' %></h1>
         <div class="container" hidden>
-          <form action="/leaderboard" class="form" method="post">
-            <button id="form_button" class="btn btn-primary float-right"></button>
-          </form>
+          <a id="form_button" href="/leaderboard" class="btn btn-primary float-right"></a>
         </div>
     </main>
   </body>

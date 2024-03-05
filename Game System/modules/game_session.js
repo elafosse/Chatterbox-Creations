@@ -149,7 +149,9 @@ class Game_Session {
         }
 
         if (this.game == Game_Types.Jeopardy) {
-            this.game_api.set_host_screen_to_board();
+            setTimeout(() => {
+                this.game_api.set_host_screen_to_board();
+            }, 6000);
         }
     }
 

@@ -59,7 +59,7 @@ class Jeopardy {
         // Sets The Host Screen To The Jeopardy Board
         // TODO: Fix
         this.player_response = '';
-        // this.host_state = HOST_STATES.BOARD;
+        this.host_state = HOST_STATES.BOARD;
     }
 
     // Host Screen Functions
