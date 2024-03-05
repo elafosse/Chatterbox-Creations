@@ -138,7 +138,6 @@ class Game_Session {
         // Checks Player Response
         let points = this.game_api.check_answer(answer);
         this.next_turn();
-        // TODO: Reward Points to player
         let currentPlayer = this.get_current_turn_player();
         let updatedScore = currentPlayer.points + points;
         currentPlayer.points = updatedScore;
@@ -159,8 +158,7 @@ class Game_Session {
     }
 
     end_session() {
-        // TODO: REMOVE ROOM_CODE
-        // TODO: Disconnect Clients
+        // TODO: Remove ROOM_CODE & Disconnect Clients
     }
 
     // Host Functions

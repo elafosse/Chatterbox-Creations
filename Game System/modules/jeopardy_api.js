@@ -23,7 +23,7 @@ class Jeopardy {
 
     select_question() {
         // Selects The Question Based on Player Chosen Values
-        // TODO: Use Jeopardy Data. Example Below
+        // TODO: Use Jeopardy Data. Remove Example
         this.current_question = 'How many stars are on the American Flag?';
         this.current_question_answer = '50';
         this.host_state = HOST_STATES.QUESTION;
@@ -57,7 +57,6 @@ class Jeopardy {
 
     set_host_screen_to_board() {
         // Sets The Host Screen To The Jeopardy Board
-        // TODO: Fix
         this.player_response = '';
         this.host_state = HOST_STATES.BOARD;
     }
@@ -66,7 +65,7 @@ class Jeopardy {
 
     current_host_screen() {
         // Returns Current Data To Display on Host Screen
-        // TODO: Add Leaderboard state? Return Current Board
+        // TODO: Return Current Board
         let data = {};
         switch (this.host_state) {
             case HOST_STATES.BOARD:

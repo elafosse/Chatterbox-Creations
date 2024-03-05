@@ -4,6 +4,13 @@ const Client = require('./client');
 const Message = require('../../Utils/messages')
 const Types = require('../../Utils/message_types');
 const Utils = require('../../Utils/utils');
+const {
+	RegExpMatcher,
+	englishDataset,
+	englishRecommendedTransformers,
+} = require('obscenity');
+
+
 const PORT = 3001
 
 const ACTIVE_GAME_SESSIONS = new Map();
@@ -18,6 +25,7 @@ class Server {
     constructor() {
         this.wss = new WebSocketServer({ port: PORT });
         this.create_ws_server();
+        this.create_string_checker();
     }
 
     async create_ws_server() {
@@ -96,18 +104,26 @@ class Server {
     // Jeopardy Functions
 
     set_category(id, msg) {
-        // TODO: Complete Function
+        // Sets The Category Chosen By The Player
         ACTIVE_GAME_SESSIONS.get(PLAYER_GAME_SESSION.get(id)).game_api.set_curr_category(msg.data.category);
         return 200;
     }
-
+    
     set_amount(id, msg) {
-        // TODO: Complete Function
+        // Sets The Amount Chosen By The Player
         ACTIVE_GAME_SESSIONS.get(PLAYER_GAME_SESSION.get(id)).game_api.set_curr_amount(msg.data.amount);
         return 200;
     }
 
     // Other Functions
+
+    create_string_checker() {
+        // Creates A Matcher To Check Strings For Inappropriate Words
+        this.matcher = new RegExpMatcher({
+            ...englishDataset.build(),
+            ...englishRecommendedTransformers,
+        });
+    }
 
     check_code(room_code) {
         // Checks if Client Room Code Correspondes to a Real Game Session Code
@@ -120,10 +136,10 @@ class Server {
 
     check_name(name) {
         // Checks if Name is Appropriate
-        if (Utils.name_appropriate(name)) {
-            return 200;
-        } else {
+        if (this.matcher.hasMatch(name)) {
             return 400;
+        } else {
+            return 200;
         }
     }
 
