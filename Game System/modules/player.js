@@ -1,3 +1,4 @@
+// Class Representing Player For Games
 class Player {
     points = 0;
     avatar;

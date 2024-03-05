@@ -1,4 +1,3 @@
-// Server
 const WebSocketServer = require('ws').Server;
 const Game_Session = require('./game_session');
 const Client = require('./client');
@@ -14,13 +13,15 @@ const ACTIVE_ROOMCODES = new Set();
 const CLIENTS = new Map();
 const HOST_SESSIONS = new Map();
 
+// Class Representing Server That Runs Chatterbox Creations
 class Server {
     constructor() {
         this.wss = new WebSocketServer({ port: PORT });
-        this.ws_server();
+        this.create_ws_server();
     }
 
-    async ws_server() {
+    async create_ws_server() {
+        // Creates WebSocket Server 
         this.wss.on('connection', ((ws) => {
             ws.on('message', (message) => {
                 let command_status = 200;
@@ -34,9 +35,6 @@ class Server {
                         break;
                     case Types.Avatar:
                         command_status = this.set_player_avatar(id, msg)
-                        break;
-                    case Types.Player_Turn:
-                        command_status = this.check_turn(id);
                         break;
                     case Types.Category:
                         command_status = this.set_category(id, msg);
@@ -56,6 +54,7 @@ class Server {
             });
 
             ws.on('end', () => {
+                // TODO: Complete?
                 console.log('Connection ended...');
             });
         }));
@@ -83,7 +82,7 @@ class Server {
         };
 
         PLAYER_GAME_SESSION.set(id, room_code);
-        this.add_client(room_code, id);
+        this.add_client_to_gs_map(room_code, id);
 
         console.log("Player - " + msg.data.username + " - added.");
         return ret;
@@ -93,25 +92,28 @@ class Server {
         // Sets the Players Avatar
         return ACTIVE_GAME_SESSIONS.get(PLAYER_GAME_SESSION.get(id)).set_player_avatar(id, avatar.data.avatar_id);
     }
-    
+
+    // Jeopardy Functions
+
     set_category(id, msg) {
         // TODO: Complete Function
         ACTIVE_GAME_SESSIONS.get(PLAYER_GAME_SESSION.get(id)).game_api.set_curr_category(msg.data.category);
         return 200;
     }
-    
+
     set_amount(id, msg) {
         // TODO: Complete Function
         ACTIVE_GAME_SESSIONS.get(PLAYER_GAME_SESSION.get(id)).game_api.set_curr_amount(msg.data.amount);
         return 200;
     }
 
+    // Other Functions
+
     check_code(room_code) {
         // Checks if Client Room Code Correspondes to a Real Game Session Code
         if (ACTIVE_ROOMCODES.has(room_code)) {
             return 200;
         } else {
-            console.log("Error: Session with Room Code not found!");
             return 404;
         }
     }
@@ -123,31 +125,6 @@ class Server {
         } else {
             return 400;
         }
-    }
-
-    check_turn(id) {
-        let gs = ACTIVE_GAME_SESSIONS.get(PLAYER_GAME_SESSION.get(id));
-        if (id == gs.get_current_turn_player().id) {
-            return 200;
-        } else {
-            return 400;
-        };
-    }
-
-    get_game_session_with_code(code) {
-        for (const value of ACTIVE_GAME_SESSIONS) {
-            if (value.room_code == code) {
-                return value;
-            }
-        }
-    }
-
-    // send_to_client() {
-
-    // }
-
-    client_game_started(client) {
-        return ACTIVE_GAME_SESSIONS.get(PLAYER_GAME_SESSION.get(client.session_id)).started;
     }
 
     // Game Session Functions
@@ -167,6 +144,17 @@ class Server {
         return HOST_SESSIONS.get(id).start_game();
     }
 
+    check_if_client_game_started(client_id) {
+        // Checks if Game Has Started
+        return ACTIVE_GAME_SESSIONS.get(PLAYER_GAME_SESSION.get(client_id)).started;
+    }
+
+    check_response(client_id, response) {
+        // Checks if Response Is Correct
+        return ACTIVE_GAME_SESSIONS.get(PLAYER_GAME_SESSION.get(client_id)).check_response(client_id, response);
+
+    }
+
     // Client Functions
 
     get_client(id) {
@@ -180,7 +168,8 @@ class Server {
         }
     }
 
-    add_client(room_code, id) {
+    add_client_to_gs_map(room_code, id) {
+        // Adds Client To Game Session List
         if (!GAME_SESSION_CLIENTS.get(room_code)) {
             GAME_SESSION_CLIENTS.set(room_code, new Set());
         }
@@ -189,31 +178,21 @@ class Server {
         GAME_SESSION_CLIENTS.set(room_code, GAME_SESSION_CLIENTS.get(room_code).add(client));
     }
 
-    clients_turn(id) {
-        CLIENTS.get(id);
-    }
-
-    next_turn(id) {
-        ACTIVE_GAME_SESSIONS.get(PLAYER_GAME_SESSION.get(id)).next_turn()
-    }
-
-
-
-    get_game_display_data(data_type) {
-        if (data_type == 'Categories') {
-            return 
-        }
+    check_if_client_turn(client_id) {
+        // Checks if it is Currently the Users Turn
+        let gs = ACTIVE_GAME_SESSIONS.get(PLAYER_GAME_SESSION.get(client_id));
+        if (client_id == gs.get_current_turn_player().id) {
+            return 200;
+        } else {
+            return 400;
+        };
     }
 
     // Host Functions
 
-    async check_if_host_needs_to_change(id) {
+    async check_current_host_state(id) {
         // Returns Information On What Host Should Currently Display
         return HOST_SESSIONS.get(id).host_screen_change();
-    }
-    
-    check_if_response(id) {
-        return HOST_SESSIONS.get(id).check_if_user_responded();
     }
 }
 
