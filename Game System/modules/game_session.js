@@ -16,13 +16,11 @@ const AVATAR_IDS = new Set([
 // Class to Connect Server & Game
 class Game_Session {
     game_api;
+    room_code;
     started = false;
     done = false;
-    user_responded = false;
-    room_code;
     current_player_index = 0;
     player_list = new Set();
-    player_id = {};
     avaliable_avatar_ids = new Set(AVATAR_IDS);
 
     constructor(game) {
@@ -72,6 +70,7 @@ class Game_Session {
     }
 
     get_player(id) {
+        // Returns Specified Player Based on ID
         for (const p of this.player_list) {
             if (p.id == id) {
                 return p;
@@ -80,13 +79,14 @@ class Game_Session {
     }
 
     set_player_avatar(id, avatar_id) {
+        // Sets the Avatar of the Player
         if (!AVATAR_IDS.has(avatar_id)) {
             return 400;
         }
         let player = this.get_player(id);
         if (this.avaliable_avatar_ids.has(avatar_id)) {
             player.avatar_id = avatar_id;
-            this.avaliable_avatar_ids.delete(avatar_id)
+            this.avaliable_avatar_ids.delete(avatar_id);
             return 200;
         } else {
             return 400;
@@ -129,33 +129,33 @@ class Game_Session {
         return array;
     }
 
-    // 
-
-    *run_game() {
-        // TODO: Start Game API
-        // let index = 0;
-        while (!this.done) {
-            // 1. Player Chooses Category
-            current_player = this.get_current_turn_player();
-            yield current_player;
-    
-        }
-    
-        // 2. Player Chooses Amount
-        // 3. Jeopardy API Returns Question
-        // 4. 
-
-    }
-
     get_current_turn_player() {
+        // Returns The Player Whose Turn it is Currently
         return this.player_order[this.current_player_index];
     }
 
+    check_response(id, answer) {
+        // Checks Player Response
+        let points = this.game_api.check_answer(answer);
+        this.next_turn();
+        // TODO: Reward Points to player
+    }
+
     next_turn() {
+        // Increments Player Turn
         this.current_player_index++;
         if (this.current_player_index == this.player_order.length) {
             this.current_player_index = 0;
         }
+
+        if (this.game == Game_Types.Jeopardy) {
+            this.game_api.set_host_screen_to_board();
+        }
+    }
+
+    end_session() {
+        // TODO: REMOVE ROOM_CODE
+        // TODO: Disconnect Clients
     }
 
     // Host Functions
@@ -163,21 +163,6 @@ class Game_Session {
     host_screen_change() {
         // Returns What Host Screen Must Be Displaying Currently
         return this.game_api.current_host_screen();
-    }
-
-    check_if_user_responded() {
-        // Checks if User Sent A Response
-        if (this.user_responded) {
-            this.user_responded = false;
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    end_session() {
-        // TODO: REMOVE ROOM_CODE
-        // TODO: Disconnect Clients
     }
 }
 

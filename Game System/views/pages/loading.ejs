@@ -6,9 +6,9 @@
   <body class="container">
     <main>
         <h1><%= (game) ? game : 'xxxxx' %></h1>
-        <h3>Please Wait for the game to begin</h3>
+        <h3>Please Wait for your turn</h3>
         <div class="container" hidden>
-          <form action="/join" class="form" method="post">
+          <form action="/play" class="form" method="post">
             <button name="TURN_CHECK" id="form_button" value="true" class="btn btn-primary float-right">Start Game</button>
           </form>
         </div>

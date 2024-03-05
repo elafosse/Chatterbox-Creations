@@ -7,7 +7,10 @@ const router = express.Router();
 router.use(express.json());
 router.use(express.urlencoded({ extended: false }));
 
+// Display Switches
+
 function host_page_to_display(params) {
+  // Select Page to Display on Host Screen Based on Parameters Sent
   if (Object.keys(params).includes('CHOSEN_GAME')) {
     return 'host_join';
   } else if (Object.keys(params).includes('START_GAME')) {
@@ -16,7 +19,7 @@ function host_page_to_display(params) {
 }
 
 function page_to_display(params) {
-  // Select Page to Display Based on Parameters Sent
+  // Select Page to Display on Player Screen Based on Parameters Sent
   if (Object.keys(params).includes('ROOMCODE' && 'USERNAME')) {
     return 'avatar';
   } else if (Object.keys(params).includes('AVATAR_ID')) {
@@ -59,60 +62,52 @@ router.post('/', (req, res) => {
       })
       break;
     case 'start_game':
-  // Jeopardy Board Page
+      // Jeopardy Board Page
       server.start_game_session(req.session.id).then(() => {
         res.render('pages' + req.body.START_GAME);
       });
+      break;
   }
 
 });
 
-// Jeopardy Board Page
-// router.post('/jeopardy/board', (req, res) => {
-//   server.start_game_session(req.session.id).then(() => {
-//     res.render('pages/jeopardy/board');
-//   });
-// })
-
-// Jeopardy Page
+// Jeopardy Pages
 router.post('/jeopardy', (req, res) => {
-  // TODO: Change URL
-  server.check_if_host_needs_to_change(req.session.id).then((change) => {
+  server.check_current_host_state(req.session.id).then((change) => {
     res.render('pages/jeopardy/' + change.Page, { data: change.Data })
   });
 })
 
-// Jeopardy Answer Page
-// router.post('/jeopardy/check_response_was_submitted', (req, res) => {
-//   // TODO: Finish
-//   server.check_if_response(id);
-// })
+// Leaderboard Page
+router.get('/leaderboard', (req, res) => {
+  res.render('pages/leaderboard');
+});
 
 
 // Player Pages
 
 // Player Join Page
-router.get('/join', (req, res) => {
-  res.render('pages/join');
+router.get('/play', (req, res) => {
+  res.render('pages/player_join');
 });
 
-router.post('/join', (req, res) => {
+router.post('/play', (req, res) => {
   let current_client = server.get_client(req.session.id);
 
   switch (page_to_display(req.body)) {
     case 'avatar':
       // Avatar Selection Page
-      current_client.create_ws(req.body);
+      current_client.create_connection_with_server(req.body);
       current_client.recieve_msg().then(() => {
         res.render('pages/avatar');
-      }).catch(() => {
+      }).catch((status) => {
         // TODO: Display Error
-        res.render('pages/join');
+        res.render('pages/player_join');
       })
       break;
     case 'loading':
       // Game Wait Page
-      if (!server.client_game_started(current_client)) {
+      if (!server.check_if_client_game_started(current_client.session_id)) {
         current_client.send_avatar_selection(req.body);
         current_client.recieve_msg().then(() => {
           res.render('pages/loading', {
@@ -123,7 +118,8 @@ router.post('/join', (req, res) => {
           res.render('pages/avatar');
         })
       } else {
-        server.next_turn(current_client.session_id);
+        // Checks Player Response
+        server.check_response(current_client.session_id, req.body.RESPONSE);
         res.render('pages/loading', {
           game: Object.keys(Game_Types)[current_client.game]
         });
@@ -131,7 +127,7 @@ router.post('/join', (req, res) => {
       break;
     case 'categories':
       // Categories Page
-      if (server.client_game_started(current_client) && server.check_turn(current_client.session_id) == 200) {
+      if (server.check_if_client_game_started(current_client.session_id) && server.check_if_client_turn(current_client.session_id) == 200) {
         res.render('pages/jeopardy/categories');
       } else {
         res.render('pages/loading', {
@@ -153,7 +149,7 @@ router.post('/join', (req, res) => {
       // Player Answer Page
       current_client.send_amount_selection(req.body);
       current_client.recieve_msg().then(() => {
-        res.render('pages/jeopardy/response');
+        res.render('pages/jeopardy/player_response');
       }).catch(() => {
         // TODO: Display Error
         res.render('pages/jeopardy/amount');
@@ -164,13 +160,5 @@ router.post('/join', (req, res) => {
       break;
   }
 });
-
-
-// Checks Player Response
-router.post('/jeopardy/check_response', (req, res) => {
-  // TODO: Finish
-  server.check_if_response(id);
-})
-
 
 module.exports = router;

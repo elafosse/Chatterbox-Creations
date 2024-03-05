@@ -1,26 +1,21 @@
-// Client
 const Message = require('../../Utils/messages')
 const Types = require('../../Utils/message_types')
 let WebSocket = require('ws');
 
+// Class Representing Client (Player). Allows Messsage Exchange Between Clients & Server
 class Client {
     current_player = false;
+
     constructor(id) {
-        this.set_session_id(id);
-    }
-
-    // Setters & Getters
-    get_session_id() {
-        return this.session_id;
-    }
-
-    set_session_id(value) {
-        this.session_id = value;
+        this.session_id = id;
     }
 
     // Connection Functions
-    async create_ws(request) {
-        // TODO: Increment Port Numbers?
+
+    async create_connection_with_server(request) {
+        // Creates Connection To Server
+    
+        // TODO: Change When Hosting?
         let ws = new WebSocket("ws://127.0.0.1:3001");
 
         ws.on('open', (event) => {
@@ -29,10 +24,12 @@ class Client {
         });
 
         ws.on('error', (err) => {
+            // TODO: Complete?
             console.log('err: ', err);
         });
 
         ws.on('close', () => {
+            // TODO: Complete?
             console.log("Connection is closed...");
         });
 
@@ -40,7 +37,10 @@ class Client {
     }
 
     // Message Functions
+
     recieve_msg() {
+        // Accepts Message From Server
+        // TODO: Combine With Send Message?
         return new Promise((resolve, reject) => this.ws_message(resolve, reject));
     }
 
@@ -49,11 +49,6 @@ class Client {
             let msg = (new Message()).import_data(JSON.parse(message));
 
             switch (msg.type) {
-                case Types.Player_ID:
-                    player_id = msg.data.player_id;
-                    console.log(player_id);
-                    console.log(`Message: ${message}`);
-                    break;
                 case Types.Success:
                     resolve(msg['STATUS']);
                     break;
@@ -65,6 +60,7 @@ class Client {
     }
 
     async send_message_to_server(msg) {
+        // Sends Message To Server
         this.ws.send(JSON.stringify({
             'session_id': this.session_id,
             'message': msg
@@ -80,27 +76,26 @@ class Client {
     }
 
     async send_avatar_selection(request) {
+        // Client Avatar Selection Sent To Server
         this.send_message_to_server(new Message(Types.Avatar, {
             'avatar_id': request.AVATAR_ID
         }))
     }
 
+    // Jeopardy Functions
+
     async send_category_selection(request) {
+        // Client Jeopardy Category Selection Sent To Server
         this.send_message_to_server(new Message(Types.Category, {
             'category': request.CATEGORY
         }))
     }
 
     async send_amount_selection(request) {
+        // Client Jeopardy Amount Selection Sent To Server
         this.send_message_to_server(new Message(Types.Amount, {
             'amount': request.AMOUNT
         }))
-    }
-
-    // TODO: Delete?
-    async check_if_turn() {
-        // Sends Message Asking Server if its the Clients Turn
-        this.send_message_to_server(new Message(Types.Player_Turn));
     }
 }
 
