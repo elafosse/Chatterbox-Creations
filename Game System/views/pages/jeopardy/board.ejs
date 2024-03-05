@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <%- include('../../partials/head'); %>
+  </head>
+
+  <body class="container">
+    <main>
+        <h3>Jeopardy</h3>
+        <div class="container">
+            <table class="table">
+                <thead>
+                  <tr>
+                    <th scope="col">MUSIC</th>
+                    <th scope="col">ANIMALS</th>
+                    <th scope="col">GEOGRAPHY</th>
+                    <th scope="col">MOVIES</th>
+                    <th scope="col">TV</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>$100</td>
+                    <td>$100</td>
+                    <td>$100</td>
+                    <td>$100</td>
+                    <td>$100</td>
+                  </tr>
+                  <tr>
+                    <td>$200</td>
+                    <td>$200</td>
+                    <td>$200</td>
+                    <td>$200</td>
+                    <td>$200</td>
+                  </tr>
+                  <tr>
+                    <td>$300</td>
+                    <td>$300</td>
+                    <td>$300</td>
+                    <td>$300</td>
+                    <td>$300</td>
+                  </tr>
+                  <tr>
+                    <td>$400</td>
+                    <td>$400</td>
+                    <td>$400</td>
+                    <td>$400</td>
+                    <td>$400</td>
+                  </tr>
+                  <tr>
+                    <td>$500</td>
+                    <td>$500</td>
+                    <td>$500</td>
+                    <td>$500</td>
+                    <td>$500</td>
+                  </tr>
+                </tbody>
+              </table>
+        </div>
+        <div class="container" hidden>
+          <form action="/jeopardy" class="form" method="post">
+          <!-- <form action="/jeopardy/question" class="form" method="post"> -->
+            <button id="form_button" class="btn btn-primary float-right"></button>
+          </form>
+        </div>
+    </main>
+  </body>
+
+  <script>
+    function pressButton() {
+      document.getElementById("form_button").click();
+    }
+
+    const myTimeout = setTimeout(pressButton, 5000);
+  </script>
+</html>
