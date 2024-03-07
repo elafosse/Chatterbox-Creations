@@ -40,6 +40,17 @@ class Jeopardy {
         }
     }
 
+    check_if_game_done() {
+        // Checks if the Jeopardy Game Has Finished
+        // TODO: Complete Check
+        this.end_game();
+    }
+
+    end_game() {
+        // TODO: Complete
+
+    }
+
     // Setters
 
     set_curr_category(category) {

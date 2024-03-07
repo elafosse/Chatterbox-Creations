@@ -150,6 +150,8 @@ class Game_Session {
             this.current_player_index = 0;
         }
 
+        this.game_api.check_if_game_done();
+
         if (this.game == Game_Types.Jeopardy) {
             setTimeout(() => {
                 this.game_api.set_host_screen_to_board();
