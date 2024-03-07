@@ -7,9 +7,29 @@
     <main>
         <h3>Say Response</h3>
         <form action="/play" class="form" method="post">
-          <input name="RESPONSE" type="text">
-          <button type="submit" class="btn btn-primary float-right">READY</button>
+          <input name="RESPONSE" id="response_input" type="text" hidden>
+          <button type="submit" id="player_response" class="btn btn-primary float-right" hidden>READY</button>
         </form>
     </main>
   </body>
+  <script>
+    function startSpeechRecognition() {
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        const recognition = new SpeechRecognition();
+
+        recognition.onstart = () => {
+            console.log('Listening...');
+        };
+
+        recognition.onresult = (event) => {
+            const transcript = event.results[0][0].transcript;
+            document.getElementById('response_input').value = transcript;
+            document.getElementById("player_response").click();
+        };
+
+        recognition.start();
+    }
+
+    startSpeechRecognition();
+  </script>
 </html>
