@@ -1,3 +1,5 @@
+const jepQuestions = require("./jeopardy");
+
 HOST_STATES = {
     NOT_STARTED: -1,
     BOARD: 0,
@@ -12,6 +14,7 @@ class Jeopardy {
     current_question_answer;
     selected_cat;
     selected_amt;
+    questionMap;
 
     // Game Progression Functions
 
@@ -23,9 +26,13 @@ class Jeopardy {
 
     select_question() {
         // Selects The Question Based on Player Chosen Values
-        // TODO: Use Jeopardy Data. Remove Example
-        this.current_question = 'How many stars are on the American Flag?';
-        this.current_question_answer = '50';
+        jepQuestions.getDataTest(this.selected_cat, this.selected_amt).then((value)=>{
+            console.log(value.Question)
+            console.log(value.Answer)
+            this.current_question = value.Question;
+            this.current_question_answer = value.Answer;
+        });;
+
         this.host_state = HOST_STATES.QUESTION;
     }
 

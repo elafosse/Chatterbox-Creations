@@ -6,6 +6,7 @@
   <body class="container">
     <main>
         <h3>Say Response</h3>
+        <input id="Answer" type="button" value="Answer" onclick="startSpeechRecognition()">
         <form action="/play" class="form" method="post">
           <input name="RESPONSE" id="response_input" type="text" hidden>
           <button type="submit" id="player_response" class="btn btn-primary float-right" hidden>READY</button>
@@ -29,7 +30,5 @@
 
         recognition.start();
     }
-
-    startSpeechRecognition();
   </script>
 </html>
