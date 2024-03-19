@@ -200,7 +200,7 @@ getDataTest("SPORTS", "$100.00").then((value)=>{
 });;
 
 
-
+module.exports = {getDataTest};
 
   
 
