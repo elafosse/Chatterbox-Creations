@@ -171,6 +171,17 @@ class Server {
 
     }
 
+    get_leaderboard(id) {
+        return HOST_SESSIONS.get(id).get_session_leaderboard();
+    }
+
+    end_session(id) {
+        // TODO: Disconnect Clients
+        let gs = HOST_SESSIONS.get(id)
+        ACTIVE_ROOMCODES.delete(gs.room_code)
+        
+    }
+
     // Client Functions
 
     get_client(id) {

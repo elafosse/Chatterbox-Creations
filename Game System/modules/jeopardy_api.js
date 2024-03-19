@@ -33,6 +33,7 @@ class Jeopardy {
         // Checks Answer To See if it is Correct
         this.host_state = HOST_STATES.ANSWER;
         this.player_response = player_ans;
+        // TODO: Make Answer Check Better
         if (player_ans != this.current_question_answer) {
             return 0;
         } else {

@@ -159,15 +159,15 @@ class Game_Session {
         }
     }
 
-    end_session() {
-        // TODO: Remove ROOM_CODE & Disconnect Clients
-    }
-
     // Host Functions
 
     host_screen_change() {
         // Returns What Host Screen Must Be Displaying Currently
         return this.game_api.current_host_screen();
+    }
+
+    get_session_leaderboard() {
+        // TODO: Sort Players by points and return list
     }
 }
 

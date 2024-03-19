@@ -80,6 +80,7 @@ router.post('/jeopardy', (req, res) => {
 
 // Leaderboard Page
 router.get('/leaderboard', (req, res) => {
+  let leaderboard = server.get_leaderboard();
   res.render('pages/leaderboard');
 });
 
