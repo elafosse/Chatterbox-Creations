@@ -1,5 +1,15 @@
 const jepQuestions = require("./jeopardy");
 
+const amountArr = ["$100.00", "$200.00","$300.00", "$400.00", "$500.00"];
+
+mapAvailable = new Map();
+    mapAvailable.set("MUSIC", amountArr);
+    mapAvailable.set("ANIMALS", amountArr);
+    mapAvailable.set("SPORTS", amountArr);
+    mapAvailable.set("HISTORY", amountArr);
+    mapAvailable.set("MOVIES", amountArr);
+
+
 HOST_STATES = {
     NOT_STARTED: -1,
     BOARD: 0,
@@ -31,6 +41,10 @@ class Jeopardy {
             console.log(value.Answer)
             this.current_question = value.Question;
             this.current_question_answer = value.Answer;
+            amountArr = mapAvailable.get(this.selected_cat);
+            const index = amountArr.indexOf(this.selected_amt);
+            mapAvailable.set(this.selected_cat, amountArr.splice(index, 1));
+
         });;
 
         this.host_state = HOST_STATES.QUESTION;
