@@ -167,7 +167,19 @@ class Game_Session {
     }
 
     get_session_leaderboard() {
-        // TODO: Sort Players by points and return list
+        let leaderboard = Array.from(this.player_list);
+        return leaderboard.sort(this.sort_players);
+    }
+
+    // Other Functions
+    sort_players(a, b) {
+        if (a.points > b.points) {
+            return -1;
+        } else if (a.points == b.points) {
+            return 0;
+        } else {
+            return 1;
+        }
     }
 }
 
