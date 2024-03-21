@@ -17,8 +17,7 @@ const AvatarSelectionScreen = ({ navigation }) => {
   // Placeholder function for the READY button
   const handleReady = () => {
     if (selectedAvatar) {
-      // Navigate to the next screen or perform the next action
-      // navigation.navigate('NextScreen');
+        navigation.navigate('WaitScreen');
     }
   };
 
