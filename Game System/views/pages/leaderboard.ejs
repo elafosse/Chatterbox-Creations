@@ -8,26 +8,16 @@
             <div class="container">
                 <h4 class="text-primary my-4">Top Players</h4>
                 <div class="row gy-3 pb-3">
-                    <div class="col-12 col-md-6 col-lg-4 d-flex align-items-center">
-                        <!-- <img width="56" height="56" src="images/players/player-1.png" alt=""> -->
-                        <h4 class="ms-3">Endrick Lafosse</h4>
-                    </div>
-                    <div class="col-12 col-md-6 col-lg-4 d-flex align-items-center">
-                        <!-- <img width="56" height="56" src="images/players/player-2.png" alt=""> -->
-                        <h4 class="ms-3">Gabrielle Richards</h4>
-                    </div>
-                    <div class="col-12 col-md-6 col-lg-4 d-flex align-items-center">
-                        <!-- <img width="56" height="56" src="images/players/player-3.png" alt=""> -->
-                        <h4 class="ms-3">Joseph Schley</h4>
-                    </div>
-                    <div class="col-12 col-md-6 col-lg-4 d-flex align-items-center">
-                        <!-- <img width="56" height="56" src="images/players/player-4.png" alt=""> -->
-                        <h4 class="ms-3">Maranda Bui</h4>
-                    </div>
-                    <div class="col-12 col-md-6 col-lg-4 d-flex align-items-center">
-                        <!-- <img width="56" height="56" src="images/players/player-5.png" alt=""> -->
+                    <% for(var i=0; i<leaderboard.length; i++) {%>
+                        <div class="col-12 col-md-6 col-lg-4 d-flex align-items-center">
+                            <h4 class="ms-3"><%= leaderboard[i].name %>: <%= leaderboard[i].points %></h4>
+                        </div>
+                    <% } %>
+
+                    <!-- <div class="col-12 col-md-6 col-lg-4 d-flex align-items-center">
+                        <img width="56" height="56" src="images/players/player-5.png" alt="">
                         <h4 class="ms-3">Jacob Behr</h4>
-                    </div>
+                    </div> -->
                 </div>
             </div>
             <div class="container" hidden>

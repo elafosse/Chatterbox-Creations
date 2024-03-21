@@ -20,7 +20,6 @@ class Jeopardy {
 
     run_game() {
         // Starts Running The Jeopardy Game
-        // TODO: Get Questions from CSV
         this.host_state = HOST_STATES.BOARD;
     }
 
@@ -44,14 +43,16 @@ class Jeopardy {
         if (player_ans != this.current_question_answer) {
             return 0;
         } else {
-            return this.selected_amt;
+            let points = this.selected_amt
+            return Number(points.replace("$",""))
+            // return this.selected_amt;
         }
     }
 
-    check_if_game_done() {
+    game_done() {
         // Checks if the Jeopardy Game Has Finished
-        // TODO: Complete Check
-        this.end_game();
+        return false;
+        // return mapAvaliable.size == 0
     }
 
     end_game() {

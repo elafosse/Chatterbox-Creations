@@ -137,10 +137,15 @@ class Game_Session {
     check_response(id, answer) {
         // Checks Player Response
         let points = this.game_api.check_answer(answer);
-        this.next_turn();
         let currentPlayer = this.get_current_turn_player();
         let updatedScore = currentPlayer.points + points;
         currentPlayer.points = updatedScore;
+
+        if (this.game_api.game_done()) {
+            this.game_api.end_game();
+        } else {
+            this.next_turn();
+        }
     }
 
     next_turn() {
@@ -149,8 +154,6 @@ class Game_Session {
         if (this.current_player_index == this.player_order.length) {
             this.current_player_index = 0;
         }
-
-        this.game_api.check_if_game_done();
 
         if (this.game == Game_Types.Jeopardy) {
             setTimeout(() => {
