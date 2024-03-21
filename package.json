@@ -1,6 +1,8 @@
 {
   "dependencies": {
+    "@react-navigation/stack": "^6.3.29",
     "ejs": "^3.1.9",
-    "express": "^4.19.0"
+    "express": "^4.19.0",
+    "styled-components": "^6.1.8"
   }
 }
