@@ -65,13 +65,13 @@ class Jeopardy {
     set_curr_category(category) {
         // Sets the Category Chosen By The Player
         // TODO: Check if Category Can be chosen
-        this.selected_cat = category;
+        this.selected_cat = category.toUpperCase();
     }
     
     set_curr_amount(amount) {
         // Sets The Amount Chosen By The Player
         // TODO: Check if amount Can be chosen
-        this.selected_amt = amount;
+        this.selected_amt = "$" + amount + ".00";
         this.select_question();
     }
 

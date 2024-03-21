@@ -171,6 +171,7 @@ class Server {
     }
 
     get_leaderboard(id) {
+        // Returns the Current Leaderboard of the Game Session
         return HOST_SESSIONS.get(id).get_session_leaderboard();
     }
 
@@ -178,7 +179,6 @@ class Server {
         // TODO: Disconnect Clients
         let gs = HOST_SESSIONS.get(id)
         ACTIVE_ROOMCODES.delete(gs.room_code)
-        
     }
 
     // Client Functions
