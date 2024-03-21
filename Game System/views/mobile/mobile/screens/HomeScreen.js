@@ -47,7 +47,7 @@ const HomeScreen = ({ navigation }) => {
       <Input placeholder="XXXX" />
       <Title>Name</Title>
       <Input placeholder="Johnny" />
-      <Button onPress={() => {/* Handle the press event */}}>
+      <Button onPress={() => {navigation.navigate('AvatarSelection');}}>
         <ButtonText>PLAY</ButtonText>
       </Button>
     </Container>
