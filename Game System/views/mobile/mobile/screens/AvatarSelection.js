@@ -5,6 +5,9 @@ const AvatarSelectionScreen = ({ navigation }) => {
   // Placeholder for avatar selection logic
   const [selectedAvatar, setSelectedAvatar] = React.useState(null);
 
+  //TODO: Determine whether user is the host or not
+  const isHost = true;
+
   // Placeholder avatars data
   const avatars = [
     { id: 'avatar1' },
@@ -17,7 +20,15 @@ const AvatarSelectionScreen = ({ navigation }) => {
   // Placeholder function for the READY button
   const handleReady = () => {
     if (selectedAvatar) {
+      // Check if the user is the host and navigate accordingly
+      if (isHost) {
+        navigation.navigate('HostStartScreen');
+      } else {
         navigation.navigate('WaitScreen');
+      }
+    } else {
+      // alert the user to select an avatar
+      alert('Please select an avatar.');
     }
   };
 
@@ -60,13 +71,12 @@ const styles = StyleSheet.create({
     fontSize: 24,
     marginBottom: 24,
     fontWeight: 'bold',
-    color: '#333',
+    color: '#0C1562',
   },
   avatarContainer: {
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'center',
-    // Add additional styling for your avatar container
   },
   avatar: {
     width: 170,
@@ -75,27 +85,29 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     margin: 10,
-    // Add additional styling as needed
+    
   },
   selectedAvatar: {
-    borderColor: 'blue', // Or your highlight color
+    borderColor: '#0C1562',
     borderWidth: 2,
-    // Add additional styling for selected state
   },
   readyButton: {
     marginTop: 20,
-    backgroundColor: '#0000ff',
+    backgroundColor: '#0C1562',
     borderRadius: 25,
     alignItems: 'center',
     padding: 15,
     width: 200,
-    // Add additional styling as needed
+    elevation: 2, 
+    shadowColor: '#000', 
+    shadowOffset: { width: 0, height: 2 }, 
+    shadowOpacity: 0.1, 
+    shadowRadius: 2, 
   },
   readyButtonText: {
     color: '#fff',
     fontSize: 18,
     fontWeight: 'bold',
-    // Add additional styling as needed
   },
   // Add additional styles for your avatars
 });

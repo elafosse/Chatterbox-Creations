@@ -12,8 +12,8 @@ const Container = styled.View`
 const Title = styled.Text`
   font-size: 24px;
   font-weight: bold;
-  color: #333;
-  margin-bottom: 24px;
+  color: #0C1562;
+  margin-bottom: 14px;
 `;
 
 const Input = styled.TextInput`
@@ -26,12 +26,17 @@ const Input = styled.TextInput`
 `;
 
 const Button = styled.TouchableOpacity`
-  background-color: #0000ff;
+  background-color: #0C1562;
   border-radius: 25px;
   width: 80%;
   padding: 15px;
   align-items: center;
   margin-top: 20px;
+  elevation: 2;
+  shadow-color: #000;
+  shadow-offset: 0 2px;
+  shadow-opacity: 0.1;
+  shadow-radius: 2px;
 `;
 
 const ButtonText = styled.Text`
