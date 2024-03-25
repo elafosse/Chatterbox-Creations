@@ -7,6 +7,7 @@ import WaitScreen from './screens/WaitScreen';
 import HostStartScreen from './screens/HostStartScreen';
 import CatagorySelection from './screens/CatagorySelection';
 import PriceSelection from './screens/PriceSelection';
+import AnswerScreen from './screens/AnswerScreen';
 
 const Stack = createStackNavigator();
 
@@ -20,6 +21,7 @@ const App = () => {
         <Stack.Screen name="HostStartScreen" component={HostStartScreen} />
         <Stack.Screen name="CatagorySelection" component={CatagorySelection} />
         <Stack.Screen name="PriceSelection" component={PriceSelection} />
+        <Stack.Screen name="AnswerScreen" component={AnswerScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );

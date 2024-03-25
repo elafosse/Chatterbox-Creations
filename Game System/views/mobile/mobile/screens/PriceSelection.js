@@ -13,8 +13,8 @@ const PriceSelection = ({ navigation }) => {
 
   const handleReady = () => {
     if (selectedPrice) {
-      // Navigate to the game screen or handle the Price selection
-      // navigation.navigate('GameScreen', { Price: selectedPrice });
+      // Navigate to the answer screen
+      navigation.navigate('AnswerScreen', { Price: selectedPrice });
     } else {
       // Alert the player to select a Price
       alert('Please select a price.');
