@@ -2,40 +2,40 @@ import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 
 //array of categories
-const categories = ['Music', 'Sports', 'Animals', 'History', 'Movies'];
+const prices = ['$100', '$200', '$300', '$400', '$500'];
 
-const CategorySelection = ({ navigation }) => {
-  const [selectedCategory, setSelectedCategory] = useState(null);
+const PriceSelection = ({ navigation }) => {
+  const [selectedPrice, setSelectedPrice] = useState(null);
 
-  const handleCategorySelect = (category) => {
-    setSelectedCategory(category);
+  const handlePriceSelect = (Price) => {
+    setSelectedPrice(Price);
   };
 
   const handleReady = () => {
-    if (selectedCategory) {
-      // Navigate to price selection screen
-      navigation.navigate('PriceSelection', { category: selectedCategory });
+    if (selectedPrice) {
+      // Navigate to the game screen or handle the Price selection
+      // navigation.navigate('GameScreen', { Price: selectedPrice });
     } else {
-      // Alert the player to select a category
-      alert('Please select a category.');
+      // Alert the player to select a Price
+      alert('Please select a price.');
     }
   };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Choose a category</Text>
-      <View style={styles.categoryContainer}>
-        {categories.map((category) => (
+      <Text style={styles.title}>Choose a price</Text>
+      <View style={styles.PriceContainer}>
+        {prices.map((Price) => (
           <TouchableOpacity
-            key={category}
+            key={Price}
             style={[
-              styles.categoryButton,
-              category === selectedCategory && styles.selectedCategory,
+              styles.PriceButton,
+              Price === selectedPrice && styles.selectedPrice,
             ]}
-            onPress={() => handleCategorySelect(category)}
+            onPress={() => handlePriceSelect(Price)}
           >
             <View style={{ alignItems: 'center', justifyContent: 'center' }}>
-              <Text style={styles.categoryText}>{category}</Text>
+              <Text style={styles.PriceText}>{Price}</Text>
             </View>
           </TouchableOpacity>
         ))}
@@ -63,13 +63,13 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     color: '#0C1562',
   },
-  categoryContainer: {
+  PriceContainer: {
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'center',
     marginBottom: 20,
   },
-  categoryButton: {
+  PriceButton: {
     paddingVertical: 30, 
     paddingHorizontal: 30, 
     margin: 10, 
@@ -78,11 +78,11 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     width: '40%',
   },
-  selectedCategory: {
+  selectedPrice: {
     borderColor: '#0C1562', 
     borderWidth: 2,
   },
-  categoryText: {
+  PriceText: {
     fontSize: 25,
     color: 'orange',
     alignItems: 'center',
@@ -107,4 +107,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default CategorySelection;
+export default PriceSelection;
