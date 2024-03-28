@@ -1,7 +1,5 @@
 const jepQuestions = require("./jeopardy");
 
-// const amountArr = ["$100.00", "$200.00","$300.00", "$400.00", "$500.00"];
-
 const mapAvailable = new Map();
 mapAvailable.set("MUSIC", ["$100.00", "$200.00","$300.00", "$400.00", "$500.00"]);
 mapAvailable.set("ANIMALS", ["$100.00", "$200.00","$300.00", "$400.00", "$500.00"]);

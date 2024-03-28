@@ -92,12 +92,8 @@ router.post('/jeopardy', (req, res) => {
 // Leaderboard Page
 router.get('/leaderboard', (req, res) => {
   // TODO: Display Leaderboard on Screen
-  if (server.check_if_game_session_done(req.session.id)) {
-    res.render('pages/player_endgame');
-  } else {
-    let leaderboard = server.get_leaderboard(req.session.id);
-    res.render('pages/leaderboard', { leaderboard: leaderboard });
-  }
+  let leaderboard = server.get_leaderboard(req.session.id);
+  res.render('pages/leaderboard', { leaderboard: leaderboard });
 });
 
 

@@ -15,6 +15,7 @@ const middleware = session({
 })
 
 // Front End
+app.disable("x-powered-by");
 app.set('view engine', 'ejs');
 app.use(express.static('static'))
 app.use(middleware);
