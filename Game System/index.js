@@ -1,5 +1,5 @@
 const express = require('express');
-const session = require('express-session')
+const session = require('cookie-session');
 const routes = require('./modules/routes');
 require('dotenv').config();
 
@@ -21,6 +21,6 @@ app.use(express.static('static'))
 app.use(middleware);
 app.use(routes);
 
-app.listen(port, () => {
+app.listen(port, '0.0.0.0', () => {
   console.log('App listening on port http://127.0.0.1:' + port)
 });
