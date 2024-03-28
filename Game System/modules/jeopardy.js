@@ -192,14 +192,6 @@ async function getDataTest(Category, amount){
 
 }
 
-//TODO: instead of console.log, display question to screen
-
-getDataTest("SPORTS", "$100.00").then((value)=>{
-    console.log(value.Question)
-    console.log(value.Answer)
-});;
-
-
 module.exports = {getDataTest};
 
   

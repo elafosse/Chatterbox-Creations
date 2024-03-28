@@ -34,9 +34,6 @@ class Jeopardy {
     select_question() {
         // Selects The Question Based on Player Chosen Values
         jepQuestions.getDataTest(this.selected_cat, this.selected_amt).then((value)=>{
-            console.log(value.Question)
-            console.log(value.Answer)
-
             // Sets Current Question & Its Answer
             this.current_question = value.Question;
             this.current_question_answer = value.Answer;

@@ -21,6 +21,6 @@ app.use(express.static('static'))
 app.use(middleware);
 app.use(routes);
 
-app.listen(port, '0.0.0.0', () => {
+app.listen(port, () => {
   console.log('App listening on port http://127.0.0.1:' + port)
 });
