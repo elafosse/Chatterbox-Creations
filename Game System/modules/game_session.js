@@ -148,6 +148,11 @@ class Game_Session {
         }
     }
 
+    game_session_done() {
+        // Checks if the game has finished
+        return this.game_api.game_done()
+    }
+
     next_turn() {
         // Increments Player Turn
         this.current_player_index++;

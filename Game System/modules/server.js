@@ -175,6 +175,13 @@ class Server {
         return HOST_SESSIONS.get(id).get_session_leaderboard();
     }
 
+    check_if_game_session_done(id) {
+        // return false
+        let gs = ACTIVE_GAME_SESSIONS.get(PLAYER_GAME_SESSION.get(id)) || HOST_SESSIONS.get(id);
+        return gs.started && gs.game_session_done();
+        // return gs.game_session_done();
+    }
+
     end_session(id) {
         // TODO: Disconnect Clients
         let gs = HOST_SESSIONS.get(id)

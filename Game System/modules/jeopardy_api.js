@@ -1,16 +1,16 @@
 const jepQuestions = require("./jeopardy");
 
-const amountArr = ["$100.00", "$200.00","$300.00", "$400.00", "$500.00"];
+// const amountArr = ["$100.00", "$200.00","$300.00", "$400.00", "$500.00"];
 
-mapAvailable = new Map();
-    mapAvailable.set("MUSIC", amountArr);
-    mapAvailable.set("ANIMALS", amountArr);
-    mapAvailable.set("SPORTS", amountArr);
-    mapAvailable.set("HISTORY", amountArr);
-    mapAvailable.set("MOVIES", amountArr);
+const mapAvailable = new Map();
+mapAvailable.set("MUSIC", ["$100.00", "$200.00","$300.00", "$400.00", "$500.00"]);
+mapAvailable.set("ANIMALS", ["$100.00", "$200.00","$300.00", "$400.00", "$500.00"]);
+mapAvailable.set("SPORTS", ["$100.00", "$200.00","$300.00", "$400.00", "$500.00"]);
+mapAvailable.set("HISTORY", ["$100.00", "$200.00","$300.00", "$400.00", "$500.00"]);
+mapAvailable.set("MOVIES", ["$100.00", "$200.00","$300.00", "$400.00", "$500.00"]);
 
 
-HOST_STATES = {
+const HOST_STATES = {
     NOT_STARTED: -1,
     BOARD: 0,
     QUESTION: 1,
@@ -38,13 +38,21 @@ class Jeopardy {
         jepQuestions.getDataTest(this.selected_cat, this.selected_amt).then((value)=>{
             console.log(value.Question)
             console.log(value.Answer)
+
+            // Sets Current Question & Its Answer
             this.current_question = value.Question;
             this.current_question_answer = value.Answer;
-            amountArr = mapAvailable.get(this.selected_cat);
-            const index = amountArr.indexOf(this.selected_amt);
-            mapAvailable.set(this.selected_cat, amountArr.splice(index, 1));
 
-        });;
+            // Removes From Map Board
+            let arr = mapAvailable.get(this.selected_cat);
+            const index = arr.indexOf(this.selected_amt);
+            arr.splice(index, 1)
+            mapAvailable.set(this.selected_cat, arr);
+
+            if (mapAvailable.get(this.selected_cat).length == 0) {
+                mapAvailable.delete(this.selected_cat);
+            }
+        });
 
         this.host_state = HOST_STATES.QUESTION;
     }
@@ -65,8 +73,7 @@ class Jeopardy {
 
     game_done() {
         // Checks if the Jeopardy Game Has Finished
-        return false;
-        // return mapAvaliable.size == 0
+        return this.host_state == HOST_STATES.BOARD && mapAvailable.size == 0
     }
 
     end_game() {
@@ -105,7 +112,7 @@ class Jeopardy {
             case HOST_STATES.BOARD:
                 data = {
                     Page: 'board',
-                    Data: ''
+                    Data: mapAvailable
                 };
                 break;
             case HOST_STATES.QUESTION:

@@ -20,7 +20,7 @@ function host_page_to_display(params) {
 
 function page_to_display(params) {
   // Select Page to Display on Player Screen Based on Parameters Sent
-  if (Object.keys(params).includes('ROOMCODE' && 'USERNAME')) {
+  if (Object.keys(params).includes('ROOMCODE') && Object.keys(params).includes('USERNAME')) {
     return 'avatar';
   } else if (Object.keys(params).includes('AVATAR_ID')) {
     return 'loading';
@@ -44,9 +44,10 @@ router.get('/', (req, res) => {
 
 // Game Join Page
 router.post('/', (req, res) => {
+  let game, type, path;
+
   switch(host_page_to_display(req.body)) {
     case 'host_join':
-      let game, type, path;
       switch(req.body.CHOSEN_GAME) {
         case 'jeopardy':
           game = 'Jeopardy';
@@ -64,7 +65,12 @@ router.post('/', (req, res) => {
     case 'start_game':
       // Jeopardy Board Page
       server.start_game_session(req.session.id).then(() => {
-        res.render('pages' + req.body.START_GAME);
+        if (server.check_if_game_session_done(req.session.id)) {
+          let leaderboard = server.get_leaderboard(req.session.id);
+          res.render('pages/leaderboard', { leaderboard: leaderboard });
+        } else {
+          res.render('pages' + req.body.START_GAME);
+        }
       });
       break;
   }
@@ -74,15 +80,24 @@ router.post('/', (req, res) => {
 // Jeopardy Pages
 router.post('/jeopardy', (req, res) => {
   server.check_current_host_state(req.session.id).then((change) => {
-    res.render('pages/jeopardy/' + change.Page, { data: change.Data })
-  });
+    if (server.check_if_game_session_done(req.session.id)) {
+      let leaderboard = server.get_leaderboard(req.session.id);
+      res.render('pages/leaderboard', { leaderboard: leaderboard });
+    } else {
+      res.render('pages/jeopardy/' + change.Page, { data: change.Data })
+    }
+  }); 
 })
 
 // Leaderboard Page
 router.get('/leaderboard', (req, res) => {
   // TODO: Display Leaderboard on Screen
-  let leaderboard = server.get_leaderboard(req.session.id);
-  res.render('pages/leaderboard', { leaderboard: leaderboard });
+  if (server.check_if_game_session_done(req.session.id)) {
+    res.render('pages/player_endgame');
+  } else {
+    let leaderboard = server.get_leaderboard(req.session.id);
+    res.render('pages/leaderboard', { leaderboard: leaderboard });
+  }
 });
 
 
@@ -129,7 +144,9 @@ router.post('/play', (req, res) => {
       break;
     case 'categories':
       // Categories Page
-      if (server.check_if_client_game_started(current_client.session_id) && server.check_if_client_turn(current_client.session_id) == 200) {
+      if (server.check_if_game_session_done(current_client.session_id)) {
+        res.render('pages/player_endgame');
+      } else if (server.check_if_client_game_started(current_client.session_id) && server.check_if_client_turn(current_client.session_id) == 200) {
         res.render('pages/jeopardy/categories');
       } else {
         res.render('pages/loading', {
