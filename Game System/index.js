@@ -1,5 +1,5 @@
 const express = require('express');
-const session = require('cookie-session');
+const session = require('express-session');
 const routes = require('./modules/routes');
 require('dotenv').config();
 
@@ -12,6 +12,8 @@ const middleware = session({
   secret: secret,
   resave: true,
   saveUninitialized: true
+  // name: 'session',
+  // keys: ['key1', 'key2']
 })
 
 // Front End
