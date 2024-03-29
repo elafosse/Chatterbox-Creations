@@ -4,6 +4,9 @@ import { View, Text, TouchableOpacity, StyleSheet, Image } from 'react-native';
 const AnswerScreen = ({ navigation }) => {
   const handlePressMicrophone = () => {
     // insert speech recognition/answer logic here
+
+    // navigate to ScoreScreen
+    navigation.navigate('ScoreScreen');
   };
 
   return (

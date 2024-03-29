@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 
-const AvatarSelectionScreen = ({ navigation }) => {
+const AvatarSelection = ({ navigation }) => {
   // Placeholder for avatar selection logic
   const [selectedAvatar, setSelectedAvatar] = React.useState(null);
 
@@ -109,7 +109,6 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: 'bold',
   },
-  // Add additional styles for your avatars
 });
 
-export default AvatarSelectionScreen;
+export default AvatarSelection;

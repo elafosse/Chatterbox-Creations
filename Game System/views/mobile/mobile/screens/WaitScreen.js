@@ -28,7 +28,6 @@ const styles = StyleSheet.create({
     color: '#333', // This is an assumption, set the color you need
     // Add additional styling as needed
   },
-  // Add other styles if needed
 });
 
 export default WaitScreen;
