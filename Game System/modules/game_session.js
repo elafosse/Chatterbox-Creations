@@ -80,6 +80,7 @@ class Game_Session {
 
     set_player_avatar(id, avatar_id) {
         // Sets the Avatar of the Player
+        avatar_id = avatar_id.toLowerCase();
         if (!AVATAR_IDS.has(avatar_id)) {
             return 400;
         }
