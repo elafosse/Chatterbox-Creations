@@ -18,6 +18,7 @@ class Game_Session {
     game_api;
     room_code;
     started = false;
+    restarting = false;
     done = false;
     current_player_index = 0;
     player_list = new Set();
@@ -110,9 +111,24 @@ class Game_Session {
     start_game() {
         // Starts the Game
         this.started = true;
+        this.restarting = false;
         this.player_order = this.get_random_player_order();
         return this.game_api.run_game();
         // return this.started;
+    }
+
+    restart(id) {
+        // Setups Game Session for Another Round
+        if (!this.restarting) {
+            this.restarting = true;
+            this.started = false;
+            this.done = false;
+            this.current_player_index = 0;
+            this.set_game_api();
+        }
+
+        let curr_player = this.get_player(id);
+        curr_player.points = 0;
     }
 
     get_random_player_order() {
@@ -147,6 +163,17 @@ class Game_Session {
         } else {
             this.next_turn();
         }
+    }
+
+    remove_player_from_game(id) {
+        // Removes Player From Game Session
+        // TODO: Finish
+        let curr_player = this.get_player(id);
+
+        // Makes avatar avaliable again
+        this.avaliable_avatar_ids.add(curr_player.avatar);
+
+        this.player_list.delete(curr_player);
     }
 
     game_session_done() {
