@@ -111,8 +111,8 @@ class Game_Session {
         // Starts the Game
         this.started = true;
         this.player_order = this.get_random_player_order();
-        this.game_api.run_game();
-        return this.started;
+        return this.game_api.run_game();
+        // return this.started;
     }
 
     get_random_player_order() {

@@ -13,47 +13,23 @@
                   <tr>
                     <th scope="col">MUSIC</th>
                     <th scope="col">ANIMALS</th>
+                    <th scope="col">SPORTS</th>
                     <th scope="col">HISTORY</th>
                     <th scope="col">MOVIES</th>
-                    <th scope="col">SPORTS</th>
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <td>$100</td>
-                    <td>$100</td>
-                    <td>$100</td>
-                    <td>$100</td>
-                    <td>$100</td>
-                  </tr>
-                  <tr>
-                    <td>$200</td>
-                    <td>$200</td>
-                    <td>$200</td>
-                    <td>$200</td>
-                    <td>$200</td>
-                  </tr>
-                  <tr>
-                    <td>$300</td>
-                    <td>$300</td>
-                    <td>$300</td>
-                    <td>$300</td>
-                    <td>$300</td>
-                  </tr>
-                  <tr>
-                    <td>$400</td>
-                    <td>$400</td>
-                    <td>$400</td>
-                    <td>$400</td>
-                    <td>$400</td>
-                  </tr>
-                  <tr>
-                    <td>$500</td>
-                    <td>$500</td>
-                    <td>$500</td>
-                    <td>$500</td>
-                    <td>$500</td>
-                  </tr>
+                  <% for(let i = 1; i < 6; i++) {%>
+                    <tr>
+                      <% for(let [key, value] of data) {%>
+                        <% if (value.includes("$" + i + "00.00")) { %>
+                            <td><%= "$" + i + "00" %></td>
+                          <% } else { %>
+                            <td>XXXX</td>
+                        <% } %>
+                      <% } %>
+                    </tr>
+                  <% } %>
                 </tbody>
               </table>
         </div>
