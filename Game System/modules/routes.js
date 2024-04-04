@@ -64,17 +64,16 @@ router.post('/', (req, res) => {
       break;
     case 'start_game':
       // Jeopardy Board Page
-      server.start_game_session(req.session.id).then(() => {
+      server.start_game_session(req.session.id).then((map) => {
         if (server.check_if_game_session_done(req.session.id)) {
           let leaderboard = server.get_leaderboard(req.session.id);
           res.render('pages/leaderboard', { leaderboard: leaderboard });
         } else {
-          res.render('pages' + req.body.START_GAME);
+          res.render('pages' + req.body.START_GAME, { data: map });
         }
       });
       break;
   }
-
 });
 
 // Jeopardy Pages

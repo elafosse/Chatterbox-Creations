@@ -29,6 +29,7 @@ class Jeopardy {
     run_game() {
         // Starts Running The Jeopardy Game
         this.host_state = HOST_STATES.BOARD;
+        return mapAvailable;
     }
 
     select_question() {
@@ -44,9 +45,9 @@ class Jeopardy {
             arr.splice(index, 1)
             mapAvailable.set(this.selected_cat, arr);
 
-            if (mapAvailable.get(this.selected_cat).length == 0) {
-                mapAvailable.delete(this.selected_cat);
-            }
+            // if (mapAvailable.get(this.selected_cat).length == 0) {
+            //     mapAvailable.delete(this.selected_cat);
+            // }
         });
 
         this.host_state = HOST_STATES.QUESTION;
@@ -68,7 +69,9 @@ class Jeopardy {
 
     game_done() {
         // Checks if the Jeopardy Game Has Finished
-        return this.host_state == HOST_STATES.BOARD && mapAvailable.size == 0
+        // return mapAvailable.size == 0
+        return this.map_is_empty();
+        // return this.host_state == HOST_STATES.BOARD && mapAvailable.size == 0
     }
 
     end_game() {
@@ -128,6 +131,17 @@ class Jeopardy {
         }
 
         return data;
+    }
+
+    // Other
+    map_is_empty() {
+        for (let [key, value] of mapAvailable) {
+            if (value.length != 0) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
 }
