@@ -1,0 +1,13 @@
+body {
+  margin: 0;
+  font-family: Arial, sans-serif; /* Consistent font throughout the app */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.App {
+  text-align: center; 
+  height: 100vh; 
+  background-color: #2D2F9F; 
+  color: white; /* Default text color set to white */
+}

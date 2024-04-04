@@ -1,0 +1,17 @@
+.loading-screen {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background-color: #2D2F9F; 
+    color: white;
+    font-family: 'Arial', sans-serif;
+  }
+  
+  .title {
+    font-size: 4em;
+    margin-bottom: 20px;
+    color: white;
+  }
+  
