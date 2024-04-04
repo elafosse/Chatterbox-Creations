@@ -71,7 +71,8 @@ class Jeopardy {
 
     game_done() {
         // Checks if the Jeopardy Game Has Finished
-        return this.host_state == HOST_STATES.BOARD && mapAvailable.size == 0
+        return mapAvailable.size == 0
+        // return this.host_state == HOST_STATES.BOARD && mapAvailable.size == 0
     }
 
     end_game() {
