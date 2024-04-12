@@ -170,6 +170,11 @@ class Server {
         return ACTIVE_GAME_SESSIONS.get(PLAYER_GAME_SESSION.get(client_id)).check_response(client_id, response);
     }
 
+    remove_player(client_id) {
+        // Removes the player from the game
+        return ACTIVE_GAME_SESSIONS.get(PLAYER_GAME_SESSION.get(client_id)).remove_player_from_game(client_id);
+    }
+
     get_leaderboard(id) {
         // Returns the Current Leaderboard of the Game Session
         return HOST_SESSIONS.get(id).get_session_leaderboard();
@@ -180,6 +185,11 @@ class Server {
         let gs = ACTIVE_GAME_SESSIONS.get(PLAYER_GAME_SESSION.get(id)) || HOST_SESSIONS.get(id);
         return gs.started && gs.game_session_done();
         // return gs.game_session_done();
+    }
+
+    restart_game_session(id) {
+        // Restarts the Game Session
+        return ACTIVE_GAME_SESSIONS.get(PLAYER_GAME_SESSION.get(id)).restart(id);
     }
 
     end_session(id) {

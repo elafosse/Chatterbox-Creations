@@ -58,7 +58,7 @@ class Jeopardy {
         this.host_state = HOST_STATES.ANSWER;
         this.player_response = player_ans;
         // TODO: Make Answer Check Better
-        if (player_ans != this.current_question_answer) {
+        if (player_ans.toLowerCase() != this.current_question_answer.toLowerCase()) {
             return 0;
         } else {
             let points = this.selected_amt
@@ -69,9 +69,7 @@ class Jeopardy {
 
     game_done() {
         // Checks if the Jeopardy Game Has Finished
-        // return mapAvailable.size == 0
-        return this.map_is_empty();
-        // return this.host_state == HOST_STATES.BOARD && mapAvailable.size == 0
+        return (this.host_state == HOST_STATES.BOARD || this.host_state == HOST_STATES.ANSWER) && this.map_is_empty();
     }
 
     end_game() {

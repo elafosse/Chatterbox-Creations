@@ -32,6 +32,10 @@ function page_to_display(params) {
     return 'answer';
   } else if (Object.keys(params).includes('RESPONSE')) {
     return 'loading';
+  } else if (Object.keys(params).includes('NEW_GAME')) {
+    return 'new_game';
+  } else if (Object.keys(params).includes('EXIT')) {
+    return 'exit';
   }
 }
 
@@ -168,6 +172,14 @@ router.post('/play', (req, res) => {
         // TODO: Display Error
         res.render('pages/jeopardy/amount');
       })
+      break;
+    case 'new_game':
+      server.restart_game_session(current_client.session_id);
+      res.render('pages/loading');
+      break;
+    case 'exit':
+      server.remove_player(current_client.session_id);
+      res.render('pages/player_join');
       break;
     default:
       // TODO: Render Error Page?
