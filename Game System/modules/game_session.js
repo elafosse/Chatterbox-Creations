@@ -171,7 +171,7 @@ class Game_Session {
         let curr_player = this.get_player(id);
 
         // Makes avatar avaliable again
-        this.avaliable_avatar_ids.add(curr_player.avatar);
+        this.avaliable_avatar_ids.add(curr_player.avatar_id);
 
         this.player_list.delete(curr_player);
     }

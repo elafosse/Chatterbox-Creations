@@ -176,9 +176,11 @@ router.post('/play', (req, res) => {
     case 'new_game':
       server.restart_game_session(current_client.session_id);
       res.render('pages/loading');
+      break;
     case 'exit':
       server.remove_player(current_client.session_id);
       res.render('pages/player_join');
+      break;
     default:
       // TODO: Render Error Page?
       break;
