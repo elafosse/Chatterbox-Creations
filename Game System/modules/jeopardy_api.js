@@ -1,4 +1,14 @@
-HOST_STATES = {
+const jepQuestions = require("./jeopardy");
+
+const mapAvailable = new Map();
+mapAvailable.set("MUSIC", ["$100.00", "$200.00","$300.00", "$400.00", "$500.00"]);
+mapAvailable.set("ANIMALS", ["$100.00", "$200.00","$300.00", "$400.00", "$500.00"]);
+mapAvailable.set("SPORTS", ["$100.00", "$200.00","$300.00", "$400.00", "$500.00"]);
+mapAvailable.set("HISTORY", ["$100.00", "$200.00","$300.00", "$400.00", "$500.00"]);
+mapAvailable.set("MOVIES", ["$100.00", "$200.00","$300.00", "$400.00", "$500.00"]);
+
+
+const HOST_STATES = {
     NOT_STARTED: -1,
     BOARD: 0,
     QUESTION: 1,
@@ -12,20 +22,34 @@ class Jeopardy {
     current_question_answer;
     selected_cat;
     selected_amt;
+    questionMap;
 
     // Game Progression Functions
 
     run_game() {
         // Starts Running The Jeopardy Game
-        // TODO: Get Questions from CSV
         this.host_state = HOST_STATES.BOARD;
+        return mapAvailable;
     }
 
     select_question() {
         // Selects The Question Based on Player Chosen Values
-        // TODO: Use Jeopardy Data. Example Below
-        this.current_question = 'How many stars are on the American Flag?';
-        this.current_question_answer = '50';
+        jepQuestions.getDataTest(this.selected_cat, this.selected_amt).then((value)=>{
+            // Sets Current Question & Its Answer
+            this.current_question = value.Question;
+            this.current_question_answer = value.Answer;
+
+            // Removes From Map Board
+            let arr = mapAvailable.get(this.selected_cat);
+            const index = arr.indexOf(this.selected_amt);
+            arr.splice(index, 1)
+            mapAvailable.set(this.selected_cat, arr);
+
+            // if (mapAvailable.get(this.selected_cat).length == 0) {
+            //     mapAvailable.delete(this.selected_cat);
+            // }
+        });
+
         this.host_state = HOST_STATES.QUESTION;
     }
 
@@ -33,11 +57,24 @@ class Jeopardy {
         // Checks Answer To See if it is Correct
         this.host_state = HOST_STATES.ANSWER;
         this.player_response = player_ans;
-        if (player_ans != this.current_question_answer) {
+        // TODO: Make Answer Check Better
+        if (player_ans.toLowerCase() != this.current_question_answer.toLowerCase()) {
             return 0;
         } else {
-            return this.selected_amt;
+            let points = this.selected_amt
+            return Number(points.replace("$",""))
+            // return this.selected_amt;
         }
+    }
+
+    game_done() {
+        // Checks if the Jeopardy Game Has Finished
+        return (this.host_state == HOST_STATES.BOARD || this.host_state == HOST_STATES.ANSWER) && this.map_is_empty();
+    }
+
+    end_game() {
+        // TODO: Complete
+
     }
 
     // Setters
@@ -45,34 +82,33 @@ class Jeopardy {
     set_curr_category(category) {
         // Sets the Category Chosen By The Player
         // TODO: Check if Category Can be chosen
-        this.selected_cat = category;
+        this.selected_cat = category.toUpperCase();
     }
     
     set_curr_amount(amount) {
         // Sets The Amount Chosen By The Player
         // TODO: Check if amount Can be chosen
-        this.selected_amt = amount;
+        this.selected_amt = "$" + amount + ".00";
         this.select_question();
     }
 
     set_host_screen_to_board() {
         // Sets The Host Screen To The Jeopardy Board
-        // TODO: Fix
         this.player_response = '';
-        // this.host_state = HOST_STATES.BOARD;
+        this.host_state = HOST_STATES.BOARD;
     }
 
     // Host Screen Functions
 
     current_host_screen() {
         // Returns Current Data To Display on Host Screen
-        // TODO: Add Leaderboard state? Return Current Board
+        // TODO: Return Current Board
         let data = {};
         switch (this.host_state) {
             case HOST_STATES.BOARD:
                 data = {
                     Page: 'board',
-                    Data: ''
+                    Data: mapAvailable
                 };
                 break;
             case HOST_STATES.QUESTION:
@@ -93,6 +129,17 @@ class Jeopardy {
         }
 
         return data;
+    }
+
+    // Other
+    map_is_empty() {
+        for (let [key, value] of mapAvailable) {
+            if (value.length != 0) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
 }

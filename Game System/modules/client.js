@@ -54,7 +54,6 @@ class Client {
                     break;
                 default:
                     reject();
-                    console.log(404);
             }
         });
     }

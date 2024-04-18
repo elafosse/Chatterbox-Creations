@@ -21,13 +21,7 @@ function send_success(ws, status) {
     })));
 }
 
-function name_appropriate(name) {
-    // TODO: Check if name is appropriate somehow
-    return true;
-}
-
 exports.random_num = random_num;
 exports.random_roomcode = random_roomcode;
 exports.send_error = send_error;
 exports.send_success = send_success;
-exports.name_appropriate = name_appropriate;

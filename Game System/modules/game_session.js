@@ -18,6 +18,7 @@ class Game_Session {
     game_api;
     room_code;
     started = false;
+    restarting = false;
     done = false;
     current_player_index = 0;
     player_list = new Set();
@@ -80,6 +81,7 @@ class Game_Session {
 
     set_player_avatar(id, avatar_id) {
         // Sets the Avatar of the Player
+        avatar_id = avatar_id.toLowerCase();
         if (!AVATAR_IDS.has(avatar_id)) {
             return 400;
         }
@@ -109,9 +111,24 @@ class Game_Session {
     start_game() {
         // Starts the Game
         this.started = true;
+        this.restarting = false;
         this.player_order = this.get_random_player_order();
-        this.game_api.run_game();
-        return this.started;
+        return this.game_api.run_game();
+        // return this.started;
+    }
+
+    restart(id) {
+        // Setups Game Session for Another Round
+        if (!this.restarting) {
+            this.restarting = true;
+            this.started = false;
+            this.done = false;
+            this.current_player_index = 0;
+            this.set_game_api();
+        }
+
+        let curr_player = this.get_player(id);
+        curr_player.points = 0;
     }
 
     get_random_player_order() {
@@ -137,11 +154,31 @@ class Game_Session {
     check_response(id, answer) {
         // Checks Player Response
         let points = this.game_api.check_answer(answer);
-        this.next_turn();
-        // TODO: Reward Points to player
         let currentPlayer = this.get_current_turn_player();
         let updatedScore = currentPlayer.points + points;
         currentPlayer.points = updatedScore;
+
+        if (this.game_api.game_done()) {
+            this.game_api.end_game();
+        } else {
+            this.next_turn();
+        }
+    }
+
+    remove_player_from_game(id) {
+        // Removes Player From Game Session
+        // TODO: Finish
+        let curr_player = this.get_player(id);
+
+        // Makes avatar avaliable again
+        this.avaliable_avatar_ids.add(curr_player.avatar_id);
+
+        this.player_list.delete(curr_player);
+    }
+
+    game_session_done() {
+        // Checks if the game has finished
+        return this.game_api.game_done()
     }
 
     next_turn() {
@@ -152,13 +189,10 @@ class Game_Session {
         }
 
         if (this.game == Game_Types.Jeopardy) {
-            this.game_api.set_host_screen_to_board();
+            setTimeout(() => {
+                this.game_api.set_host_screen_to_board();
+            }, 6000);
         }
-    }
-
-    end_session() {
-        // TODO: REMOVE ROOM_CODE
-        // TODO: Disconnect Clients
     }
 
     // Host Functions
@@ -166,6 +200,22 @@ class Game_Session {
     host_screen_change() {
         // Returns What Host Screen Must Be Displaying Currently
         return this.game_api.current_host_screen();
+    }
+
+    get_session_leaderboard() {
+        let leaderboard = Array.from(this.player_list);
+        return leaderboard.sort(this.sort_players);
+    }
+
+    // Other Functions
+    sort_players(a, b) {
+        if (a.points > b.points) {
+            return -1;
+        } else if (a.points == b.points) {
+            return 0;
+        } else {
+            return 1;
+        }
     }
 }
 

@@ -1,37 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <%- include('../../partials/head'); %>
+        <%- include('../partials/head'); %>
     </head>
     <body class="container">
         <main>
             <div class="container">
-                <h4 class="text-primary my-4">Top Players</h4>
+                <h3 class="text-primary my-4">Leaderboard</h3>
                 <div class="row gy-3 pb-3">
-                    <div class="col-12 col-md-6 col-lg-4 d-flex align-items-center">
-                        <!-- <img width="56" height="56" src="images/players/player-1.png" alt=""> -->
-                        <h4 class="ms-3">John Smith</h4>
-                    </div>
-                    <div class="col-12 col-md-6 col-lg-4 d-flex align-items-center">
-                        <!-- <img width="56" height="56" src="images/players/player-2.png" alt=""> -->
-                        <h4 class="ms-3">Pro Russel</h4>
-                    </div>
-                    <div class="col-12 col-md-6 col-lg-4 d-flex align-items-center">
-                        <!-- <img width="56" height="56" src="images/players/player-3.png" alt=""> -->
-                        <h4 class="ms-3">Abu Sufian</h4>
-                    </div>
-                    <div class="col-12 col-md-6 col-lg-4 d-flex align-items-center">
-                        <!-- <img width="56" height="56" src="images/players/player-4.png" alt=""> -->
-                        <h4 class="ms-3">Shajedul Karim</h4>
-                    </div>
-                    <div class="col-12 col-md-6 col-lg-4 d-flex align-items-center">
-                        <!-- <img width="56" height="56" src="images/players/player-5.png" alt=""> -->
-                        <h4 class="ms-3">Maruf Ahmed</h4>
-                    </div>
-                    <div class="col-12 col-md-6 col-lg-4 d-flex align-items-center">
-                        <!-- <img width="56" height="56" src="images/players/player-6.png" alt=""> -->
-                        <h4 class="ms-3">Mujahid</h4>
-                    </div>
+                    <% for(var i=0; i<leaderboard.length; i++) {%>
+                        <div class="col-12 col-md-6 col-lg-4 d-flex align-items-center">
+                            <h4 class="ms-3"><%= leaderboard[i].name %>: <%= leaderboard[i].points %></h4>
+                        </div>
+                    <% } %>
+
+                    <!-- <div class="col-12 col-md-6 col-lg-4 d-flex align-items-center">
+                        <img width="56" height="56" src="images/players/player-5.png" alt="">
+                        <h4 class="ms-3">Jacob Behr</h4>
+                    </div> -->
                 </div>
             </div>
             <div class="container" hidden>
@@ -46,7 +32,7 @@
         function pressButton() {
           document.getElementById("form_button").click();
         }
-    
-        const myTimeout = setTimeout(pressButton, 5000);
+
+        const myTimeout = setTimeout(pressButton, 3000);
       </script>
 </html>
