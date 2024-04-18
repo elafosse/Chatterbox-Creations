@@ -18,10 +18,31 @@
           <button name="START_GAME" value="<%= (path) ? path : 'xxxxx' %>" class="btn btn-primary float-right">Start Game</button>
         </form>
       </div>
+      <div class="container">
+        <% if (players) { %>
+          <% players.forEach(function(player) { %>
+            <tr>
+              <td><%= player.name %></td>
+            </tr>
+          <% }); %>
+        <% } %>
+      </div>
+      <div class="container" hidden>
+        <form action="" class="form" method="post">
+          <button name="CHOSEN_GAME" id="form_button" value="jeopardy" class="btn btn-primary">Start Game</button>
+        </form>
+      </div>
     </main>
 
     <footer>
       <%- include('../partials/footer'); %>
     </footer>
   </body>
+  <script>
+    function pressButton() {
+      document.getElementById("form_button").click();
+    }
+
+    const myTimeout = setTimeout(pressButton, 1000);
+  </script>
 </html>

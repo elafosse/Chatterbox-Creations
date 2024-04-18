@@ -160,6 +160,16 @@ class Server {
         return HOST_SESSIONS.get(id).start_game();
     }
 
+    host_game_exists(client_id) {
+        // Checks if Game Exists
+        return HOST_SESSIONS.get(client_id);
+    }
+
+    get_session_code(client_id) {
+        // Returns the Room Code of the Game Session
+        return HOST_SESSIONS.get(client_id).room_code;
+    }
+
     check_if_client_game_started(client_id) {
         // Checks if Game Has Started
         return ACTIVE_GAME_SESSIONS.get(PLAYER_GAME_SESSION.get(client_id)).started;
@@ -168,6 +178,11 @@ class Server {
     check_response(client_id, response) {
         // Checks if Response Is Correct
         return ACTIVE_GAME_SESSIONS.get(PLAYER_GAME_SESSION.get(client_id)).check_response(client_id, response);
+    }
+
+    get_players(client_id) {
+        // Returns the Players currently in the Game Session
+        return HOST_SESSIONS.get(client_id).player_list; 
     }
 
     remove_player(client_id) {

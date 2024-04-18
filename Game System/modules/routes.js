@@ -62,9 +62,15 @@ router.post('/', (req, res) => {
             // TODO: Show Error Screen?
           break;
       }
+
+      if (server.host_game_exists(req.session.id)) {
+        res.render('pages/host_join', { game: game, room_code: server.get_session_code(req.session.id), path: path, players: server.get_players(req.session.id) });
+        break;
+      }
+
       server.init_game_session(type, req.session.id).then((code) => {
-        res.render('pages/host_join', { game: game, room_code: code, path: path });
-      })
+        res.render('pages/host_join', { game: game, room_code: code, path: path, players: undefined });
+      });
       break;
     case 'start_game':
       // Jeopardy Board Page
