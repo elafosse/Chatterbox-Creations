@@ -83,7 +83,7 @@ class Game_Session {
         // Sets the Avatar of the Player
         avatar_id = avatar_id.toLowerCase();
         if (!AVATAR_IDS.has(avatar_id)) {
-            return 400;
+            return 404;
         }
         let player = this.get_player(id);
         if (this.avaliable_avatar_ids.has(avatar_id)) {

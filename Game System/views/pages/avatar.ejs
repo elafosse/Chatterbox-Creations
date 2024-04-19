@@ -5,6 +5,9 @@
   </head>
   <body class="container">
     <main>
+      <div class="container">
+        <%- include('../partials/err'); %>
+      </div>
         <h3>Pick your avatar</h3>
         <form action="/play" class="form" method="post">
           <input name="AVATAR_ID" type="text">

@@ -50,10 +50,10 @@ class Client {
 
             switch (msg.type) {
                 case Types.Success:
-                    resolve(msg['STATUS']);
+                    resolve(msg.data['STATUS']);
                     break;
                 default:
-                    reject();
+                    reject(msg.data['STATUS']);
             }
         });
     }

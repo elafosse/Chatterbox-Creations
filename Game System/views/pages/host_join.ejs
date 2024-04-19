@@ -23,7 +23,7 @@
           <% players.forEach(function(player) { %>
             <tr>
               <td><%= player.name %></td>
-              <td><img src="<%= player.avatar_id %>.png" class="card-img-top" alt="..."></td>
+              <td><img src="<%= player.avatar_id %>.png" class="img-fluid" alt=""></td>
             </tr>
           <% }); %>
         <% } %>
@@ -44,6 +44,6 @@
       document.getElementById("form_button").click();
     }
 
-    const myTimeout = setTimeout(pressButton, 1000);
+    const myTimeout = setTimeout(pressButton, 3000);
   </script>
 </html>

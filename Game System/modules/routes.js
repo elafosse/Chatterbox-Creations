@@ -110,21 +110,31 @@ router.get('/leaderboard', (req, res) => {
 
 // Player Join Page
 router.get('/play', (req, res) => {
-  res.render('pages/player_join');
+  res.render('pages/player_join', { error: undefined });
 });
 
 router.post('/play', (req, res) => {
   let current_client = server.get_client(req.session.id);
+  let error;
 
   switch (page_to_display(req.body)) {
     case 'avatar':
       // Avatar Selection Page
       current_client.create_connection_with_server(req.body);
       current_client.recieve_msg().then(() => {
-        res.render('pages/avatar');
+        res.render('pages/avatar', { error });
       }).catch((status) => {
-        // TODO: Display Error
-        res.render('pages/player_join');
+        let error;
+
+        if (status == 400) {
+          error = "Name not allowed";
+        } else if (status == 404) {
+          error = "Game Session with Room Code not found";
+        } else if (status == 406) {
+          error = "No more players allowed for game session";
+        }
+
+        res.render('pages/player_join', { error });
       })
       break;
     case 'loading':
@@ -135,9 +145,16 @@ router.post('/play', (req, res) => {
           res.render('pages/loading', {
             game: Object.keys(Game_Types)[current_client.game]
           });
-        }).catch(() => {
-          // TODO: Display Error
-          res.render('pages/avatar');
+        }).catch((status) => {
+          let error;
+
+          if (status == 400) {
+            error = "Avatar Selected by another player";
+          } else if (status == 404) {
+            error = "Avatar Does Not Exist";
+          }
+  
+          res.render('pages/avatar', { error });
         })
       } else {
         // Checks Player Response
@@ -185,7 +202,7 @@ router.post('/play', (req, res) => {
       break;
     case 'exit':
       server.remove_player(current_client.session_id);
-      res.render('pages/player_join');
+      res.render('pages/player_join', { error });
       break;
     default:
       // TODO: Render Error Page?
