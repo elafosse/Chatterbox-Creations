@@ -13,6 +13,8 @@ function host_page_to_display(params) {
   // Select Page to Display on Host Screen Based on Parameters Sent
   if (Object.keys(params).includes('CHOSEN_GAME')) {
     return 'host_join';
+  } else if (Object.keys(params).includes('END_GAME')) {
+    return 'end_game';
   } else if (Object.keys(params).includes('START_GAME')) {
     return 'start_game';
   }
@@ -82,6 +84,10 @@ router.post('/', (req, res) => {
           res.render('pages' + req.body.START_GAME, { data: map });
         }
       });
+      break;
+    case 'end_game':
+      server.end_session(req.session.id);
+      res.render('pages/index');
       break;
   }
 });

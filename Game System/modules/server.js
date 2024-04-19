@@ -209,8 +209,13 @@ class Server {
 
     end_session(id) {
         // TODO: Disconnect Clients
-        let gs = HOST_SESSIONS.get(id)
-        ACTIVE_ROOMCODES.delete(gs.room_code)
+        let gs = HOST_SESSIONS.get(id);
+        let code = gs.room_code;
+        gs.end();
+
+        ACTIVE_GAME_SESSIONS.delete(code);
+        ACTIVE_ROOMCODES.delete(code);
+        HOST_SESSIONS.delete(id);
     }
 
     // Client Functions

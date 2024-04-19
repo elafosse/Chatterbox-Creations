@@ -131,6 +131,19 @@ class Game_Session {
         curr_player.points = 0;
     }
 
+    end() {
+        // Ends Game Session
+        this.game_api = undefined;
+        this.room_code = undefined;
+        this.started = undefined;
+        this.restarting = undefined;
+        this.done = undefined;
+        this.current_player_index = undefined;
+
+        this.player_list = new Set();
+        this.avaliable_avatar_ids = new Set(AVATAR_IDS);
+    }
+
     get_random_player_order() {
         // Determines A Random Order for Players
         let array = Array.from(this.player_list);
