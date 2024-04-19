@@ -14,8 +14,6 @@ class Client {
 
     async create_connection_with_server(request) {
         // Creates Connection To Server
-    
-        // TODO: Change When Hosting?
         let ws = new WebSocket("ws://127.0.0.1:3001");
 
         ws.on('open', (event) => {
