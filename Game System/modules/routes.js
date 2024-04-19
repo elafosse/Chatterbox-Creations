@@ -106,7 +106,6 @@ router.post('/jeopardy', (req, res) => {
 
 // Leaderboard Page
 router.get('/leaderboard', (req, res) => {
-  // TODO: Display Leaderboard on Screen
   let leaderboard = server.get_leaderboard(req.session.id);
   res.render('pages/leaderboard', { leaderboard: leaderboard });
 });
@@ -188,7 +187,6 @@ router.post('/play', (req, res) => {
       current_client.recieve_msg().then(() => {
         res.render('pages/jeopardy/amount', { amounts: server.get_jy_amounts(current_client.session_id)});
       }).catch(() => {
-        // TODO: Display Error
         res.render('pages/jeopardy/categories');
       })
       break;
@@ -198,7 +196,6 @@ router.post('/play', (req, res) => {
       current_client.recieve_msg().then(() => {
         res.render('pages/jeopardy/player_response');
       }).catch(() => {
-        // TODO: Display Error
         res.render('pages/jeopardy/amount');
       })
       break;
@@ -208,6 +205,7 @@ router.post('/play', (req, res) => {
       break;
     case 'exit':
       server.remove_player(current_client.session_id);
+      current_client.ws.close();
       res.render('pages/player_join', { error });
       break;
     default:

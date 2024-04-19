@@ -93,7 +93,6 @@ class Jeopardy {
     
     set_curr_amount(amount) {
         // Sets The Amount Chosen By The Player
-        // TODO: Check if amount Can be chosen
         this.selected_amt = "$" + amount + ".00";
         if (mapAvailable.get(this.selected_cat).includes(this.selected_amt)) {
             this.select_question();
