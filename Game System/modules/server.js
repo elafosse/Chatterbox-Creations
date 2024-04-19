@@ -115,6 +115,16 @@ class Server {
         return 200;
     }
 
+    get_jy_categories(client_id) {
+        // Returns Avaliable Jeopardy Categories
+        return ACTIVE_GAME_SESSIONS.get(PLAYER_GAME_SESSION.get(client_id)).game_api.avaliable_categories();
+    }
+    
+    get_jy_amounts(client_id) {
+        // Returns Avaliable Jeopardy Amounts
+        return ACTIVE_GAME_SESSIONS.get(PLAYER_GAME_SESSION.get(client_id)).game_api.avaliable_amounts_in_category();
+    }
+
     // Other Functions
 
     create_string_checker() {

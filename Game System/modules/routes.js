@@ -175,7 +175,7 @@ router.post('/play', (req, res) => {
       if (server.check_if_game_session_done(current_client.session_id)) {
         res.render('pages/player_endgame');
       } else if (server.check_if_client_game_started(current_client.session_id) && server.check_if_client_turn(current_client.session_id) == 200) {
-        res.render('pages/jeopardy/categories');
+        res.render('pages/jeopardy/categories', { categories: server.get_jy_categories(current_client.session_id)});
       } else {
         res.render('pages/loading', {
           game: Object.keys(Game_Types)[current_client.game]
@@ -186,7 +186,7 @@ router.post('/play', (req, res) => {
       // Amount Page
       current_client.send_category_selection(req.body);
       current_client.recieve_msg().then(() => {
-        res.render('pages/jeopardy/amount');
+        res.render('pages/jeopardy/amount', { amounts: server.get_jy_amounts(current_client.session_id)});
       }).catch(() => {
         // TODO: Display Error
         res.render('pages/jeopardy/categories');

@@ -7,6 +7,10 @@
     <main>
         <h3>Choose a category</h3>
         <form action="/play" class="form" method="post">
+          <% categories.forEach(function(category) { %>
+            <button name="" class="btn btn-primary float-right"><%= category %></button>
+          <% }); %>
+
           <input name="CATEGORY" type="text">
           <button type="submit" class="btn btn-primary float-right">SUBMIT</button>
         </form>

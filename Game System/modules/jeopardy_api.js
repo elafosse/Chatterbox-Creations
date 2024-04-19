@@ -149,6 +149,30 @@ class Jeopardy {
         return true;
     }
 
+    avaliable_categories() {
+        // Returns the Categories that are avaliable
+        let arr = [];
+
+        for (let [key, value] of mapAvailable) {
+            if (value.length != 0) {
+                arr.push(key);
+            }
+        }
+
+        return arr;
+    }
+
+    avaliable_amounts_in_category() {
+        // Returns the Amounts that are avaliable for the chosen category
+        let arr = [];
+
+        mapAvailable.get(this.selected_cat).forEach(function(amt) {
+            arr.push(amt);
+        });
+
+        return arr;
+    }
+
 }
 
 module.exports = Jeopardy;

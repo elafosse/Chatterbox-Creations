@@ -7,6 +7,9 @@
     <main>
         <h3>Choose an amount</h3>
         <form action="/play" class="form" method="post">
+          <% amounts.forEach(function(amt) { %>
+            <button name="" class="btn btn-primary float-right"><%= amt %></button>
+          <% }); %>
           <input name="AMOUNT" type="text">
           <button type="submit" class="btn btn-primary float-right">SUBMIT</button>
         </form>
