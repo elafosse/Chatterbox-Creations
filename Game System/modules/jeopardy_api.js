@@ -139,7 +139,7 @@ class Jeopardy {
 
     // Other
     map_is_empty() {
-        for (let [key, value] of mapAvailable) {
+        for (let value of mapAvailable.values()) {
             if (value.length != 0) {
                 return false;
             }

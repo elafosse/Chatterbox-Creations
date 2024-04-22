@@ -46,12 +46,10 @@ class Client {
         this.ws.on('message', (message) => {
             let msg = (new Message()).import_data(JSON.parse(message));
 
-            switch (msg.type) {
-                case Types.Success:
-                    resolve(msg.data['STATUS']);
-                    break;
-                default:
-                    reject(msg.data['STATUS']);
+            if (msg.type == Types.Success) {
+                resolve(msg.data['STATUS']);
+            } else {
+                reject(msg.data['STATUS']);
             }
         });
     }
