@@ -80,13 +80,8 @@
           <div class="priceContainer">
             <% amounts.forEach(amt => { %>
               <label class="priceButton" id="btn-<%= amt %>" onclick="handlePriceSelect('<%= amt %>')">
-                <%= amt %>
-                <input class="priceText" type="radio" name="AMOUNT" value="<%= amt %>">
+                <input type="radio" name="AMOUNT" value="<%= amt %>" style="display: none;"><p class="priceText"><%= amt %></p>
               </label>
-
-              <!-- <div class="priceButton" id="btn-<%= amt %>" onclick="handlePriceSelect('<%= amt %>')">
-                <div class="priceText"><%= amt %></div>
-              </div> -->
             <% }) %>
           </div>
 
