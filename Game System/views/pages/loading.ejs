@@ -1,25 +1,68 @@
 <!DOCTYPE html>
-<html lang="en">
-  <head>
-    <%- include('../partials/head'); %>
-  </head>
-  <body class="container">
-    <main>
-        <h1><%= (game) ? game : 'xxxxx' %></h1>
-        <h3>Please Wait for your turn</h3>
-        <div class="container" hidden>
-          <form action="/play" class="form" method="post">
-            <button name="TURN_CHECK" id="form_button" value="true" class="btn btn-primary float-right">Start Game</button>
-          </form>
+<html lang="en" style="height: 100%;">
+<head>
+    <% include('../partials/head'); %>
+    <style>
+        body, html {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif; /* Match the font family */
+            background-color: #fff; /* Match the background color */
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+        }
+
+        h1 {
+            font-size: 24px; /* Match the avatar heading size */
+            font-weight: bold;
+            color: #e96f1d; /* Match the avatar heading color */
+            margin-bottom: 24px; /* Match the spacing */
+        }
+
+        h3 {
+            font-size: 18px;
+            font-weight: lighter; /* Match the font weight from avatar */
+            color: #0C1562; /* Match the color for consistency */
+            text-align: center;
+        }
+
+        footer {
+            width: 100%;
+            text-align: center;
+            color: #cccccc; /* Match the footer color */
+            margin-top: auto; /* Ensure the footer stays at the bottom */
+            padding: 10px 0; /* Add some padding for spacing */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1><%= (game && game === 'Jeopardy') ? 'Jeopardy!' : (game ? game : 'xxxxx') %></h1>
+        <h3>Please wait for your turn</h3>
+        <div hidden>
+            <form action="/play" method="post">
+                <button name="TURN_CHECK" id="form_button" value="true" class="btn btn-primary">Start Game</button>
+            </form>
         </div>
-    </main>
-  </body>
+    </div>
 
-  <script>
-    function pressButton() {
-      document.getElementById("form_button").click();
-    }
+    <footer>
+      <%- include('../partials/footer'); %>
+    </footer>
 
-    const myTimeout = setTimeout(pressButton, 1000);
-  </script>
+    <script>
+        function pressButton() {
+            document.getElementById("form_button").click();
+        }
+
+        setTimeout(pressButton, 1000);
+    </script>
+</body>
 </html>
