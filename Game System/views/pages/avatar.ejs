@@ -1,113 +1,113 @@
 <!DOCTYPE html>
 <html lang="en" style="height: 100%;">
-<head>
-  <%- include('../partials/head'); %>
-  <style>
-    html, body {
-      height: 100%;
-      margin: 0;
-      padding: 0;
-    }
-    body {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      background-color: #fff;
-    }
-    .container {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      flex-grow: 1;
-      width: 100%;
-      max-width: 320px;
-    }
-    h3 {
-      font-size: 24px;
-      font-weight: bold;
-      color: #0C1562;
-      margin-bottom: 24px;
-    }
-    .avatar-container {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      width: 100%;
-    }
-    .avatar {
-      width: 60px; /* Smaller to fit more in a row */
-      height: 60px;
-      background-color: #cccccc;
-      margin: 5px; /* Smaller margin to conserve space */
-      cursor: pointer;
-      border: 2px solid transparent; /* Adjusted border thickness */
-    }
-    .selected-avatar {
-      border-color: #0C1562;
-      border-width: 2px;
-      border-style: solid;
-    }
-    .ready-button {
-      background-color: #0C1562;
-      border-radius: 25px;
-      width: 80%;
-      padding: 15px;
-      color: #fff;
-      font-size: 18px;
-      font-weight: bold;
-      text-align: center;
-      margin-top: 20px;
-      cursor: pointer;
-      text-decoration: none;
-      display: block; /* Make the button expand */
-      margin: 20px auto; /* Center the button */
-    }
-    footer {
-      text-align: center;
-      width: 100%;
-      margin-top: auto; /* Pushes the footer to the bottom */
-    }
-  </style>
-</head>
-<body>
-  <div class="container">
-      <div class="container">
-        <%- include('../partials/err'); %>
-      </div>
-    <h3>Pick your avatar</h3>
-    <form action="/play" method="post" class="form-group">
-      <div class="avatar-container">
-        <% var avatars = ['elephant', 'frog', 'duck', 'cow', 'chicken', 'penguin', 'dog', 'panda']; %>
-        <% avatars.forEach(function(avatar, index) { %>
-          <label class="avatar" onclick="selectAvatar('<%= avatar %>')" style="background-image: url('<%= avatar %>.png');">
-            <input type="radio" name="AVATAR_ID" value="<%= avatar %>" style="display: none;">
-          </label>
-          <% if (index === 2 || index === 5) { %> <div style="flex-basis: 100%; height: 0;"></div> <% } %>
-        <% }); %>
-      </div>
-      <button type="submit" class="ready-button">READY</button>
-    </form>
-  </div>
-  <footer>
-    <%- include('../partials/footer'); %>
-  </footer>
+  <head>
+    <%- include('../partials/head'); %>
+    <style>
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+      body {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        background-color: #fff;
+      }
+      .container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        flex-grow: 1;
+        width: 100%;
+        max-width: 320px;
+      }
+      h3 {
+        font-size: 24px;
+        font-weight: bold;
+        color: #0C1562;
+        margin-bottom: 24px;
+      }
+      .avatar-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        width: 100%;
+      }
+      .avatar {
+        width: 60px; /* Smaller to fit more in a row */
+        height: 60px;
+        background-color: #cccccc;
+        margin: 5px; /* Smaller margin to conserve space */
+        cursor: pointer;
+        border: 2px solid transparent; /* Adjusted border thickness */
+      }
+      .selected-avatar {
+        border-color: #0C1562;
+        border-width: 2px;
+        border-style: solid;
+      }
+      .ready-button {
+        background-color: #0C1562;
+        border-radius: 25px;
+        width: 80%;
+        padding: 15px;
+        color: #fff;
+        font-size: 18px;
+        font-weight: bold;
+        text-align: center;
+        margin-top: 20px;
+        cursor: pointer;
+        text-decoration: none;
+        display: block; /* Make the button expand */
+        margin: 20px auto; /* Center the button */
+      }
+      footer {
+        text-align: center;
+        width: 100%;
+        margin-top: auto; /* Pushes the footer to the bottom */
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+        <div class="container">
+          <%- include('../partials/err'); %>
+        </div>
+      <h3>Pick your avatar</h3>
+      <form action="/play" method="post" class="form-group">
+        <div class="avatar-container">
+          <% var avatars = ['elephant', 'frog', 'duck', 'cow', 'chicken', 'penguin', 'dog', 'panda']; %>
+          <% avatars.forEach(function(avatar, index) { %>
+            <label class="avatar" onclick="selectAvatar('<%= avatar %>')" style="background-image: url('<%= avatar %>.png');">
+              <input type="radio" name="AVATAR_ID" value="<%= avatar %>" style="display: none;">
+            </label>
+            <% if (index === 2 || index === 5) { %> <div style="flex-basis: 100%; height: 0;"></div> <% } %>
+          <% }); %>
+        </div>
+        <button type="submit" class="ready-button">READY</button>
+      </form>
+    </div>
+    <footer>
+      <%- include('../partials/footer'); %>
+    </footer>
 
-  <script>
-    function selectAvatar(avatarId) {
-      var avatars = document.querySelectorAll('.avatar');
-      avatars.forEach(avatar => {
-        // If the avatar is the one that was clicked, add the 'selected-avatar' class
-        if(avatar.children[0].value === avatarId) {
-          avatar.classList.add('selected-avatar');
-        } else {
-          // Otherwise, remove it to ensure only the selected avatar has the border
-          avatar.classList.remove('selected-avatar');
-        }
-      });
-    }
+    <script>
+      function selectAvatar(avatarId) {
+        var avatars = document.querySelectorAll('.avatar');
+        avatars.forEach(avatar => {
+          // If the avatar is the one that was clicked, add the 'selected-avatar' class
+          if(avatar.children[0].value === avatarId) {
+            avatar.classList.add('selected-avatar');
+          } else {
+            // Otherwise, remove it to ensure only the selected avatar has the border
+            avatar.classList.remove('selected-avatar');
+          }
+        });
+      }
 
-  </script>
-</body>
+    </script>
+  </body>
 </html>
