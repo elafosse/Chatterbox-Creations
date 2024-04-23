@@ -60,14 +60,14 @@ class Jeopardy {
 
         // TODO: Fix 
         this.selected_cat = undefined;
-        this.selected_amt = undefined;
         this.current_question = undefined;
-
+        
         // TODO: Make Answer Check Better
         if (player_ans.toLowerCase() != this.current_question_answer.toLowerCase()) {
             return 0;
         } else {
             let points = this.selected_amt
+            this.selected_amt = undefined;
             return Number(points.replace("$",""))
         }
     }
