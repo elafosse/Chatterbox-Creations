@@ -2,14 +2,66 @@
 <html lang="en">
   <head>
     <%- include('../partials/head'); %>
+    <title>Player End Screen</title>
+    <style>
+        /* .container {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background-color: #fff;
+      } */
+      .title {
+        font-size: 30px;
+        font-weight: bold;
+        margin-bottom: 10px;
+        color: #0C1562;
+      }
+      .button {
+        background-color: #0C1562;
+        border-radius: 25px;
+        width: 80%;
+        padding: 15px;
+        align-items: center;
+        margin-top: 20px;
+        text-align: center;
+        box-shadow: 0 2px 2px 0 rgba(0,0,0,0.1);
+        cursor: pointer;
+    }
+    .button-text {
+      color: #fff;
+      font-size: 18px;
+      font-weight: bold;
+    }
+    .form-group {
+      width: 100%;
+      text-align: center;
+      justify-content: space-around;
+      align-items: center;
+    }
+    </style>
   </head>
-  <body class="container">
+  <body>
     <main>
-      <div class="container justify-content-center">
+      <div class="container">
+        <h1 class="title">Jeopardy</h1>
+        <!-- <p class="subtitle">Press the button to begin the game.</p> -->
+        <!-- <div class="startButton" onclick="handleStartGame()">
+          <span class="startButtonText">START</span>
+        </div> -->
+  
         <form action="/play" class="form" method="post">
           <div class="container form-group">
-            <button type="submit" name="NEW_GAME" class="btn btn-primary float-right" id="new">NEW GAME</button>
-            <button type="submit" name="EXIT" class="btn btn-primary float-right" id="exit">EXIT</button>
+            <!-- <button type="submit" name="NEW_GAME" class="startButton" id="new">NEW GAME</button> -->
+            <!-- <button type="submit" name="EXIT" class="startButton" id="exit">EXIT</button> -->
+            
+            <button type="submit" name="NEW_GAME" class="button" id="new">
+              <span class="button-text">NEW GAME</span>
+            </button>
+            <button type="submit" name="EXIT" class="button" id="exit">
+              <span class="button-text">EXIT</span>
+            </button>
           </div>
         </form>
       </div>
