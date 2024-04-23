@@ -115,6 +115,16 @@ class Server {
         return 200;
     }
 
+    get_jy_categories(client_id) {
+        // Returns Avaliable Jeopardy Categories
+        return ACTIVE_GAME_SESSIONS.get(PLAYER_GAME_SESSION.get(client_id)).game_api.avaliable_categories();
+    }
+    
+    get_jy_amounts(client_id) {
+        // Returns Avaliable Jeopardy Amounts
+        return ACTIVE_GAME_SESSIONS.get(PLAYER_GAME_SESSION.get(client_id)).game_api.avaliable_amounts_in_category();
+    }
+
     // Other Functions
 
     create_string_checker() {
@@ -160,6 +170,16 @@ class Server {
         return HOST_SESSIONS.get(id).start_game();
     }
 
+    host_game_exists(client_id) {
+        // Checks if Game Exists
+        return HOST_SESSIONS.get(client_id);
+    }
+
+    get_session_code(client_id) {
+        // Returns the Room Code of the Game Session
+        return HOST_SESSIONS.get(client_id).room_code;
+    }
+
     check_if_client_game_started(client_id) {
         // Checks if Game Has Started
         return ACTIVE_GAME_SESSIONS.get(PLAYER_GAME_SESSION.get(client_id)).started;
@@ -168,6 +188,11 @@ class Server {
     check_response(client_id, response) {
         // Checks if Response Is Correct
         return ACTIVE_GAME_SESSIONS.get(PLAYER_GAME_SESSION.get(client_id)).check_response(client_id, response);
+    }
+
+    get_players(client_id) {
+        // Returns the Players currently in the Game Session
+        return HOST_SESSIONS.get(client_id).player_list; 
     }
 
     remove_player(client_id) {
@@ -194,8 +219,13 @@ class Server {
 
     end_session(id) {
         // TODO: Disconnect Clients
-        let gs = HOST_SESSIONS.get(id)
-        ACTIVE_ROOMCODES.delete(gs.room_code)
+        let gs = HOST_SESSIONS.get(id);
+        let code = gs.room_code;
+        gs.end();
+
+        ACTIVE_GAME_SESSIONS.delete(code);
+        ACTIVE_ROOMCODES.delete(code);
+        HOST_SESSIONS.delete(id);
     }
 
     // Client Functions

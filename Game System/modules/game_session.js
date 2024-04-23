@@ -83,7 +83,7 @@ class Game_Session {
         // Sets the Avatar of the Player
         avatar_id = avatar_id.toLowerCase();
         if (!AVATAR_IDS.has(avatar_id)) {
-            return 400;
+            return 404;
         }
         let player = this.get_player(id);
         if (this.avaliable_avatar_ids.has(avatar_id)) {
@@ -131,6 +131,23 @@ class Game_Session {
         curr_player.points = 0;
     }
 
+    end() {
+        // Ends Game Session
+        this.game_api.end_game();
+
+        this.game = undefined;
+        this.game_api = undefined;
+        this.room_code = undefined;
+        this.started = undefined;
+        this.restarting = undefined;
+        this.done = undefined;
+        this.current_player_index = undefined;
+        this.player_order = undefined;
+
+        this.player_list = new Set();
+        this.avaliable_avatar_ids = new Set(AVATAR_IDS);
+    }
+
     get_random_player_order() {
         // Determines A Random Order for Players
         let array = Array.from(this.player_list);
@@ -167,13 +184,14 @@ class Game_Session {
 
     remove_player_from_game(id) {
         // Removes Player From Game Session
-        // TODO: Finish
         let curr_player = this.get_player(id);
 
         // Makes avatar avaliable again
         this.avaliable_avatar_ids.add(curr_player.avatar_id);
 
+        // Deletes the Player From List & Order
         this.player_list.delete(curr_player);
+        this.player_order.delete(curr_player);
     }
 
     game_session_done() {

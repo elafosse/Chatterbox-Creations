@@ -14,8 +14,6 @@ class Client {
 
     async create_connection_with_server(request) {
         // Creates Connection To Server
-    
-        // TODO: Change When Hosting?
         let ws = new WebSocket("ws://127.0.0.1:3001");
 
         ws.on('open', (event) => {
@@ -48,12 +46,10 @@ class Client {
         this.ws.on('message', (message) => {
             let msg = (new Message()).import_data(JSON.parse(message));
 
-            switch (msg.type) {
-                case Types.Success:
-                    resolve(msg['STATUS']);
-                    break;
-                default:
-                    reject();
+            if (msg.type == Types.Success) {
+                resolve(msg.data['STATUS']);
+            } else {
+                reject(msg.data['STATUS']);
             }
         });
     }

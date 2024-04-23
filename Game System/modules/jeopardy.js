@@ -193,6 +193,3 @@ async function getDataTest(Category, amount){
 }
 
 module.exports = {getDataTest};
-
-  
-

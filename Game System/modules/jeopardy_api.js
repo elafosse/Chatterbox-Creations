@@ -57,13 +57,18 @@ class Jeopardy {
         // Checks Answer To See if it is Correct
         this.host_state = HOST_STATES.ANSWER;
         this.player_response = player_ans;
+
+        // TODO: Fix 
+        this.selected_cat = undefined;
+        this.selected_amt = undefined;
+        this.current_question = undefined;
+
         // TODO: Make Answer Check Better
         if (player_ans.toLowerCase() != this.current_question_answer.toLowerCase()) {
             return 0;
         } else {
             let points = this.selected_amt
             return Number(points.replace("$",""))
-            // return this.selected_amt;
         }
     }
 
@@ -81,15 +86,17 @@ class Jeopardy {
 
     set_curr_category(category) {
         // Sets the Category Chosen By The Player
-        // TODO: Check if Category Can be chosen
-        this.selected_cat = category.toUpperCase();
+        if (mapAvailable.get(category.toUpperCase()).length != 0) {
+            this.selected_cat = category.toUpperCase();
+        }
     }
     
     set_curr_amount(amount) {
         // Sets The Amount Chosen By The Player
-        // TODO: Check if amount Can be chosen
         this.selected_amt = "$" + amount + ".00";
-        this.select_question();
+        if (mapAvailable.get(this.selected_cat).includes(this.selected_amt)) {
+            this.select_question();
+        }
     }
 
     set_host_screen_to_board() {
@@ -102,7 +109,6 @@ class Jeopardy {
 
     current_host_screen() {
         // Returns Current Data To Display on Host Screen
-        // TODO: Return Current Board
         let data = {};
         switch (this.host_state) {
             case HOST_STATES.BOARD:
@@ -133,13 +139,37 @@ class Jeopardy {
 
     // Other
     map_is_empty() {
-        for (let [key, value] of mapAvailable) {
+        for (let value of mapAvailable.values()) {
             if (value.length != 0) {
                 return false;
             }
         }
 
         return true;
+    }
+
+    avaliable_categories() {
+        // Returns the Categories that are avaliable
+        let arr = [];
+
+        for (let [key, value] of mapAvailable) {
+            if (value.length != 0) {
+                arr.push(key);
+            }
+        }
+
+        return arr;
+    }
+
+    avaliable_amounts_in_category() {
+        // Returns the Amounts that are avaliable for the chosen category
+        let arr = [];
+
+        mapAvailable.get(this.selected_cat).forEach(function(amt) {
+            arr.push(amt);
+        });
+
+        return arr;
     }
 
 }
