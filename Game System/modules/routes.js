@@ -129,8 +129,6 @@ router.post('/play', (req, res) => {
       current_client.recieve_msg().then(() => {
         res.render('pages/avatar', { error });
       }).catch((status) => {
-        let error;
-
         if (status == 400) {
           error = "Name not allowed";
         } else if (status == 404) {
@@ -148,11 +146,10 @@ router.post('/play', (req, res) => {
         current_client.send_avatar_selection(req.body);
         current_client.recieve_msg().then(() => {
           res.render('pages/loading', {
+            error,
             game: Object.keys(Game_Types)[current_client.game]
           });
         }).catch((status) => {
-          let error;
-
           if (status == 400) {
             error = "Avatar Selected by another player";
           } else if (status == 404) {
@@ -165,6 +162,7 @@ router.post('/play', (req, res) => {
         // Checks Player Response
         server.check_response(current_client.session_id, req.body.RESPONSE);
         res.render('pages/loading', {
+          error,
           game: Object.keys(Game_Types)[current_client.game]
         });
       }
@@ -174,9 +172,10 @@ router.post('/play', (req, res) => {
       if (server.check_if_game_session_done(current_client.session_id)) {
         res.render('pages/player_endgame');
       } else if (server.check_if_client_game_started(current_client.session_id) && server.check_if_client_turn(current_client.session_id) == 200) {
-        res.render('pages/jeopardy/categories', { categories: server.get_jy_categories(current_client.session_id)});
+        res.render('pages/jeopardy/categories', { error, categories: server.get_jy_categories(current_client.session_id)});
       } else {
         res.render('pages/loading', {
+          error,
           game: Object.keys(Game_Types)[current_client.game]
         });
       }
@@ -185,9 +184,13 @@ router.post('/play', (req, res) => {
       // Amount Page
       current_client.send_category_selection(req.body);
       current_client.recieve_msg().then(() => {
-        res.render('pages/jeopardy/amount', { amounts: server.get_jy_amounts(current_client.session_id)});
-      }).catch(() => {
-        res.render('pages/jeopardy/categories');
+        res.render('pages/jeopardy/amount', { error, amounts: server.get_jy_amounts(current_client.session_id)});
+      }).catch((status) => {
+        if (status == 404) {
+          error = "Make A Selection";
+        }
+
+        res.render('pages/jeopardy/categories', { error, categories: server.get_jy_categories(current_client.session_id)});
       })
       break;
     case 'answer':
@@ -195,13 +198,20 @@ router.post('/play', (req, res) => {
       current_client.send_amount_selection(req.body);
       current_client.recieve_msg().then(() => {
         res.render('pages/jeopardy/player_response');
-      }).catch(() => {
-        res.render('pages/jeopardy/amount');
+      }).catch((status) => {
+        if (status == 404) {
+          error = "Make A Selection";
+        }
+
+        res.render('pages/jeopardy/amount', { error, amounts: server.get_jy_amounts(current_client.session_id)});
       })
       break;
     case 'new_game':
       server.restart_game_session(current_client.session_id);
-      res.render('pages/loading');
+      res.render('pages/loading', {
+        error,
+        game: Object.keys(Game_Types)[current_client.game]
+      });
       break;
     case 'exit':
       server.remove_player(current_client.session_id);

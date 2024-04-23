@@ -105,12 +105,20 @@ class Server {
 
     set_category(id, msg) {
         // Sets The Category Chosen By The Player
+        if (msg.data.category == "None") {
+            return 404;
+        }
+
         ACTIVE_GAME_SESSIONS.get(PLAYER_GAME_SESSION.get(id)).game_api.set_curr_category(msg.data.category);
         return 200;
     }
     
     set_amount(id, msg) {
         // Sets The Amount Chosen By The Player
+        if (msg.data.amount == "None") {
+            return 404;
+        }
+
         ACTIVE_GAME_SESSIONS.get(PLAYER_GAME_SESSION.get(id)).game_api.set_curr_amount(msg.data.amount);
         return 200;
     }

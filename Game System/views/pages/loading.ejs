@@ -44,6 +44,9 @@
 </head>
 <body>
     <div class="container">
+      <%- include('../partials/err'); %>
+    </div>
+    <div class="container">
         <h1><%= (game && game === 'Jeopardy') ? 'Jeopardy!' : (game ? game : 'xxxxx') %></h1>
         <h3>Please wait for your turn</h3>
         <div hidden>

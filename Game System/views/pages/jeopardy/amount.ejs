@@ -75,6 +75,9 @@
   </head>
   <body class="container">
     <main>
+      <div class="container">
+        <%- include('../../partials/err'); %>
+      </div>
         <h1 class="title">Choose a price</h1>
         <form action="/play" class="form" method="post">
           <div class="priceContainer">
@@ -83,6 +86,7 @@
                 <input type="radio" name="AMOUNT" value="<%= amt %>" style="display: none;"><p class="priceText"><%= amt %></p>
               </label>
             <% }) %>
+            <input type="radio" name="AMOUNT" value="None" style="display: none;" checked>
           </div>
 
           <button type="submit" class="ready-button">READY</button>
