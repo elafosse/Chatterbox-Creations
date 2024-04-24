@@ -74,10 +74,12 @@ class Jeopardy {
 
     async ai_check(player_ans) {
         return new Promise((resolve, reject) => {
+            console.log(player_ans);
+            console.log(this.current_question_answer);
             openai.chat.completions.create({
                 messages: [
-                    {"role": "system", "content": "You are judging whether a jeopardy answer is correct or not, The words might not exactly correct, but if they sound the same, or are close enough answer yes. Answer correctly only with yes or no."},
-                    {"role": "user", "content": "I have a jeopardy game that does not properly recognize answers people get due to sound recognition, or added words. Is " + player_ans + " close enough to " + this.current_question_answer + "?"},
+                    {"role": "system", "content": "You are judging whether a jeopardy answer is correct or not, The words might not exactly correct, but if they sound the same, or are basically the same in different words answer yes. If the answer is None respond no. Dont allow broad terms for a specific answer. Answer correctly only with yes or no."},
+                    {"role": "user", "content": "I have a jeopardy game that does not properly recognize answers people get due to sound recognition. If the answer is the same thing in different words, or if they sound the almost exactly the same, answer yes. If the player answer is too broad for the specific true answer, respond no. If the player answer is just a random word, such as womp, that does not sound the same as the true answer, respond no. Is the player answer of " + player_ans + " close enough to the true answer of" + this.current_question_answer + ", such that the meaning is the same if said out loud?"},
                 ],
                 model: "gpt-3.5-turbo",
             }).then((completion) => {
@@ -87,6 +89,8 @@ class Jeopardy {
                 if (completion.choices[0].message.content == "No." || completion.choices[0].message.content == "No"){
                     console.log("no entered");
                     // return 0;
+                }else if(player_ans == "None"){
+
                 } else {
                     console.log("in else")
                     let points = this.selected_amt;

@@ -75,6 +75,9 @@
             const transcript = event.results[0][0].transcript;
             document.getElementById('response_input').value = transcript;
             document.getElementById("player_response").click();
+            document.getElementById("player_response").addEventListener("click", function(event){
+              event.target.disabled = true;
+            });
         };
 
         recognition.start();
@@ -82,8 +85,7 @@
 
     const microphoneButton = document.getElementById('microphoneButton');
     microphoneButton.addEventListener('click', startSpeechRecognition);
-  </script>
-  <script>
+ 
     const countdownDuration = 10;
     const countdownElement = document.getElementById("timer");
 
@@ -107,6 +109,9 @@
           countdownElement.textContent = "Time's up!";
           document.getElementById('response_input').value = "None";
           document.getElementById("player_response").click();
+          document.getElementById("player_response").addEventListener("click", function(event){
+              event.target.disabled = true;
+          });
         }
       }, 1000);
     }
