@@ -180,6 +180,8 @@ class Game_Session {
         } else {
             this.next_turn();
         }
+
+        return points > 0;
     }
 
     remove_player_from_game(id) {

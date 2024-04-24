@@ -120,7 +120,7 @@ router.get('/play', (req, res) => {
 
 router.post('/play', (req, res) => {
   let current_client = server.get_client(req.session.id);
-  let error;
+  let success, error;
 
   switch (page_to_display(req.body)) {
     case 'avatar':
@@ -146,6 +146,7 @@ router.post('/play', (req, res) => {
         current_client.send_avatar_selection(req.body);
         current_client.recieve_msg().then(() => {
           res.render('pages/loading', {
+            success,
             error,
             game: Object.keys(Game_Types)[current_client.game]
           });
@@ -160,13 +161,23 @@ router.post('/play', (req, res) => {
         })
       } else {
         // Checks Player Response
-        server.check_response(current_client.session_id, req.body.RESPONSE);
-        setTimeout(function() {
-          res.render('pages/loading', {
-            error,
-            game: Object.keys(Game_Types)[current_client.game]
-          });
-        }, 5000);
+        let correct = server.check_response(current_client.session_id, req.body.RESPONSE);
+
+        correct.then(correct => {
+          if (correct) {
+            success = "Correct!"
+          } else {
+            error = "Incorrect."
+          }
+
+          setTimeout(function() {
+            res.render('pages/loading', {
+              success,
+              error,
+              game: Object.keys(Game_Types)[current_client.game]
+            });
+          }, 5000);
+        })
       }
       break;
     case 'categories':
@@ -179,6 +190,7 @@ router.post('/play', (req, res) => {
         }, 2000);
       } else {
         res.render('pages/loading', {
+          success,
           error,
           game: Object.keys(Game_Types)[current_client.game]
         });
@@ -213,6 +225,7 @@ router.post('/play', (req, res) => {
     case 'new_game':
       server.restart_game_session(current_client.session_id);
       res.render('pages/loading', {
+        success,
         error,
         game: Object.keys(Game_Types)[current_client.game]
       });
