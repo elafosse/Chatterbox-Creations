@@ -206,12 +206,16 @@ h4 {
 }
 
 .avatar {
-  width: 60px; /* Smaller to fit more in a row */
+  width: 60px;
   height: 60px;
-  background-color: #cccccc;
-  margin: 5px; /* Smaller margin to conserve space */
+  margin: 5px;
   cursor: pointer;
-  border: 2px solid transparent; /* Adjusted border thickness */
+  border: 2px solid transparent;
+  background-size: cover;
+  background-position: center center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .selected-avatar {
