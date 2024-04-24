@@ -193,7 +193,7 @@ class Server {
         return ACTIVE_GAME_SESSIONS.get(PLAYER_GAME_SESSION.get(client_id)).started;
     }
 
-    check_response(client_id, response) {
+    async check_response(client_id, response) {
         // Checks if Response Is Correct
         return ACTIVE_GAME_SESSIONS.get(PLAYER_GAME_SESSION.get(client_id)).check_response(client_id, response);
     }

@@ -1,4 +1,7 @@
 const jepQuestions = require("./jeopardy");
+const OpenAI = require("openai");
+const openai = new OpenAI({apiKey: process.env.SECRET_KEY});
+
 
 const mapAvailable = new Map();
 mapAvailable.set("MUSIC", ["$100.00", "$200.00","$300.00", "$400.00", "$500.00"]);
@@ -44,16 +47,12 @@ class Jeopardy {
             const index = arr.indexOf(this.selected_amt);
             arr.splice(index, 1)
             mapAvailable.set(this.selected_cat, arr);
-
-            // if (mapAvailable.get(this.selected_cat).length == 0) {
-            //     mapAvailable.delete(this.selected_cat);
-            // }
         });
 
         this.host_state = HOST_STATES.QUESTION;
     }
 
-    check_answer(player_ans) {
+    async check_answer(player_ans) {
         // Checks Answer To See if it is Correct
         this.host_state = HOST_STATES.ANSWER;
         this.player_response = player_ans;
@@ -64,12 +63,43 @@ class Jeopardy {
         
         // TODO: Make Answer Check Better
         if (player_ans.toLowerCase() != this.current_question_answer.toLowerCase()) {
-            return 0;
+            let points = await this.ai_check(player_ans)
+            return points;
         } else {
             let points = this.selected_amt
             this.selected_amt = undefined;
             return Number(points.replace("$",""))
         }
+    }
+
+    async ai_check(player_ans) {
+        return new Promise((resolve, reject) => {
+            openai.chat.completions.create({
+                messages: [
+                    {"role": "system", "content": "You are judging whether a jeopardy answer is correct or not, The words might not exactly correct, but if they sound the same, or are close enough answer yes. Answer correctly only with yes or no."},
+                    {"role": "user", "content": "I have a jeopardy game that does not properly recognize answers people get due to sound recognition, or added words. Is " + player_ans + " close enough to " + this.current_question_answer + "?"},
+                ],
+                model: "gpt-3.5-turbo",
+            }).then((completion) => {
+                let value = 0;
+                console.log("running");
+                console.log(completion.choices[0].message.content);
+                if (completion.choices[0].message.content == "No." || completion.choices[0].message.content == "No"){
+                    console.log("no entered");
+                    // return 0;
+                } else {
+                    console.log("in else")
+                    let points = this.selected_amt;
+                    console.log("points: " + points);
+                    this.selected_amt = undefined;
+                    let num = Number(points.replace("$",""));
+                    console.log(num);
+                    value = num;
+                }
+                resolve(value)
+            })
+        })
+
     }
 
     game_done() {
