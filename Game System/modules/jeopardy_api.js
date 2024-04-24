@@ -1,6 +1,6 @@
 const jepQuestions = require("./jeopardy");
 const OpenAI = require("openai");
-const openai = new OpenAI({apiKey: process.env.SECRET_KEY});
+const openai = new OpenAI({apiKey: process.env.OPENAI_API_KEY});
 
 
 const mapAvailable = new Map();
