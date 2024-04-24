@@ -1,0 +1,339 @@
+/* Site Wide */
+body {
+  background-color: #0C1562;
+  color: #ffffff;
+  font-family: 'Arial', sans-serif;
+}
+
+header, footer {
+  /* background-color: #0C1562; */
+  padding: 10px 0;
+  text-align: center;
+}
+
+.main {
+  text-align: center;
+}
+
+.btn-primary {
+  background-color: #e96f1d;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  font-weight: bold;
+}
+
+.btn-primary:hover {
+  background-color: #e96f1d;
+}
+
+.container {
+  padding: 20px;
+}
+
+.form {
+  text-align: center;
+}
+
+.input {
+  height: 50px;
+  margin: 10px 0;
+  padding: 0 15px;
+  border-radius: 25px;
+  border: 1px solid #ccc;
+  width: 80%;
+  box-sizing: border-box;
+}
+
+.button {
+  background-color: #0C1562;
+  border-radius: 25px;
+  width: 80%;
+  padding: 15px;
+  align-items: center;
+  margin-top: 20px;
+  text-align: center;
+  box-shadow: 0 2px 2px 0 rgba(0,0,0,0.1);
+  cursor: pointer;
+}
+
+.button-text {
+  color: #fff;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.ready-button {
+  background-color: #0C1562;
+  border-radius: 25px;
+  width: 80%;
+  padding: 15px;
+  color: #fff;
+  font-size: 18px;
+  font-weight: bold;
+  text-align: center;
+  margin-top: 20px;
+  cursor: pointer;
+  text-decoration: none;
+  display: block; /* Make the button expand */
+  margin: 20px auto; /* Center the button */
+}
+
+
+/* Index */
+.card {
+  background-color: #1A1A3D;
+  border: none;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  transition: 0.3s;
+  margin-bottom: 20px;
+}
+
+.card:hover {
+  box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+}
+
+.card img {
+  border-radius: 10px 10px 0 0;
+  max-width: 100%;
+  height: auto;
+}
+
+.card .card-body {
+  padding: 15px;
+}
+
+.card .card-title {
+  color: #e96f1d;
+  text-align: center;
+  font-weight: bold;
+}
+
+.card .card-text {
+  color: #ffffff;
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+
+/* Host Join Game Screen */
+h3 {
+  text-align: center;
+  color: #e96f1d;
+  margin-top: 20px;
+  font-weight: bold;
+}
+
+h4 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 32vh;
+  text-align: center;
+  color: #e96f1d;
+  margin-top: 20px;
+}
+
+.circle-container {
+  position: relative;
+  width: 300px;
+  height: 300px;
+  margin: auto;
+  margin-top: 40px;
+}
+
+.player-name {
+  text-align: center;
+  color: #e96f1d;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.player-avatar {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+}
+
+/* Player Join Screen */
+.player_body {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+  justify-content: center;
+  align-items: center;
+  background-color: #fff;
+}
+
+.player_container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+  align-items: center;
+  max-width: 320px;
+  flex-grow: 1;
+  height: 100vh;
+  background-color: #fff;
+}
+
+.label_title {
+  font-size: 24px;
+  font-weight: bold;
+  color: #0C1562;
+  margin-bottom: 14px;
+}
+
+
+/* Avatar Selection Screen */
+.player_h3 {
+  font-size: 24px;
+  font-weight: bold;
+  color: #0C1562;
+  margin-bottom: 24px;
+}
+
+.avatar-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  width: 100%;
+}
+
+.avatar {
+  width: 60px; /* Smaller to fit more in a row */
+  height: 60px;
+  background-color: #cccccc;
+  margin: 5px; /* Smaller margin to conserve space */
+  cursor: pointer;
+  border: 2px solid transparent; /* Adjusted border thickness */
+}
+
+.selected-avatar {
+  border-color: #0C1562;
+  border-width: 2px;
+  border-style: solid;
+}
+
+
+/* Loading Page */
+.loading_container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
+.loading_h1 {
+  font-size: 24px; /* Match the avatar heading size */
+  font-weight: bold;
+  color: #e96f1d; /* Match the avatar heading color */
+  margin-bottom: 24px; /* Match the spacing */
+}
+
+.loading_h3 {
+  font-size: 18px;
+  font-weight: lighter; /* Match the font weight from avatar */
+  color: #0C1562; /* Match the color for consistency */
+  text-align: center;
+}
+
+
+/* Category Selection */
+.select_title {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  color: #0C1562;
+}
+
+.select_btn {
+  padding: 10px;
+  margin: 10px;
+  background-color: #fff;
+  border-color: #CCC;
+  border-width: 1px;
+  border-style: solid;
+  width: 40%;
+}
+
+.selectedCat {
+  border-color: #0C1562;
+  border-width: 2px;
+}
+
+.select_btn_text {
+  font-size: 25px;
+  color: orange;
+  text-align: center;
+}
+
+
+/* Amount Selection */
+.select_container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.priceButton {
+  padding: 30px;
+  margin: 10px;
+  background-color: #fff;
+  border-color: #CCC;
+  border-width: 1px;
+  border-style: solid;
+  width: 40%;
+}
+
+.selectedPrice {
+  border-color: #0C1562;
+  border-width: 2px;
+}
+
+.priceText {
+  font-size: 25px;
+  color: orange;
+  text-align: center;
+}
+
+
+/* Player Response */
+.answer_title {
+  font-size: 30px;
+  font-weight: bold;
+  margin-bottom: 10px;
+  color: #0C1562;
+}
+
+.subtitle {
+  font-size: 18px;
+  margin-bottom: 30px;
+  color: #0C1562;
+}
+
+.microphoneButton {
+  height: 100px;
+  width: 100px;
+  border-radius: 50%;
+  background-color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-color: #0C1562;
+  border-width: 2px;
+  border-style: solid;
+}
+
+.microphoneIcon {
+  background-color: white;
+  width: 40px;
+  height: 57px;
+}

@@ -2,67 +2,57 @@
 <html lang="en">
   <head>
     <%- include('../../partials/head'); %>
-    <title>Answer Screen</title>
-    <style>
-      .container {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
-        background-color: #fff;
-      }
-      .title {
-        font-size: 30px;
-        font-weight: bold;
-        margin-bottom: 10px;
-        color: #0C1562;
-      }
-      .subtitle {
-        font-size: 18px;
-        margin-bottom: 30px;
-        color: #0C1562;
-      }
-      .microphoneButton {
-        height: 100px;
-        width: 100px;
-        border-radius: 50%;
-        background-color: white;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        border-color: #0C1562;
-        border-width: 2px;
-        border-style: solid;
-      }
-      .microphoneIcon {
-        background-color: white;
-        width: 40px;
-        height: 57px;
-      }
-    </style>
   </head>
-  <body class="container">
+
+  <body class="player_body">
     <main>
-      <div class="container">
-        <h1 class="title">Your Turn!</h1>
-        <h5 id="timer">10</h5>
+      <div class="player_container">
+        <h1 class="answer_title">Your Turn!</h1>
+        <h5 class="answer_title" id="timer">10</h5>
 
         <p class="subtitle">Tap the button to speak</p>
-        <div class="microphoneButton">
+        <div class="microphoneButton" onclick="startSpeechRecognition()">
           <img class="microphoneIcon" id="microphoneButton" src="microphone.png" alt="Microphone Icon" />
         </div>
 
-        <!-- <input id="Answer" type="button" value="Answer" onclick="startSpeechRecognition()"> -->
         <form action="/play" class="form" method="post">
           <input name="RESPONSE" id="response_input" type="text" hidden>
           <button type="submit" id="player_response" class="btn btn-primary float-right" hidden>READY</button>
         </form>
       </div>
-
     </main>
   </body>
+
   <script>
+
+    // Countdown
+    let interval;
+    const countdownDuration = 10;
+    const countdownElement = document.getElementById("timer");
+
+    function updateCountdown(curr_time) {
+      countdownElement.textContent = curr_time;
+    }
+
+    function startCountdown() {
+      let countdownTime = countdownDuration;
+
+      interval = setInterval(() => {
+        countdownTime--;
+        if (countdownTime < 0) {
+          updateCountdown("Time's up!");
+        } else {
+          updateCountdown(countdownTime);
+        }
+
+        if (countdownTime === 0) {
+          countdownElement.textContent = "Time's up!";
+          document.getElementById('response_input').value = "None";
+          document.getElementById("player_response").click();
+        }
+      }, 1000);
+    }
+
     function startSpeechRecognition() {
         const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
         const recognition = new SpeechRecognition();
@@ -75,40 +65,12 @@
             const transcript = event.results[0][0].transcript;
             document.getElementById('response_input').value = transcript;
             document.getElementById("player_response").click();
+            if (interval) {
+              clearInterval(interval);
+            }
         };
 
         recognition.start();
-    }
-
-    const microphoneButton = document.getElementById('microphoneButton');
-    microphoneButton.addEventListener('click', startSpeechRecognition);
-  </script>
-  <script>
-    const countdownDuration = 10;
-    const countdownElement = document.getElementById("timer");
-
-    function updateCountdown(curr_time) {
-      countdownElement.textContent = curr_time;
-    }
-
-    function startCountdown() {
-      let countdownTime = countdownDuration;
-
-      const countdownInterval = setInterval(() => {
-        countdownTime--;
-        if (countdownTime < 0) {
-          updateCountdown("Time's up!");
-        } else {
-          updateCountdown(countdownTime);
-        }
-
-
-        if (countdownTime === 0) {
-          countdownElement.textContent = "Time's up!";
-          document.getElementById('response_input').value = "None";
-          document.getElementById("player_response").click();
-        }
-      }, 1000);
     }
 
     window.onload = startCountdown;

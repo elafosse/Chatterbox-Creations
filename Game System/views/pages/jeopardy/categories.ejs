@@ -2,113 +2,48 @@
 <html lang="en">
   <head>
     <%- include('../../partials/head'); %>
-    <title>Category Selection</title>
-    <style>
-      .container {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
-        background-color: #fff;
-      }
-      .title {
-        font-size: 24px;
-        font-weight: bold;
-        margin-bottom: 20px;
-        color: #0C1562;
-      }
-      .catContainer {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
-        margin-bottom: 20px;
-      }
-      .catButton {
-        padding: 30px;
-        margin: 10px;
-        background-color: #fff;
-        border-color: #CCC;
-        border-width: 1px;
-        border-style: solid;
-        width: 40%;
-      }
-      .selectedCat {
-        border-color: #0C1562;
-        border-width: 2px;
-      }
-      .priceText {
-        font-size: 25px;
-        color: orange;
-        text-align: center;
-      }
-      .ready-button {
-        background-color: #0C1562;
-        border-radius: 25px;
-        width: 80%;
-        padding: 15px;
-        color: #fff;
-        font-size: 18px;
-        font-weight: bold;
-        text-align: center;
-        margin-top: 20px;
-        cursor: pointer;
-        text-decoration: none;
-        display: block; /* Make the button expand */
-        margin: 20px auto; /* Center the button */
-      }
-      .readyButton {
-        border-radius: 25px;
-        padding: 15px;
-        width: 80%;
-        justify-content: center;
-        align-items: center;
-        background-color: #0C1562;
-        box-shadow: 0 2px 2px rgba(0, 0, 0, 0.1);
-      }
-      .readyButtonText {
-        color: #fff;
-        font-size: 18px;
-        font-weight: bold;
-      }
-    </style>
   </head>
-  <body class="container">
+
+  <body class="player_body">
     <main>
       <div class="container">
         <%- include('../../partials/err'); %>
       </div>
-        <h1 class="title">Choose a category</h1>
-        <form action="/play" class="form" method="post">
-          <div class="catContainer">
-            <% categories.forEach(function(category) { %>
-              <!-- <button name="" class="btn btn-primary float-right"><%= category %></button> -->
 
-              <label class="catButton" id="btn-<%= category %>" onclick="handleCategorySelect('<%= category %>')">
-                <input type="radio" name="CATEGORY" value="<%= category %>" style="display: none;"><%= category %>
+      <div class="player_container">
+        <h1 class="select_title">Choose a Category</h1>
+        <form action="/play" class="form" method="post">
+          <div class="select_container">
+            <% categories.forEach(function(category) { %>
+              <label class="select_btn" id="btn-<%= category %>" onclick="handleCategorySelect('<%= category %>')">
+                <input type="radio" name="CATEGORY" value="<%= category %>" style="display: none;">
+                <span class="select_btn_text"><%= category %></span>
               </label>
             <% }); %>
             <input type="radio" name="CATEGORY" value="None" style="display: none;" checked>
           </div>
 
-          <!-- <input name="CATEGORY" type="text"> -->
-          <!-- <button type="submit" class="btn btn-primary float-right">SUBMIT</button> -->
           <button type="submit" class="ready-button">READY</button>
         </form>
+      </div>
     </main>
-
-    <script>
-      let selectedCategory = null;
-
-      const handleCategorySelect = (selectedCategory) => {
-        const catButtons = document.querySelectorAll('.priceButton');
-        catButtons.forEach(button => {
-          button.classList.remove('selectedCat');
-        });
-        
-        selected_button = document.getElementById("btn-" + selectedCategory);
-        selected_button.classList.add('selectedCat');
-      };
-    </script>
+      
+    <footer style="color: black;">
+      <%- include('../../partials/footer'); %>
+    </footer>
   </body>
+
+  <script>
+    let selectedCategory = null;
+
+    const handleCategorySelect = (selectedCategory) => {
+      const catButtons = document.querySelectorAll('.select_btn');
+      catButtons.forEach(button => {
+        button.classList.remove('selectedCat');
+      });
+      
+      selected_button = document.getElementById("btn-" + selectedCategory);
+      selected_button.classList.add('selectedCat');
+    };
+  </script>
 </html>

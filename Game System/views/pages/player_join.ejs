@@ -1,95 +1,33 @@
 <!DOCTYPE html>
-<html lang="en" style="height: 100%;">
-<head>
-  <%- include('../partials/head'); %>
-  <style>
-    html{
-      height: 100%;
-      margin: 0;
-    }
-    body {
-      margin: 0;
-      display: flex;
-      flex-direction: column;
-      min-height: 100%;
-      justify-content: center;
-      align-items: center;
-      background-color: #fff;
-    }
-    .container {
-      width: 100%;
-      max-width: 320px;
-      flex-grow: 1;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-    }
-    .title {
-      font-size: 24px;
-      font-weight: bold;
-      color: #0C1562;
-      margin-bottom: 14px;
-    }
-    .input {
-      height: 50px;
-      margin: 10px 0;
-      padding: 0 15px;
-      border-radius: 25px;
-      border: 1px solid #ccc;
-      width: 80%;
-      box-sizing: border-box;
-    }
-    .button {
-      background-color: #0C1562;
-      border-radius: 25px;
-      width: 80%;
-      padding: 15px;
-      align-items: center;
-      margin-top: 20px;
-      text-align: center;
-      box-shadow: 0 2px 2px 0 rgba(0,0,0,0.1);
-      cursor: pointer;
-    }
-    .button-text {
-      color: #fff;
-      font-size: 18px;
-      font-weight: bold;
-    }
-    .form-group {
-      width: 100%;
-      text-align: center;
-      justify-content: space-around;
-      align-items: center;
-    }
-    footer{
-      margin-top: auto;
-      text-align: center;
-      width: 100%;
-    }
-  </style>
-</head>
-<body>
+<html lang="en">
+  <head>
+    <%- include('../partials/head'); %>
+  </head>
+
+  <body class="player_body">
+    <main>
       <div class="container">
         <%- include('../partials/err'); %>
       </div>
-  <div class="container justify-content-center">
-    <form action="/play" class="form" method="post">
-      <div class="form-group">
-        <label for="room_code" class="title">Room Code</label>
-        <input name="ROOMCODE" type="number" class="input" id="room_code" placeholder="Enter Room Code">
-
-        <label for="username" class="title">Name</label>
-        <input name="USERNAME" type="text" class="input" id="username" placeholder="Johnny">
-
-        <button type="submit" class="button">
-          <span class="button-text">PLAY</span>
-        </button>
+      <div class="player_container justify-content-center">
+        <form action="/play" class="form" method="post">
+          <div class="form-group">
+            <label for="room_code" class="label_title">Room Code</label>
+            <input name="ROOMCODE" type="number" class="input" id="room_code" placeholder="Enter Room Code">
+            
+            <label for="username" class="label_title">Name</label>
+            <input name="USERNAME" type="text" class="input" id="username" placeholder="Johnny">
+            
+            <button type="submit" class="button">
+              <span class="button-text">PLAY</span>
+            </button>
+          </div>
+        </form>
       </div>
-    </form>
-  </div>
-  <footer>
-    <%- include('../partials/footer'); %>
-  </footer>
-</body>
+    </main>
+
+    <footer style="color: black; padding-top: 60px;">
+      <%- include('../partials/footer'); %>
+    </footer>
+  </body>
 </html>
