@@ -49,6 +49,9 @@
           countdownElement.textContent = "Time's up!";
           document.getElementById('response_input').value = "None";
           document.getElementById("player_response").click();
+          document.getElementById("player_response").addEventListener("click", function(event){
+              event.target.disabled = true;
+          });
         }
       }, 1000);
     }
