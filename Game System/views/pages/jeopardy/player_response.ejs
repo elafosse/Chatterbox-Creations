@@ -11,8 +11,8 @@
         <h5 class="answer_title" id="timer">10</h5>
 
         <p class="subtitle">Tap the button to speak</p>
-        <div class="microphoneButton" onclick="startSpeechRecognition()">
-          <img class="microphoneIcon" id="microphoneButton" src="microphone.png" alt="Microphone Icon" />
+        <div class="microphoneButton" id="microphoneButton" onclick="startSpeechRecognition()">
+          <img class="microphoneIcon" src="microphone.png" alt="Microphone Icon" />
         </div>
 
         <form action="/play" class="form" method="post">
@@ -57,25 +57,26 @@
     }
 
     function startSpeechRecognition() {
-        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-        const recognition = new SpeechRecognition();
+      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+      const recognition = new SpeechRecognition();
+      
+      recognition.onstart = () => {
+        console.log('Listening...');
+        document.getElementById('microphoneButton').classList.toggle('glow');
+      };
 
-        recognition.onstart = () => {
-            console.log('Listening...');
-        };
+      recognition.onresult = (event) => {
+          const transcript = event.results[0][0].transcript;
+          document.getElementById('response_input').value = transcript;
+          document.getElementById("player_response").click();
+          if (interval) {
+            clearInterval(interval);
+          }
+      };
 
-        recognition.onresult = (event) => {
-            const transcript = event.results[0][0].transcript;
-            document.getElementById('response_input').value = transcript;
-            document.getElementById("player_response").click();
-            if (interval) {
-              clearInterval(interval);
-            }
-        };
-
-        recognition.start();
+      recognition.start();
     }
 
-    window.onload = startCountdown;
+    // window.onload = startCountdown;
   </script>
 </html>
