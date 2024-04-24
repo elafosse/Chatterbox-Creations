@@ -3,39 +3,38 @@
   <head>
     <%- include('../partials/head'); %>
   </head>
+
   <body class="container">
     <header>
       <%- include('../partials/header'); %>
-    </header>
+    </header>    
 
     <main>
       <div class="container">
         <h1><%= (game) ? game : 'xxxxx' %></h1>
-        <h3><%= (room_code) ? room_code : 'xxxxx' %></h3>
       </div>
       <div class="container">
-        <form action="/" class="form" method="post">
+        <div class="container">
+          <h4><strong>Room Code:&nbsp;</strong><%= (room_code) ? room_code : 'xxxxx' %></h4>
+          <% if (players) { %>
+            <% players.forEach(function(player, index) { %>
+              <div class="player-name" data-index="<%= index %>" data-total="<%= players.length %>">
+                <%= player.name %>
+                <img src="<%= player.avatar_id %>.png" class="player-avatar" alt="">
+              </div>
+            <% }); %>
+          <% } %>
+        </div>
+      </div>
+      <div class="container">
+        <form action="" class="form" method="post">
           <button name="START_GAME" value="<%= (path) ? path : 'xxxxx' %>" class="btn btn-primary float-right">Start Game</button>
+          <button name="END_GAME" id="end_button" value="" class="btn btn-primary">Exit</button>
         </form>
-      </div>
-      <div class="container">
-        <% if (players) { %>
-          <% players.forEach(function(player) { %>
-            <tr>
-              <td><%= player.name %></td>
-              <td><img src="<%= player.avatar_id %>.png" class="img-fluid" alt=""></td>
-            </tr>
-          <% }); %>
-        <% } %>
       </div>
       <div class="container" hidden>
         <form action="" class="form" method="post">
           <button name="CHOSEN_GAME" id="form_button" value="jeopardy" class="btn btn-primary">Start Game</button>
-        </form>
-      </div>
-      <div class="container">
-        <form action="" class="form" method="post">
-          <button name="END_GAME" id="end_button" value="" class="btn btn-primary">Exit</button>
         </form>
       </div>
     </main>
@@ -44,11 +43,35 @@
       <%- include('../partials/footer'); %>
     </footer>
   </body>
+
   <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const players = document.querySelectorAll('.player-name');
+      const distanceFromCenter = 200; //Adjust the distance from the center as needed
+
+      players.forEach(function(player, index) {
+        const total = players.length;
+        const angle = (index / total) * 360; //Angle for each player
+        const radians = (angle * Math.PI) / 180;
+        const x = Math.cos(radians) * distanceFromCenter;
+        const y = Math.sin(radians) * distanceFromCenter;
+
+        //Adjust the position of the player name
+        player.style.transform = `translate(-50%, -50%) translate(${x}px, ${y}px)`;
+        //Ensure the transform origin is the center of the container
+        player.style.transformOrigin = 'center center';
+        //Absolutely position the player names
+        player.style.position = 'absolute';
+        //Center the player names within the circle container
+        player.style.left = '50%';
+        player.style.top = '50%';
+      });
+    });
+
     function pressButton() {
       document.getElementById("form_button").click();
     }
 
-    const myTimeout = setTimeout(pressButton, 3000);
+    const myTimeout = setTimeout(pressButton, 1000);
   </script>
 </html>

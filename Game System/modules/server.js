@@ -105,12 +105,20 @@ class Server {
 
     set_category(id, msg) {
         // Sets The Category Chosen By The Player
+        if (msg.data.category == "None") {
+            return 404;
+        }
+
         ACTIVE_GAME_SESSIONS.get(PLAYER_GAME_SESSION.get(id)).game_api.set_curr_category(msg.data.category);
         return 200;
     }
     
     set_amount(id, msg) {
         // Sets The Amount Chosen By The Player
+        if (msg.data.amount == "None") {
+            return 404;
+        }
+
         ACTIVE_GAME_SESSIONS.get(PLAYER_GAME_SESSION.get(id)).game_api.set_curr_amount(msg.data.amount);
         return 200;
     }
@@ -146,7 +154,7 @@ class Server {
 
     check_name(name) {
         // Checks if Name is Appropriate
-        if (this.matcher.hasMatch(name)) {
+        if (this.matcher.hasMatch(name) || name == '') {
             return 400;
         } else {
             return 200;
@@ -185,7 +193,7 @@ class Server {
         return ACTIVE_GAME_SESSIONS.get(PLAYER_GAME_SESSION.get(client_id)).started;
     }
 
-    check_response(client_id, response) {
+    async check_response(client_id, response) {
         // Checks if Response Is Correct
         return ACTIVE_GAME_SESSIONS.get(PLAYER_GAME_SESSION.get(client_id)).check_response(client_id, response);
     }

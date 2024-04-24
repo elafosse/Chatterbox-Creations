@@ -3,16 +3,48 @@
   <head>
     <%- include('../../partials/head'); %>
   </head>
-  <body class="container">
+
+  <body class="player_body">
     <main>
-        <h3>Choose an amount</h3>
+      <div class="container">
+        <%- include('../../partials/err'); %>
+      </div>
+
+      <div class="player_container">
+        <h1 class="select_title">Choose a Price</h1>
         <form action="/play" class="form" method="post">
-          <% amounts.forEach(function(amt) { %>
-            <button name="" class="btn btn-primary float-right"><%= amt %></button>
-          <% }); %>
-          <input name="AMOUNT" type="text">
-          <button type="submit" class="btn btn-primary float-right">SUBMIT</button>
+          <div class="select_container">
+            <% amounts.forEach(amt => { %>
+              <label class="select_btn" id="btn-<%= amt %>" onclick="handlePriceSelect('<%= amt %>')">
+                <input type="radio" name="AMOUNT" value="<%= amt %>" style="display: none;">
+                <span class="select_btn_text"><%= amt %></span>
+              </label>
+            <% }) %>
+            <input type="radio" name="AMOUNT" value="None" style="display: none;" checked>
+          </div>
+
+          <button type="submit" class="ready-button">READY</button>
         </form>
+      </div>
     </main>
+
+    <footer style="color: black;">
+      <%- include('../../partials/footer'); %>
+    </footer>
   </body>
+
+  <script>
+    let selectedPrice = null;
+    const prices = ['$100', '$200', '$300', '$400', '$500'];
+
+    const handlePriceSelect = (selectedPrice) => {
+      const priceButtons = document.querySelectorAll('.select_btn');
+      priceButtons.forEach(button => {
+        button.classList.remove('selectedPrice');
+      });
+      
+      selected_button = document.getElementById("btn-" + selectedPrice);
+      selected_button.classList.add('selectedPrice');
+    };
+  </script>
 </html>

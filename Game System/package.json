@@ -21,6 +21,7 @@
     "express-session": "^1.18.0",
     "nodemon": "^3.1.0",
     "obscenity": "^0.2.1",
+    "openai": "^4.38.3",
     "ws": "^8.16.0"
   }
 }

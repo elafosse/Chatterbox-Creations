@@ -168,9 +168,9 @@ class Game_Session {
         return this.player_order[this.current_player_index];
     }
 
-    check_response(id, answer) {
+    async check_response(id, answer) {
         // Checks Player Response
-        let points = this.game_api.check_answer(answer);
+        let points = await this.game_api.check_answer(answer);
         let currentPlayer = this.get_current_turn_player();
         let updatedScore = currentPlayer.points + points;
         currentPlayer.points = updatedScore;

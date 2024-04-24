@@ -3,6 +3,7 @@
   <head>
     <%- include('../partials/head'); %>
   </head>
+
   <body class="container">
     <header>
       <%- include('../partials/header'); %>
@@ -10,17 +11,34 @@
 
     <main>
       <div class="container">
-        <h1>Games</h1>
-        <p>Here is our selection of games</p>
         <div class="container">
-          <div class="card" style="width: 18rem;">
-            <img src="jeopardy_logo.jpg" class="card-img-top" alt="...">
-            <div class="card-body">
-              <h5 class="card-title">Jeopardy</h5>
-              <p class="card-text">Test your general knowledge playing the hit game <em>Jeopardy!</em></p>
-              <form action="" class="form" method="post">
-                <button name="CHOSEN_GAME" value="jeopardy" class="btn btn-primary">Start Game</button>
-              </form>
+          <h1>Game Selection</h1>
+        </div>
+        <!-- Row to contain cards -->
+        <div class="row">
+          <!-- Jeopardy Card -->
+          <div class="col-md-6 col-sm-12">
+            <div class="card">
+              <img src="jeopardy_logo.jpg" class="card-img-top" alt="Jeopardy logo">
+              <div class="card-body">
+                <h5 class="card-title">Jeopardy</h5>
+                <p class="card-text">Test your general knowledge playing the hit game <em>Jeopardy!</em></p>
+                <div class="container">
+                  <form action="" class="form" method="post">
+                    <button name="CHOSEN_GAME" value="jeopardy" class="btn btn-primary">Start Game</button>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Placeholder for More Games -->
+          <div class="col-md-6 col-sm-12">
+            <div class="card">
+              <img src="comingsoon.jpg" class="card-img-top" alt="coming soon">
+              <div class="card-body">
+                <h5 class="card-title">More Games Coming Soon!</h5>
+                <p class="card-text">Check back later for even more games!</p>
+              </div>
             </div>
           </div>
         </div>

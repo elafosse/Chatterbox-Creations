@@ -3,23 +3,65 @@
     <head>
         <%- include('../partials/head'); %>
     </head>
+    <style>
+        body {
+            background-color: #0C1562; 
+            color: #ffffff;
+            font-family: 'Arial', sans-serif;
+        }
+
+        h3 {
+            text-align: center;
+            color: #e96f1d; 
+            margin-top: 20px;
+            font-weight: bold;
+        }
+
+        .container {
+            padding: 20px;
+        }
+
+        /* Table Styling */
+        .leaderboard-table {
+            width: 100%;
+            margin-top: 20px;
+            border-collapse: collapse;
+        }
+
+        .leaderboard-table thead {
+            background-color: #e96f1d;
+            color: #0C1562;
+        }
+
+        .leaderboard-table th, .leaderboard-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ffffff;
+        }
+
+        .leaderboard-table tbody tr:hover {
+            background-color: #292952;
+        }
+    </style>
     <body class="container">
         <main>
-            <div class="container">
-                <h3 class="text-primary my-4">Leaderboard</h3>
-                <div class="row gy-3 pb-3">
-                    <% for(var i=0; i<leaderboard.length; i++) {%>
-                        <div class="col-12 col-md-6 col-lg-4 d-flex align-items-center">
-                            <h4 class="ms-3"><%= leaderboard[i].name %>: <%= leaderboard[i].points %></h4>
-                        </div>
+            <h3>Leaderboard</h3>
+            <table class="leaderboard-table">
+                <thead>
+                    <tr>
+                        <th>Player</th>
+                        <th>Points</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% for(var i=0; i<leaderboard.length; i++) { %>
+                        <tr>
+                            <td><%= leaderboard[i].name %></td>
+                            <td><%= leaderboard[i].points %></td>
+                        </tr>
                     <% } %>
-
-                    <!-- <div class="col-12 col-md-6 col-lg-4 d-flex align-items-center">
-                        <img width="56" height="56" src="images/players/player-5.png" alt="">
-                        <h4 class="ms-3">Jacob Behr</h4>
-                    </div> -->
-                </div>
-            </div>
+                </tbody>
+            </table>
             <div class="container" hidden>
                 <form action="/jeopardy" class="form" method="post">
                   <button id="form_button" class="btn btn-primary float-right"></button>

@@ -3,17 +3,47 @@
   <head>
     <%- include('../../partials/head'); %>
   </head>
-  <body class="container">
-    <main>
-        <h3>Choose a category</h3>
-        <form action="/play" class="form" method="post">
-          <% categories.forEach(function(category) { %>
-            <button name="" class="btn btn-primary float-right"><%= category %></button>
-          <% }); %>
 
-          <input name="CATEGORY" type="text">
-          <button type="submit" class="btn btn-primary float-right">SUBMIT</button>
+  <body class="player_body">
+    <main>
+      <div class="container">
+        <%- include('../../partials/err'); %>
+      </div>
+
+      <div class="player_container">
+        <h1 class="select_title">Choose a Category</h1>
+        <form action="/play" class="form" method="post">
+          <div class="select_container">
+            <% categories.forEach(function(category) { %>
+              <label class="select_btn" id="btn-<%= category %>" onclick="handleCategorySelect('<%= category %>')">
+                <input type="radio" name="CATEGORY" value="<%= category %>" style="display: none;">
+                <span class="select_btn_text"><%= category %></span>
+              </label>
+            <% }); %>
+            <input type="radio" name="CATEGORY" value="None" style="display: none;" checked>
+          </div>
+
+          <button type="submit" class="ready-button">READY</button>
         </form>
+      </div>
     </main>
+      
+    <footer style="color: black;">
+      <%- include('../../partials/footer'); %>
+    </footer>
   </body>
+
+  <script>
+    let selectedCategory = null;
+
+    const handleCategorySelect = (selectedCategory) => {
+      const catButtons = document.querySelectorAll('.select_btn');
+      catButtons.forEach(button => {
+        button.classList.remove('selectedCat');
+      });
+      
+      selected_button = document.getElementById("btn-" + selectedCategory);
+      selected_button.classList.add('selectedCat');
+    };
+  </script>
 </html>
