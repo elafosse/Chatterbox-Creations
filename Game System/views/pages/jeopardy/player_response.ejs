@@ -8,7 +8,7 @@
     <main>
       <div class="player_container">
         <h1 class="answer_title">Your Turn!</h1>
-        <h5 class="answer_title" id="timer">10</h5>
+        <h5 class="answer_title" id="timer">20</h5>
 
         <p class="subtitle">Tap the button to speak</p>
         <div class="microphoneButton" id="microphoneButton" onclick="startSpeechRecognition()">
@@ -63,6 +63,7 @@
       recognition.onstart = () => {
         console.log('Listening...');
         document.getElementById('microphoneButton').classList.toggle('glow');
+        clearInterval(interval);
       };
 
       recognition.onresult = (event) => {
@@ -74,9 +75,31 @@
           }
       };
 
+      recognition.onaudioend = (event) => {
+        console.log("audioend");
+      };
+
+      recognition.onend = (event) => {
+        document.getElementById('response_input').value = "None";
+        document.getElementById("player_response").click();
+        document.getElementById("player_response").addEventListener("click", function(event){
+            event.target.disabled = true;
+        });
+        document.getElementById('microphoneButton').classList.toggle('glow');
+        console.log("end");
+      };
+
+      recognition.onerror = (event) => {
+        console.log("error");
+      };
+
+      recognition.onnomatch = (event) => {
+        console.log("nomatch");
+      };
+
       recognition.start();
     }
 
-    // window.onload = startCountdown;
+    window.onload = startCountdown;
   </script>
 </html>
