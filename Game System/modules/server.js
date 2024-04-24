@@ -154,7 +154,7 @@ class Server {
 
     check_name(name) {
         // Checks if Name is Appropriate
-        if (this.matcher.hasMatch(name)) {
+        if (this.matcher.hasMatch(name) || name == '') {
             return 400;
         } else {
             return 200;
