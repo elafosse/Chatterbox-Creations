@@ -96,7 +96,12 @@
 
       const countdownInterval = setInterval(() => {
         countdownTime--;
-        updateCountdown(countdownTime);
+        if (countdownTime < 0) {
+          updateCountdown("Time's up!");
+        } else {
+          updateCountdown(countdownTime);
+        }
+
 
         if (countdownTime === 0) {
           countdownElement.textContent = "Time's up!";
