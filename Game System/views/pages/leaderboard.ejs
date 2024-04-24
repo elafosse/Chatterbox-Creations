@@ -56,7 +56,7 @@
                 <tbody>
                     <% for(var i=0; i<leaderboard.length; i++) { %>
                         <tr>
-                            <td><%= leaderboard[i].name %></td>
+                            <td><img src="<%= leaderboard[i].avatar_id %>.png" class="player-avatar" alt="">        <%= leaderboard[i].name %></td>
                             <td><%= leaderboard[i].points %></td>
                         </tr>
                     <% } %>
