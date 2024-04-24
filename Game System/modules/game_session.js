@@ -209,7 +209,7 @@ class Game_Session {
         if (this.game == Game_Types.Jeopardy) {
             setTimeout(() => {
                 this.game_api.set_host_screen_to_board();
-            }, 6000);
+            }, 3000);
         }
     }
 

@@ -24,11 +24,18 @@
   </body>
 
   <script>
-
     // Countdown
     let interval;
     const countdownDuration = 20;
     const countdownElement = document.getElementById("timer");
+
+    function send_to_server(data) {
+      document.getElementById('response_input').value = data;
+      document.getElementById("player_response").click();
+      document.getElementById("player_response").addEventListener("click", function(event){
+          event.target.disabled = true;
+      });
+    }
 
     function updateCountdown(curr_time) {
       countdownElement.textContent = curr_time;
@@ -38,6 +45,7 @@
       let countdownTime = countdownDuration;
 
       interval = setInterval(() => {
+        console.log(countdownTime);
         countdownTime--;
         if (countdownTime < 0) {
           updateCountdown("Time's up!");
@@ -47,11 +55,8 @@
 
         if (countdownTime === 0) {
           countdownElement.textContent = "Time's up!";
-          document.getElementById('response_input').value = "None";
-          document.getElementById("player_response").click();
-          document.getElementById("player_response").addEventListener("click", function(event){
-              event.target.disabled = true;
-          });
+          send_to_server("None");
+          clearInterval(interval);
         }
       }, 1000);
     }
@@ -68,11 +73,7 @@
 
       recognition.onresult = (event) => {
           const transcript = event.results[0][0].transcript;
-          document.getElementById('response_input').value = transcript;
-          document.getElementById("player_response").click();
-          if (interval) {
-            clearInterval(interval);
-          }
+          send_to_server(transcript);
       };
 
       recognition.onaudioend = (event) => {
@@ -80,17 +81,12 @@
       };
 
       recognition.onend = (event) => {
-        document.getElementById('response_input').value = "None";
-        document.getElementById("player_response").click();
-        document.getElementById("player_response").addEventListener("click", function(event){
-            event.target.disabled = true;
-        });
         document.getElementById('microphoneButton').classList.toggle('glow');
         console.log("end");
       };
-
+      
       recognition.onerror = (event) => {
-        console.log("error");
+        send_to_server("None");
       };
 
       recognition.onnomatch = (event) => {
